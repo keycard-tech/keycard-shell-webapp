@@ -1,0 +1,693 @@
+@import url('https://fonts.googleapis.com/css2?family=Chivo+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;1,100;1,200;1,300;1,400;1,500;1,600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+
+/* HTML5 display-role reset for older browsers */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
+}
+
+ol,
+ul {
+  list-style: none;
+}
+
+blockquote,
+q {
+  quotes: none;
+}
+
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: '';
+  content: none;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+a {
+  font: inherit;
+  color: inherit;
+  text-decoration: none;
+}
+
+input[disabled="disabled"],
+input[disabled="disabled"]:hover {
+  opacity: 0.7;
+}
+
+.group:before,
+.group:after {
+  content: " ";
+  display: table;
+}
+
+.group:after {
+  clear: both;
+}
+
+.group {
+  zoom: 1;
+}
+
+::-webkit-scrollbar {
+  background-color: rgb(15, 17, 22);
+  width: 5px;
+}
+
+::-webkit-scrollbar-thumb:window-inactive,
+::-webkit-scrollbar-thumb {
+  background: rgb(50, 60, 80);
+  border-radius: 10px;
+}
+
+body {
+  background: rgb(22, 22, 35);
+  font-family: 'Chivo Mono', monospace;
+  font-size: 62.5%;
+  font-size: .8em;
+  color: white;
+  line-height: 1.3em;
+  font-weight: 300;
+  box-sizing: border-box;
+}
+
+.kpro_web__main-container {
+  min-height: 800px;
+}
+
+.kpro_web__menu-container {
+  width: 90%;
+  display: block;
+  padding: 1em 0;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+.kpro_web__menu {
+  float: right;
+  text-align: right;
+  padding: 1.5em 0;
+  width: 45%;
+  border-bottom: white solid 2px;
+  box-sizing: border-box;
+}
+
+.kpro_web__menu-element {
+  display: inline-block;
+  width: 30%;
+}
+
+.kpro_web__menu-element-link:hover, .active {
+  font-weight: 600;
+}
+
+.kpro_web__logo {
+  float: left;
+  font-family: 'Press Start 2P', cursive;
+  font-size: 1.8em;
+  width: 45%;
+  padding: 1em 0;
+  box-sizing: border-box;
+}
+
+.kpro_web__version-container {
+  width: 450px;
+  margin: 0 auto 3.5em auto;
+  text-align: right;
+  font-weight: 700;
+}
+
+.kpro_web__db-container {
+  width: 550px;
+  height: 550px;
+  margin: 5em auto 0 auto;
+  text-align: center;
+  position: relative;
+}
+
+.kpro_web__db-qr-container {
+  --s: 70px; /* the size on the corner */
+  --t: 5px;  /* the thickness of the border */
+  --g: 30px; /* the gap between the border and image */
+
+  width: 520px;
+  height: 520px;
+  margin: 1em auto 2.5em auto;
+  padding: calc(var(--g) + var(--t));
+  box-sizing: border-box;
+  outline: var(--t) solid rgb(81, 80, 85); /* the color here */
+  outline-offset: calc(-1*var(--t));
+  -webkit-mask:
+    conic-gradient(at var(--s) var(--s),#0000 75%,#000 0)
+    0 0/calc(100% - var(--s)) calc(100% - var(--s)),
+    linear-gradient(#000 0 0) content-box;
+  transition: .4s;
+}
+.kpro_web__db-qr-container:hover {
+  outline-offset: calc(var(--g)/-1);
+}
+
+.db_updater__top-label-container {
+  font-size: 2em;
+  padding: 3em 0 1em 0;
+  box-sizing: border-box;
+  text-align: center;
+  line-height: 1.4em;
+  width: 90%;
+  margin: 0 auto;
+}
+
+.db_updater__label-container {
+  font-size: 2em;
+  padding: 1.5em 0;
+  box-sizing: border-box;
+  text-align: center;
+  line-height: 1.4em;
+  width: 90%;
+  margin: 0 auto;
+}
+
+.db_updater__btn-container {
+  width: 90%;
+  margin: 0 auto 3.5em auto;
+  text-align: center;
+}
+
+.kpro__web_footer-container {
+  width: 90%;
+  margin: 0 auto;
+  text-align: right;
+}
+
+.kpro__web_footer {
+  float: right;
+  text-align: right;
+  width: 60%;
+  padding: 2em 0;
+  border-top: solid white 1px;
+  box-sizing: border-box;
+}
+
+.kpro_web__device-container {
+  width: 90%;
+  margin: 4em auto;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.kpro_web__device-qr-container {
+  width: 530px;
+  height: 530px;
+}
+
+.kpro_web__qr-bg-container {
+  width: 430px;
+  height: 430px;
+  box-shadow: 0 3px 3px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  margin: 1.2em auto;
+  background: white;
+  padding: 3% 0;
+  box-sizing: border-box;
+  display: block;
+}
+
+.kpro_web__device-qr {
+  width: 400px;
+  height: 400px;
+}
+
+.kpro_web__verify-step {
+  height: 680px;
+}
+
+.kpro_web__btn-container {
+  text-align: center;
+  margin: 3em 0;
+  display: block;
+  padding: 1em 0;
+  box-sizing: border-box;
+}
+
+.kpro_web__btn {
+  background: white;
+  font-family: 'Chivo Mono', cursive;
+  border: none;
+  color: rgb(22, 22, 35);
+  cursor: pointer;
+  display: inline-block;
+  font-size: 1.2em;
+  text-transform: uppercase;
+  font-weight: 300;
+  padding: .7em 2.5em;
+  border: solid 2px white;
+  box-shadow: 0 3px 3px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+}
+
+.kpro_web__btn:hover {
+  background: none;
+  color: white;
+}
+
+.kpro_web__btn-centered {
+  width: 450px;
+  height: 450px;
+  background: rgb(51, 40, 55);
+  margin: 4em auto 1em auto;
+  box-sizing: border-box;
+  display: block;
+  padding: 11em 0;
+  box-sizing: border-box;
+  box-shadow: 0 3px 3px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+}
+
+.kpro_web__btn-container-icon {
+  display: block;
+  font-size: 150px;
+}
+
+.device_verify__scan-container {
+  width: 650px;
+  height: 650px;
+  margin: 1em auto;
+}
+
+.kpro_web__success-qr-message {
+  display: block;
+  line-height: 1.6em;
+}
+
+.kpro_web__qr-message-container {
+  margin-top: 2em;
+  padding-top: 2em;
+  box-sizing: border-box;
+}
+
+.kpro_web__fw-heading-container {
+  width: 90%;
+  margin: 3em auto;
+  text-align: center;
+}
+
+.kpro_web__fw-heading {
+  font-weight: 600;
+  font-size: 2.2em;
+  margin: 1em 0;
+  display: inline-block;
+}
+
+.kpro_web__release-notes-container {
+  text-align: center;
+}
+
+.kpro_web__fw-text {
+  font-weight: 200;
+  line-height: 1.4em;
+  font-size: 1.5em;
+  margin: 1em 0 2em 0;
+  display: block;
+}
+
+.kpro_web__fw-container {
+  width: 90%;
+  text-align: center;
+  margin: 3em auto;
+}
+
+.kpro_web__fw-btn-icon {
+  font-size: 20px !important;
+  vertical-align: top;
+}
+
+.kpro_web__fw-load-progress-bar-container {
+  width: 50%;
+  margin: 3em auto 2em auto;
+}
+
+#progress-bar {
+  width: 100%;
+}
+
+progress {
+  border-radius: 5px;
+  height: 5px;
+  background: white;
+}
+
+progress::-webkit-progress-bar {
+  border-radius: 5px;
+  height: 5px;
+  background: white;
+}
+
+progress::-webkit-progress-value {
+  background: rgb(230, 222, 75);
+  border-radius: 5px;
+}
+
+progress::-moz-progress-bar {
+  background: white;
+}
+
+progress::-moz-progress-value {
+  background: rgb(230, 222, 75);
+  border-radius: 5px;
+}
+
+.kpro_web__release-note {
+  width: 50%;
+  margin: 2em auto 4em auto;
+  background: white;
+  color: rgb(22, 22, 35);
+  padding: 2em 3em;
+  box-sizing: border-box;
+  text-align: left;
+  line-height: 1.7em;
+  height: 360px;
+  position: relative;
+  overflow-y: hidden;
+  transition: height .5s ease-out;
+  box-shadow: 0 3px 3px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+}
+
+.kpro_web__release-note-heading {
+  font-weight: 500;
+  font-size: 1.3em;
+  padding-bottom: 1.3em;
+  width: 80%;
+  border-bottom: solid 2px rgb(22, 22, 35);
+}
+
+.kpro_web__release-note-text {
+  font-size: 1.05em;
+  padding-top: 1em;
+}
+
+.kpro_web__read-more {
+  position: absolute;
+  bottom: 0;
+  background: rgba(255, 255, 255, .5);
+  padding: .3em 0;
+  text-align: center;
+  width: 100%;
+  font-size: 38px !important;
+  left: 0;
+  border: none;
+}
+
+#release-note-fw-changelog > h1, #release-note-fw-changelog > h2, #release-note-fw-changelog > ul, #release-note-fw-changelog > li, #release-note-fw-changelog > ol,
+#release-note-fw-changelog > h3, #release-note-fw-changelog > a, #release-note-fw-changelog > a:hover, #release-note-fw-changelog > blockquote,
+#release-note-fw-changelog > pre, #release-note-fw-changelog > code, #release-note-fw-changelog > table, #release-note-fw-changelog > tr, #release-note-fw-changelog > th,
+#release-note-fw-changelog > td {
+  all: revert;
+}
+
+.kpro_web__msg-container {
+  width: 90%;
+  margin: 2em auto;
+  text-align: center;
+}
+
+.kpro_web__msg {
+  background: white;
+  display: inline-block;
+  color: rgb(22, 22, 35);
+  text-align: left;
+  padding: .5em 1em;
+  box-sizing: border-box;
+  border-bottom: solid 1px rgb(22, 22, 35);
+}
+
+
+#release-note-fw-changelog > pre {
+  background: rgb(245, 245, 245);
+  padding: 1em;
+  box-sizing: border-box;
+  color: rgb(80, 80, 80)
+}
+
+#release-note-fw-changelog > a {
+  border-bottom: solid 1px rgb(22, 22, 35);
+}
+
+.kpro_web__display-none {
+  display: none;
+}
+
+.kpro_web__delta-container {
+  width: 90%;
+  margin: 2em auto 1em auto;
+  text-align: center;
+}
+
+.kpro_web__delta-select {
+  background: white;
+  font-family: 'Chivo Mono', cursive;
+  border: none;
+  color: rgb(22, 22, 35);
+  display: inline-block;
+  font-size: 1.2em;
+  font-weight: 300;
+  padding: .7em .3em;
+  border: solid 2px white;
+  box-shadow: 0 3px 3px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  line-height: 2em;
+  outline: none;
+}
+
+option {
+  text-align: center;
+}
+
+@media screen and (max-width: 570px) {
+  .kpro_web__main-container {
+    min-height: 300px;
+  }
+
+  .kpro_web__menu {
+    width: 50%;
+  }
+
+  .kpro_web__menu-container {
+    margin-bottom: 1.5em;
+  }
+
+  .kpro_web__menu-element {
+    display: block;
+    background: white;
+    width: 90%;
+    color: rgb(22, 22, 35);
+    padding: .5em;
+    box-sizing: border-box;
+    margin-bottom: .7em;
+    float: right;
+  }
+
+  .kpro_web__logo {
+    font-size: 1.2em;
+    width: 40%;
+  }
+
+  .kpro_web__verify-step {
+    min-height: 500px;
+    height: 100%;
+  }
+
+  .kpro_web__db-container {
+    min-height: 460px;
+    height: 100%;
+  }
+
+  .kpro_web__btn-centered {
+    padding: 6.5em 0;
+  }
+
+  .kpro_web__db-container, .kpro_web__device-container{
+    width: 90%;
+    margin: 0 auto;
+    padding: 1em 0 0 0;
+    box-sizing: border-box;
+  }
+
+  .kpro_web__version-container {
+    width: 330px;
+    margin: 0 auto 2em auto;
+  }
+
+  .kpro_web__db-qr, .kpro_web__device-qr, .kpro_web__btn-centered {
+    width: 330px;
+    height: 330px;
+    display: block;
+    margin: 0 auto;
+    box-sizing: border-box;
+  }
+
+  #qr-canvas, .device_verify__scan-container {
+    width: 350px !important;
+    height: 350px !important;
+  }
+
+  .kpro_web__qr-bg-container {
+    width: 335px;
+    height: 335px;
+    margin: 0 auto;
+    background: white;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  .device_verify__scan-container {
+    width: 450px;
+    height: 450px;
+    margin: 1em auto;
+  }
+
+  .kpro_web__db-qr-container, .kpro_web__device-qr-container {
+    --s: 50px; /* the size on the corner */
+    --t: 5px;  /* the thickness of the border */
+    --g: 30.2px; /* the gap between the border and image */
+    --l: 2%;
+
+    width: 100%;
+    height: 395px;
+    margin: 0 auto;
+    padding: var(--g) var(--l);
+    outline: var(--t) solid rgb(81, 80, 85); /* the color here */
+    outline-offset: calc(-1*var(--t));
+    -webkit-mask:
+      conic-gradient(at var(--s) var(--s),#0000 75%,#000 0)
+      0 0/calc(100% - var(--s)) calc(100% - var(--s)),
+      linear-gradient(#000 0 0) content-box;
+    transition: .4s;
+  }
+
+  .kpro_web__db-qr-container:hover {
+    outline-offset: calc(-1*var(--t));
+  }
+
+  .db_updater__label-container, .db_updater__top-label-container {
+    font-size: 1.4em;
+    line-height: 1.4em;
+  }
+
+  .db_updater__top-label-container {
+    padding: .5em 0 1em 0;
+  }
+
+  .kpro__web_footer-container {
+    width: 90%;
+    margin: 0 auto;
+    text-align: right;
+  }
+
+  .kpro_web__fw-heading {
+    margin: 0 0 1em 0;
+  }
+
+  .kpro_web__release-note {
+    width: 90%;
+    margin: 1em auto;
+  }
+}

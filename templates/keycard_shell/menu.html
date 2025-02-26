@@ -1,0 +1,15 @@
+{% load static %}
+<div class="kpro_web__menu-container group" id="kpro_web__menu-container">
+  <h1 class="kpro_web__logo" id="kpro_web__logo">Keycard Pro Web</h1>
+  <ul class="kpro_web__menu" id="kpro_web__menu">
+    <li class="kpro_web__menu-element" id="kpro_web__menu-element-db">
+      <a href="{% url 'db:db-index' %}" class="kpro_web__menu-element-link {% if request.path == '/db/' %} active {% endif %}" id="kpro_web__menu-element-db">ERC20 DB</a>
+    </li>
+    <li class="kpro_web__menu-element" id="kpro_web__menu-element-ver">
+      <a href="{% url 'device:verify-index' %}" class="kpro_web__menu-element-link {% if request.path == '/verify/' %} active {% endif %}" id="kpro_web__menu-element-ver">Verify Device</a>
+    </li>
+    <li class="kpro_web__menu-element" id="kpro_web__menu-element-fw">
+      <a href="{% url 'firmware:firmware-index' %}" class="kpro_web__menu-element-link {% if request.path == '/firmware/' %} active {% endif %}" id="kpro_web__menu-element-ver">Update Firmware</a>
+    </li>
+  </ul>
+</div>

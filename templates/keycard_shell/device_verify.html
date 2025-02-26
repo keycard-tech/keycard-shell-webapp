@@ -1,0 +1,43 @@
+{% extends './base.html' %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="{% static '/keycard_shell/css/style.css' %}">
+<input type="hidden" id="device_verify__challenge" name="chall" value="{{ challenge }}">
+<input type="hidden" id="device_verify__csfr" name="csfr" value="{{ csrf_token }}">
+<div class="kpro_web__device-container">
+  <div id="kpro_web__verify-step1" class="kpro_web__verify-step">
+    <div class="kpro_web__db-qr-container kpro_web__device-qr-container">
+      <div class="kpro_web__qr-bg-container">
+        <canvas class="kpro_web__db-qr kpro_web__device-qr" id="device_verify__qr"></canvas>
+      </div>
+    </div>
+    <div class="kpro_web__btn-container">
+      <input id="device_verify__next-button" class="kpro_web__btn" type="button" value="Next">
+    </div>
+  </div>
+  <div id="kpro_web__verify-step2" class="kpro_web__verify-step kpro_web__display-none">
+    <div class="kpro_web__btn-centered">
+      <span class="material-icons-sharp kpro_web__btn-container-icon">videocam</span>
+    </div>
+    <div class="kpro_web__btn-container">
+      <input id="device_verify__scan-button" class="kpro_web__btn" type="button" value="Scan Device QR">
+    </div>
+  </div>
+    <div id="kpro_web__verify-step3" class="kpro_web__verify-step kpro_web__display-none">
+      <div id="device_verify__qr-reader" class="device_verify__scan-container"></div>
+    </div>
+  <div id="kpro_web__verify-step4" class="kpro_web__verify-step kpro_web__display-none">
+    <div class="kpro_web__success-qr-container kpro_web__db-qr-container kpro_web__device-qr-container">
+      <canvas class="kpro_web__db-qr kpro_web__device-qr" id="device_success__qr"></canvas>
+    </div>
+    <div class="kpro_web__qr-message-container">
+      <span id="qr-message" class="kpro_web__success-qr-message"></span>
+      <span id="qr-uid" class="kpro_web__success-qr-message"></span>
+      <span id="qr-first-auth"class="kpro_web__success-qr-message"></span>
+      <span id="qr-last-auth"class="kpro_web__success-qr-message"></span>
+      <span id="qr-counter" class="kpro_web__success-qr-message"></span>
+    </div>
+  </div>
+</div>
+<script src="{% static '/keycard_shell/js/device.js' %}"></script>
+{% endblock %}

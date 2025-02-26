@@ -1,0 +1,37 @@
+{% extends './base.html' %}
+{% load static %}
+{% block content %}
+<input type="hidden" id="db_updater__media-prefix" name="db_updater__media-prefix" value="{% get_media_prefix %}">
+<div class="db_updater__top-label-container">
+  <h1 class="db_updater__label">Insert your current ERC20 database version &amp; scan QR to get the latest available delta...</h1>
+ </div>
+ <div class="kpro_web__delta-container">
+  <select name="db-current-version" id="db-current-version" class="kpro_web__delta-select">
+    <option value="">--Please choose ERC20 DB version--</option>
+  </select>
+</div>
+<div class="kpro_web__db-container kpro_web__display-none" id="qr-container">
+  <div class="kpro_web__db-qr-container">
+    <canvas id="qr" class="kpro_web__db-qr"></canvas>
+  </div>
+</div>
+<div class="kpro_web__version-container kpro_web__display-none" id="version-container">
+  <span class="kpro_web__version" id="db-version-label"></span>
+</div>
+<div class="db_updater__label-container">
+  <h1 class="db_updater__label">...or connect your Keycard Pro to update ERC20 &amp; Chain database</h1>
+ </div>
+ <div class="db_updater__btn-container">
+  <button class="kpro_web__btn group" id="btn-db-usb-update">
+    <span class="material-icons-sharp kpro_web__fw-btn-icon" id="fw-icon">usb</span>
+    <span class="kpro_web__fw-btn-label">Update ERC20 Database</span>
+    </button>
+    <div id="db-progress" class="kpro_web__fw-load-progress-bar-container kpro_web__display-none">
+      <progress id="db-progress-bar" value="0"></progress>
+    </div>
+    <div class="kpro_web__msg-container">
+      <span id="kpro-db-web-msg" class="kpro_web__display-none kpro_web__msg"></span>
+    </div>
+ </div>
+<script src="{% static '/keycard_shell/js/token_db.js' %}"></script>
+{% endblock %}
