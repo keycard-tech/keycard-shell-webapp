@@ -30,6 +30,12 @@ DB_SIGN_KEY = env.str("DB_SIGN_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(os.environ.get("DEBUG", default=0))
 
+ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
+CSRF_TRUSTED_ORIGINS = os.environ.get("DJANGO_CSRF_TRUSTED_ORIGINS").split(" ")
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -42,7 +48,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'apps.db_update',
     'apps.device_verify',
-    'apps.firmware_update'
+    'apps.firmware_update',
+    "django_extensions"
 ]
 
 MIDDLEWARE = [
