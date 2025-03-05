@@ -4,8 +4,8 @@ services:
       context: .
       dockerfile: Dockerfile.prod
     volumes:
-      - kshell_data:/var/lib/keycard_shell/data/
-      - static_volume:/home/keycard_shell/web/staticfiles
+      - /docker/shell/upload:/var/lib/keycard_shell/data/
+      - /docker/shell/app:/home/keycard_shell/web/staticfiles
     env_file:
       - ./.env.prod
     depends_on:
@@ -13,21 +13,15 @@ services:
   db:
     image: postgres:17.4-alpine
     volumes:
-      - postgres_data:/var/lib/postgresql/data/
+      - /docker/shell/db/data:/var/lib/postgresql/data/
     env_file:
       - ./.env.prod.db
   nginx:
     build: ./nginx
     ports:
-      - 8000:80
-      - 3000:443
+      - 3000:80
     depends_on:
       - web
     volumes:
-      - static_volume:/home/keycard_shell/web/staticfiles
-      - kshell_data:/var/lib/keycard_shell/data/
-
-volumes:
-  postgres_data:
-  kshell_data:
-  static_volume:
+      - /docker/shell/app:/home/keycard_shell/web/staticfiles
+      - /docker/shell/upload:/var/lib/keycard_shell/data/
