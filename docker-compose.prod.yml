@@ -3,6 +3,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.prod
+      args:
+        UID: ${UID:-100000}
+        GID: ${GID:-999}
     volumes:
       - /docker/shell/upload:/var/lib/keycard_shell/data/
       - /docker/shell/app:/home/keycard_shell/web/staticfiles
