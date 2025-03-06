@@ -1,11 +1,11 @@
 ###########
 # BUILDER #
 ###########
-ARG UID=100000
-ARG GID=999
-
 # pull official base image
 FROM python:3.13.2-alpine as builder
+
+ARG UID=100000
+ARG GID=999
 
 # set work directory
 WORKDIR /usr/src/keycard_shell
