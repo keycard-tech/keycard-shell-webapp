@@ -13,6 +13,6 @@ fi
 
 python manage.py makemigrations
 python manage.py migrate
-DJANGO_SUPERUSER_PASSWORD=$SQL_PASSWORD python manage.py createsuperuser --username=$SQL_USER --email=$SQL_EMAIL --noinput
+DJANGO_SUPERUSER_PASSWORD=$DJANGO_SUPERUSER_PASSWORD python manage.py createsuperuser --username=$DJANGO_SUPERUSER_USERNAME --email=$DJANGO_SUPERUSER_EMAIL --noinput
 python manage.py collectstatic --no-input
 gunicorn keycard_shell.wsgi:application --bind 0.0.0.0:8000

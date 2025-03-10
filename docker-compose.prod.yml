@@ -23,5 +23,9 @@ services:
     depends_on:
       - web
     volumes:
-      - static_volume:
-      - kpro_data:
+      - kpro_data:/var/lib/keycard_shell/data/
+      - static_volume:/home/keycard_shell/web/staticfiles
+volumes:
+  kpro_data:
+  static_volume:
+  

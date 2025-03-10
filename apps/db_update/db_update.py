@@ -1,5 +1,6 @@
 import itertools
 import json
+from common.errors import InvalidJSONFileError
 from common.utils import makedirs, deletedirs, zip_db_files
 from django.conf import settings
 from .token_db import generate_token_bin_file
@@ -8,12 +9,14 @@ from urllib.request import urlopen, Request
 from pathlib import Path
 
 def upload_db_file(r_path, w_path):
-      print(r_path)
-      req = Request(r_path, data=None, headers={'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.47 Safari/537.36'})
-      resp = urlopen(req)
-      data = json.loads(resp.read())
-      with open(w_path, "w") as outfile:
-        json.dump(data, outfile)
+      try:
+        req = Request(r_path, data=None, headers={'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.47 Safari/537.36'})
+        resp = urlopen(req)
+        data = json.loads(resp.read())
+        with open(w_path, "w") as outfile:
+          json.dump(data, outfile)
+      except json.JSONDecodeError as err:  
+         raise InvalidJSONFileError(r_path)
 
 class DBUpdate:
   element_id = itertools.count()

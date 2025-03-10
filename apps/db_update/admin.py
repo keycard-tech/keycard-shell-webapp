@@ -6,6 +6,7 @@ from django.db import IntegrityError, transaction
 from django.contrib import messages
 from django.utils.html import format_html
 from django.conf import settings
+from common.errors import InvalidJSONFileError
 from common.utils import iter_query
 import datetime
 
@@ -61,21 +62,29 @@ class UpdateDBAdmin(admin.ModelAdmin):
         return super().render_change_form(request, context, add, change, form_url, obj)
 
     def save_model(self, request, obj, form, change):
-        d = form.cleaned_data
-        dbs_query = DB.objects.all().order_by('-version')[:DELTA_DBS]
-        prev_dbs = iter_query(dbs_query, "version")
-        db = DBUpdate(erc20_url = d.get('erc20_url'), chain_url = d.get('chain_url'), db_version = d.get('version'), prev_dbs = prev_dbs)
-        f_hash = db.upload_db()
-        obj.db_hash = f_hash
-
         try:
-          with transaction.atomic():
-            super().save_model(request, obj, form, change)
-        except IntegrityError as e:
-            if 'UNIQUE constraint' in str(e.args):
-                DBUpdate.delete_db(obj.version)
-                msg = "The database is already up-to-date"
-                self.message_user(request, msg, level=messages.SUCCESS)
+            print("Hello2")
+            d = form.cleaned_data
+            dbs_query = DB.objects.all().order_by('-version')[:DELTA_DBS]
+            prev_dbs = iter_query(dbs_query, "version")
+            db = DBUpdate(erc20_url = d.get('erc20_url'), chain_url = d.get('chain_url'), db_version = d.get('version'), prev_dbs = prev_dbs)
+            f_hash = db.upload_db()
+            obj.db_hash = f_hash
+            
+            if (obj.db_hash):
+                try:
+                    with transaction.atomic():
+                        super().save_model(request, obj, form, change)
+                except IntegrityError as e:
+                    DBUpdate.delete_db(obj.version)
+                    err_msg = "The database is already up-to-date"
+                    self.message_user(request, err_msg, level=messages.ERROR)    
+        except InvalidJSONFileError as err:
+            DBUpdate.delete_db(obj.version)
+            err_msg = "Invalid JSON file at " + err.path
+            self.message_user(request, err_msg, level=messages.ERROR)
+        except Exception as err:
+            print("error")    
 
     def has_change_permission(self, request, obj=None):
         return False
