@@ -4,9 +4,6 @@
 # pull official base image
 FROM python:3.13.2-alpine as builder
 
-ARG UID=100000
-ARG GID=999
-
 # set work directory
 WORKDIR /usr/src/keycard_shell
 # set environment variables
@@ -40,7 +37,7 @@ FROM python:3.13.2-alpine
 RUN mkdir -p /home/keycard_shell
 
 # create the app user
-RUN addgroup -g ${GID} -S keycard_shell && adduser -u ${UID} -S keycard_shell -G keycard_shell
+RUN addgroup -S keycard_shell && adduser -S keycard_shell -G keycard_shell
 
 # create the appropriate directories
 ENV HOME=/home/keycard_shell
