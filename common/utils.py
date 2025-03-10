@@ -4,6 +4,8 @@ import zipfile
 
 from secp256k1Crypto import PrivateKey
 
+from common.errors import ZipError
+
 SIGN_KEY = os.environ['DB_SIGN_KEY']
 
 def iter_query(query, field_name):
@@ -13,10 +15,13 @@ def iter_query(query, field_name):
   return res
 
 def zip_db_files(db_path, zip_path):
-  with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as zipf:
-    for fp in db_path.glob("**/*"):
-      if fp.suffix in {".json", ".bin"}:
-        zipf.write(fp, arcname=fp.relative_to(db_path))
+  try:
+    with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as zipf:
+      for fp in db_path.glob("**/*"):
+        if fp.suffix in {".json", ".bin"}:
+          zipf.write(fp, arcname=fp.relative_to(db_path))
+  except Exception as err:
+    raise ZipError("Unable to zip " + db_path)        
 
 def makedirs(path):
   try:

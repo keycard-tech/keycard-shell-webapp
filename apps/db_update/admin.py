@@ -6,7 +6,7 @@ from django.db import IntegrityError, transaction
 from django.contrib import messages
 from django.utils.html import format_html
 from django.conf import settings
-from common.errors import InvalidJSONFileError
+from common.errors import CompareDeltasError, InvalidAddressLength, InvalidBinFileError, InvalidJSONFileError, InvalidChainDBFile, InvalidTokenDBFile, InvalidTokenList, ProcessTokenError, SerializeDeltaError, ZipError
 from common.utils import iter_query
 import datetime
 
@@ -63,28 +63,60 @@ class UpdateDBAdmin(admin.ModelAdmin):
 
     def save_model(self, request, obj, form, change):
         try:
-            print("Hello2")
             d = form.cleaned_data
             dbs_query = DB.objects.all().order_by('-version')[:DELTA_DBS]
             prev_dbs = iter_query(dbs_query, "version")
             db = DBUpdate(erc20_url = d.get('erc20_url'), chain_url = d.get('chain_url'), db_version = d.get('version'), prev_dbs = prev_dbs)
             f_hash = db.upload_db()
             obj.db_hash = f_hash
-            
-            if (obj.db_hash):
-                try:
-                    with transaction.atomic():
-                        super().save_model(request, obj, form, change)
-                except IntegrityError as e:
-                    DBUpdate.delete_db(obj.version)
-                    err_msg = "The database is already up-to-date"
-                    self.message_user(request, err_msg, level=messages.ERROR)    
-        except InvalidJSONFileError as err:
+
+            with transaction.atomic():
+                if(obj.db_hash):
+                    super().save_model(request, obj, form, change)
+        except IntegrityError as err:
             DBUpdate.delete_db(obj.version)
-            err_msg = "Invalid JSON file at " + err.path
-            self.message_user(request, err_msg, level=messages.ERROR)
+            messages.set_level(request, messages.ERROR)
+            err_msg = "The database is already up-to-date"
+            messages.add_message(request, messages.ERROR, err_msg)
+        except InvalidJSONFileError as err:
+            messages.set_level(request, messages.ERROR)
+            err_msg = "Invalid JSON at " +  err.path
+            messages.add_message(request, messages.ERROR, err_msg) 
+        except ProcessTokenError as err:
+            messages.set_level(request, messages.ERROR)
+            err_msg = f"Error processing token. {err.err}"
+            messages.add_message(request, messages.ERROR, err_msg)      
+        except InvalidChainDBFile as err:
+            messages.set_level(request, messages.ERROR)
+            err_msg = f"Can't create db.bin. Error: {err.err}"
+            messages.add_message(request, messages.ERROR, err_msg) 
+        except InvalidTokenDBFile as err:
+            messages.set_level(request, messages.ERROR)
+            err_msg = f"Can't create db.bin. Error: {err.err}"
+            messages.add_message(request, messages.ERROR, err_msg)     
+        except InvalidAddressLength  as err:
+            messages.set_level(request, messages.ERROR)
+            messages.add_message(request, messages.ERROR, err.message) 
+        except InvalidTokenList as err:
+            messages.set_level(request, messages.ERROR)
+            messages.add_message(request, messages.ERROR, err.message) 
+        except InvalidBinFileError as err:
+            messages.set_level(request, messages.ERROR)
+            err_msg = f"Invalid bin file at {err.path}"
+            messages.add_message(request, messages.ERROR, err_msg)    
+        except CompareDeltasError as err:
+            messages.set_level(request, messages.ERROR)
+            messages.add_message(request, messages.ERROR, f"Error comparing {err.prev_db} and {err.latest_db}")   
+        except SerializeDeltaError as err:
+            messages.set_level(request, messages.ERROR)
+            messages.add_message(request, messages.ERROR, err.message) 
+        except ZipError as err:
+            messages.set_level(request, messages.ERROR)
+            messages.add_message(request, messages.ERROR, err.message)      
         except Exception as err:
-            print("error")    
+            messages.set_level(request, messages.ERROR)
+            messages.add_message(request, messages.ERROR, err) 
+
 
     def has_change_permission(self, request, obj=None):
         return False
