@@ -6,7 +6,7 @@ from django.db import IntegrityError, transaction
 from django.contrib import messages
 from django.utils.html import format_html
 from django.conf import settings
-from common.errors import CompareDeltasError, InvalidAddressLength, InvalidBinFileError, InvalidJSONFileError, InvalidChainDBFile, InvalidTokenDBFile, InvalidTokenList, ProcessTokenError, SerializeDeltaError, ZipError
+from common.errors import CompareDeltasError, DecodeEntryError, InvalidAddressLength, InvalidBinFileError, InvalidJSONFileError, InvalidChainDBFile, InvalidTokenDBFile, InvalidTokenList, ProcessTokenError, SerializeDeltaError, ZipError
 from common.utils import iter_query
 import datetime
 
@@ -76,43 +76,37 @@ class UpdateDBAdmin(admin.ModelAdmin):
         except IntegrityError as err:
             DBUpdate.delete_db(obj.version)
             messages.set_level(request, messages.ERROR)
-            err_msg = "The database is already up-to-date"
-            messages.add_message(request, messages.ERROR, err_msg)
+            messages.add_message(request, messages.ERROR, "The database is already up-to-date")
         except InvalidJSONFileError as err:
             messages.set_level(request, messages.ERROR)
-            err_msg = "Invalid JSON at " +  err.path
-            messages.add_message(request, messages.ERROR, err_msg) 
+            messages.add_message(request, messages.ERROR, "Invalid JSON at " +  err.path) 
         except ProcessTokenError as err:
             messages.set_level(request, messages.ERROR)
-            err_msg = f"Error processing token. {err.err}"
-            messages.add_message(request, messages.ERROR, err_msg)      
+            messages.add_message(request, messages.ERROR, f"Error processing token. {err.err}")      
         except InvalidChainDBFile as err:
             messages.set_level(request, messages.ERROR)
-            err_msg = f"Can't create db.bin. Error: {err.err}"
-            messages.add_message(request, messages.ERROR, err_msg) 
+            messages.add_message(request, messages.ERROR, f"Can't create db.bin. Error: {err.err}") 
         except InvalidTokenDBFile as err:
             messages.set_level(request, messages.ERROR)
-            err_msg = f"Can't create db.bin. Error: {err.err}"
-            messages.add_message(request, messages.ERROR, err_msg)     
+            messages.add_message(request, messages.ERROR, f"Can't create db.bin. Error: {err.err}")     
         except InvalidAddressLength  as err:
             messages.set_level(request, messages.ERROR)
-            messages.add_message(request, messages.ERROR, err.message) 
+            messages.add_message(request, messages.ERROR, "Unexpected address format") 
         except InvalidTokenList as err:
             messages.set_level(request, messages.ERROR)
-            messages.add_message(request, messages.ERROR, err.message) 
+            messages.add_message(request, messages.ERROR, "Processing token list. Error: Invalid JSON")     
         except InvalidBinFileError as err:
             messages.set_level(request, messages.ERROR)
-            err_msg = f"Invalid bin file at {err.path}"
-            messages.add_message(request, messages.ERROR, err_msg)    
+            messages.add_message(request, messages.ERROR, f"Invalid bin file at {err.path}")    
         except CompareDeltasError as err:
             messages.set_level(request, messages.ERROR)
             messages.add_message(request, messages.ERROR, f"Error comparing {err.prev_db} and {err.latest_db}")   
         except SerializeDeltaError as err:
             messages.set_level(request, messages.ERROR)
-            messages.add_message(request, messages.ERROR, err.message) 
+            messages.add_message(request, messages.ERROR, f"Unable to create {err.delta_version} delta") 
         except ZipError as err:
             messages.set_level(request, messages.ERROR)
-            messages.add_message(request, messages.ERROR, err.message)      
+            messages.add_message(request, messages.ERROR, f"Unable to zip {err.path}")      
         except Exception as err:
             messages.set_level(request, messages.ERROR)
             messages.add_message(request, messages.ERROR, err) 

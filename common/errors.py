@@ -13,16 +13,14 @@ class InvalidTokenDBFile(Exception):
         self.err = err   
 
 class InvalidAddressLength(Exception):
-      def __init__(self, mess):
-        self.message = mess   
+      pass
 
 class InvalidTokenList(Exception):
-    def __init__(self, mess):
-        self.message = mess   
+    pass 
 
 class ZipError(Exception):
-    def __init__(self, mess):
-        self.message = mess
+    def __init__(self, path):
+        self.path = path
 
 class InvalidBinFileError(Exception):
     def __init__(self, path):
@@ -33,6 +31,9 @@ class CompareDeltasError(Exception):
         self.prev_db = prev_db_version
         self.latest_db = latest_db_version
 
+class DecodeEntryError(Exception):
+    pass
+
 class SerializeDeltaError(Exception):
-    def __init__(self, mess):
-        self.message = mess
+    def __init__(self, delta_db_version):
+        self.delta_version = delta_db_version

@@ -2,21 +2,17 @@ import json
 import struct
 import hashlib
 
+from common.consts import CHAIN_MAGIC, ERC20_MAGIC, VERSION_MAGIC
 from common.errors import InvalidChainDBFile, InvalidAddressLength, InvalidTokenDBFile, ProcessTokenError, InvalidTokenList
 from common.utils import sign
 
-CHAIN_MAGIC = 0x4348
-ERC20_MAGIC = 0x3020
-VERSION_MAGIC = 0x4532
 
-PAGE_SIZE = 8192
-WORD_SIZE = 16
 
 def serialize_addresses(addresses):
     res = b''
     for id, address in sorted(addresses.items()):
         if len(address) != 42:
-            raise InvalidAddressLength("Unexpected address format")
+            raise InvalidAddressLength
         res = res + struct.pack("<I20s", id, bytes.fromhex(address[2:]))
 
     return res
@@ -111,7 +107,7 @@ def generate_token_bin_file(token_list, chain_list, output, db_version):
         for token in token_list["tokens"]:
             process_token(tokens, chains, token, chain_list)
     except Exception as err:
-        raise InvalidTokenList("Processing token list. Error: Invalid JSON")        
+        raise InvalidTokenList        
 
     with open(output, 'wb') as f:
         serialize_db(f, m, chains, tokens, db_version, db_h)

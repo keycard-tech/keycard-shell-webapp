@@ -21,7 +21,7 @@ def zip_db_files(db_path, zip_path):
         if fp.suffix in {".json", ".bin"}:
           zipf.write(fp, arcname=fp.relative_to(db_path))
   except Exception as err:
-    raise ZipError("Unable to zip " + db_path)        
+    raise ZipError(db_path)        
 
 def makedirs(path):
   try:

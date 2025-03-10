@@ -1,14 +1,12 @@
 import hashlib
 import struct
 
-from common.errors import CompareDeltasError, InvalidBinFileError, SerializeDeltaError
+from common.consts import CHAIN_MAGIC, DELTA_MAGIC, ERC20_MAGIC
+from common.errors import CompareDeltasError, DecodeEntryError, InvalidBinFileError, SerializeDeltaError
 from common.utils import sign
 from django.conf import settings
 
-DELTA_MAGIC = 0x444c
-CHAIN_MAGIC = 0x4348
-ERC20_MAGIC = 0x3020
-VERSION_MAGIC = 0x4532
+
 
 def decode_entry(entry, magic, dec_obj):
   if(magic == CHAIN_MAGIC):
@@ -19,7 +17,7 @@ def decode_entry(entry, magic, dec_obj):
     id = entry[addresses_len + 6:len(entry) - 1].decode("ascii")
     dec_obj["tokens"][id] = entry
   else:
-    raise Exception(f"Error decoding .bin file.")  
+    raise DecodeEntryError
     
 def read_bin(f_path):
   try:
@@ -88,7 +86,7 @@ def serialize_delta(f, m, delta, delta_db_ver):
     f.write(buf)
     m.update(buf)
   except Exception as err:
-    raise SerializeDeltaError(f"Unable to create {delta_db_ver} delta")
+    raise SerializeDeltaError(delta_db_ver)
 
 def generate_db_delta(output, delta, delta_db_ver, m):
   with open(output, 'wb') as f:
