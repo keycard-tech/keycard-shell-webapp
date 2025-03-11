@@ -1,6 +1,7 @@
 import os
 import shutil
 import zipfile
+import re
 
 from secp256k1Crypto import PrivateKey
 
@@ -38,3 +39,6 @@ def sign(m):
   key = PrivateKey(bytes(bytearray.fromhex(SIGN_KEY)), raw=True)
   sig = key.ecdsa_sign(m, raw=True)
   return key.ecdsa_serialize_compact(sig)
+
+def ishex(s):
+    return not re.search(r"[^A-Fa-f0-9]", s)

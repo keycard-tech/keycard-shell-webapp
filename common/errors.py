@@ -36,4 +36,4 @@ class DecodeEntryError(Exception):
 
 class SerializeDeltaError(Exception):
     def __init__(self, delta_db_version):
-        self.delta_version = delta_db_version
+        self.delta_version = delta_db_version 

@@ -10,7 +10,7 @@ import codecs
 
 # Register your models here.
 
-from .models import Device
+from .models import Device, validate_uid
 
 class DeviceVerifyForm(forms.ModelForm):
     class Meta:
@@ -40,21 +40,33 @@ class DeviceVerifyAdmin(admin.ModelAdmin):
         return custom_urls + urls
 
     def import_csv(self, request):
-        if request.method == "POST":
-            csv_file = request.FILES["csv_file"]
-            reader = csv.reader(codecs.iterdecode(csv_file, 'utf-8'))
-            data = []
-            for uid, public_key in reader:
-                device = Device(uid=uid, public_key=public_key, verification_start_date=None, success_counter=0)
-                data.append(device)
-            try:
-                Device.objects.bulk_create(data)
-                self.message_user(request, "Your csv file has been imported")
-            except IntegrityError as e:
-                if 'UNIQUE constraint' in str(e.args):
-                    msg = "Device already exists. Please check your csv."
-                    self.message_user(request, msg, level=messages.ERROR)
-        return redirect('/admin/device_verify/device')
+        try:
+            if request.method == "POST":
+                csv_file = request.FILES["csv_file"]
+                reader = csv.reader(codecs.iterdecode(csv_file, 'utf-8'))
+                data = []
+                for uid, public_key in reader:
+                    device = Device(uid=validate_uid(uid), public_key=validate_uid(public_key), verification_start_date=None, success_counter=0)
+                    data.append(device)
+                Device.objects.bulk_create(data)   
+                self.message_user(request, "CSV file imported successfully")  
+        except IntegrityError as err:
+            messages.set_level(request, messages.ERROR)
+            messages.add_message(request, messages.ERROR, "Device already exists. Please check your csv.")           
+        except FileNotFoundError:
+            messages.set_level(request, messages.ERROR)
+            messages.add_message(request, messages.ERROR, "The CSV file could not be found.")
+        except csv.Error as e:
+            messages.set_level(request, messages.ERROR)
+            messages.add_message(request, messages.ERROR, f"Error: {e}")
+        except UnicodeDecodeError:
+            messages.set_level(request, messages.ERROR)
+            messages.add_message(request, messages.ERROR, "The CSV file contains characters that cannot be decoded.")
+        except Exception as err:
+            messages.set_level(request, messages.ERROR)
+            messages.add_message(request, messages.ERROR, f"Error reading CSV file. {err}")
+
+        return redirect('/admin/device_verify/device')    
 
     def has_change_permission(self, request, obj=None):
         return False
