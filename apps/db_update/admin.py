@@ -6,7 +6,7 @@ from django.db import IntegrityError, transaction
 from django.contrib import messages
 from django.utils.html import format_html
 from django.conf import settings
-from common.errors import CompareDeltasError, DecodeEntryError, InvalidAddressLength, InvalidBinFileError, InvalidJSONFileError, InvalidChainDBFile, InvalidTokenDBFile, InvalidTokenList, ProcessTokenError, SerializeDeltaError, ZipError
+from common.errors import CompareDeltasError, DecodeEntryError, InvalidAddressLength, InvalidBinFileError, InvalidJSONFileError, InvalidChainDBFile, InvalidTokenDBFile, InvalidTokenList, ProcessTokenError, SerializeDeltaError, ZipError, get_error_message
 from common.utils import iter_query
 import datetime
 
@@ -17,7 +17,6 @@ from .models import DB
 from .db_update import DBUpdate
 
 DELTA_DBS = 500
-
 class UpdateDBForm(forms.ModelForm):
     class Meta:
         model = DB
@@ -74,42 +73,13 @@ class UpdateDBAdmin(admin.ModelAdmin):
                 if(obj.db_hash):
                     super().save_model(request, obj, form, change)
         except IntegrityError as err:
+            messages.set_level(request, messages.ERROR)
+            messages.add_message(request, messages.ERROR, "The database is already up-to-date" )          
+        except (InvalidJSONFileError, ProcessTokenError, InvalidChainDBFile, InvalidTokenDBFile, Exception, InvalidAddressLength, InvalidTokenList, InvalidBinFileError, CompareDeltasError, SerializeDeltaError, ZipError) as err:
             DBUpdate.delete_db(obj.version)
+            msg = get_error_message(err)
             messages.set_level(request, messages.ERROR)
-            messages.add_message(request, messages.ERROR, "The database is already up-to-date")
-        except InvalidJSONFileError as err:
-            messages.set_level(request, messages.ERROR)
-            messages.add_message(request, messages.ERROR, "Invalid JSON at " +  err.path) 
-        except ProcessTokenError as err:
-            messages.set_level(request, messages.ERROR)
-            messages.add_message(request, messages.ERROR, f"Error processing token. {err.err}")      
-        except InvalidChainDBFile as err:
-            messages.set_level(request, messages.ERROR)
-            messages.add_message(request, messages.ERROR, f"Can't create db.bin. Error: {err.err}") 
-        except InvalidTokenDBFile as err:
-            messages.set_level(request, messages.ERROR)
-            messages.add_message(request, messages.ERROR, f"Can't create db.bin. Error: {err.err}")     
-        except InvalidAddressLength  as err:
-            messages.set_level(request, messages.ERROR)
-            messages.add_message(request, messages.ERROR, "Unexpected address format") 
-        except InvalidTokenList as err:
-            messages.set_level(request, messages.ERROR)
-            messages.add_message(request, messages.ERROR, "Processing token list. Error: Invalid JSON")     
-        except InvalidBinFileError as err:
-            messages.set_level(request, messages.ERROR)
-            messages.add_message(request, messages.ERROR, f"Invalid bin file at {err.path}")    
-        except CompareDeltasError as err:
-            messages.set_level(request, messages.ERROR)
-            messages.add_message(request, messages.ERROR, f"Error comparing {err.prev_db} and {err.latest_db}")   
-        except SerializeDeltaError as err:
-            messages.set_level(request, messages.ERROR)
-            messages.add_message(request, messages.ERROR, f"Unable to create {err.delta_version} delta") 
-        except ZipError as err:
-            messages.set_level(request, messages.ERROR)
-            messages.add_message(request, messages.ERROR, f"Unable to zip {err.path}")      
-        except Exception as err:
-            messages.set_level(request, messages.ERROR)
-            messages.add_message(request, messages.ERROR, err) 
+            messages.add_message(request, messages.ERROR, msg) 
 
 
     def has_change_permission(self, request, obj=None):
@@ -121,7 +91,6 @@ class UpdateDBAdmin(admin.ModelAdmin):
 
 admin.site.register(DB, UpdateDBAdmin)
 admin.site.unregister(Group)
-
 
 admin.site.site_header = "Keycard Pro Web"
 admin.site.site_title = "Keycard Pro Web"

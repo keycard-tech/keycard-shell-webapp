@@ -25,7 +25,6 @@ def read_bin(f_path):
       i = 8
       db = f.read()
       parsed = {"version": db[0:i], "chains": {}, "tokens": {}}
-      print(parsed)
       while i < len(db) - 64:
         el_header = struct.unpack('<HH', db[i:i+4])
         el_length = el_header[1]

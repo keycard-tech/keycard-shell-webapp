@@ -53,16 +53,13 @@ class DeviceVerifyAdmin(admin.ModelAdmin):
         except IntegrityError as err:
             messages.set_level(request, messages.ERROR)
             messages.add_message(request, messages.ERROR, "Device already exists. Please check your csv.")           
-        except FileNotFoundError:
+        except csv.Error as err:
             messages.set_level(request, messages.ERROR)
-            messages.add_message(request, messages.ERROR, "The CSV file could not be found.")
-        except csv.Error as e:
-            messages.set_level(request, messages.ERROR)
-            messages.add_message(request, messages.ERROR, f"Error: {e}")
+            messages.add_message(request, messages.ERROR, f"Error: {err}")
         except UnicodeDecodeError:
             messages.set_level(request, messages.ERROR)
             messages.add_message(request, messages.ERROR, "The CSV file contains characters that cannot be decoded.")
-        except Exception as err:
+        except (FileNotFoundError, Exception) as err:
             messages.set_level(request, messages.ERROR)
             messages.add_message(request, messages.ERROR, f"Error reading CSV file. {err}")
 
