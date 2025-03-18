@@ -26,6 +26,7 @@ env.read_env(os.path.join(BASE_DIR, '.env.dev'))
 
 SECRET_KEY = os.environ.get("SECRET_KEY")
 DB_SIGN_KEY = env.str("DB_SIGN_KEY")
+SALT_KEY = os.environ.get("SALT_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(os.environ.get("DEBUG", default=0))
@@ -39,13 +40,15 @@ CSRF_COOKIE_SECURE = True
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
+    #'django.contrib.admin',
+    'shell_admin.apps.ShellAdminConfig',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'pagedown.apps.PagedownConfig',
     'django.contrib.staticfiles',
+    'apps.two_factor_auth',
     'apps.db_update',
     'apps.device_verify',
     'apps.firmware_update',

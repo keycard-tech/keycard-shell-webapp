@@ -11,7 +11,6 @@ import datetime
 import time
 import os
 
-# Create your views here.
 enc_key = os.environ['DEVICE_VERIFICATION_SIGN_KEY']
 
 state = {
