@@ -1,5 +1,6 @@
 import itertools
 import json
+from urllib.error import HTTPError
 from common.errors import InvalidJSONFileError
 from common.utils import makedirs, deletedirs, zip_db_files
 from django.conf import settings
@@ -17,6 +18,8 @@ def upload_db_file(r_path, w_path):
       json.dump(data, outfile)
   except json.JSONDecodeError as err:  
     raise InvalidJSONFileError(r_path)
+  except HTTPError as err:
+    raise err
 class DBUpdate:
   element_id = itertools.count()
 

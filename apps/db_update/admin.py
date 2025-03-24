@@ -62,12 +62,12 @@ class UpdateDBAdmin(admin.ModelAdmin):
 
     def save_model(self, request, obj, form, change):
         try:
-            d = form.cleaned_data
+            db_form_data = form.cleaned_data
             dbs_query = DB.objects.all().order_by('-version')[:DELTA_DBS]
-            prev_dbs = iter_query(dbs_query, "version")
-            db = DBUpdate(erc20_url = d.get('erc20_url'), chain_url = d.get('chain_url'), db_version = d.get('version'), prev_dbs = prev_dbs)
-            f_hash = db.upload_db()
-            obj.db_hash = f_hash
+            available_dbs = iter_query(dbs_query, "version")
+            db = DBUpdate(erc20_url = db_form_data.get('erc20_url'), chain_url = db_form_data.get('chain_url'), db_version = db_form_data.get('version'), prev_dbs = available_dbs)
+            db_file_hash = db.upload_db()
+            obj.db_hash = db_file_hash
 
             with transaction.atomic():
                 if(obj.db_hash):
@@ -92,6 +92,6 @@ class UpdateDBAdmin(admin.ModelAdmin):
 admin.site.register(DB, UpdateDBAdmin)
 admin.site.unregister(Group)
 
-admin.site.site_header = "Keycard Pro Web"
-admin.site.site_title = "Keycard Pro Web"
+admin.site.site_header = "Keycard Shell Web"
+admin.site.site_title = "Keycard Shell Web"
 admin.site.index_title = "Admin"

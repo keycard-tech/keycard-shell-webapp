@@ -40,19 +40,19 @@ def serialize_token(token):
         raise InvalidTokenDBFile(err)  
 
 def serialize_db(f, m, chains, tokens, db_version, db_h):
-    buf = struct.pack("<HHI", VERSION_MAGIC, 4, db_version)
+    db_buffer = struct.pack("<HHI", VERSION_MAGIC, 4, db_version)
 
     for chain in chains.values():
         serialized_chain = serialize_chain(chain)
-        buf = buf + serialized_chain
+        db_buffer = db_buffer + serialized_chain
 
     for token in tokens.values():
         serialized_token = serialize_token(token)
-        buf = buf + serialized_token
+        db_buffer = db_buffer + serialized_token
 
-    f.write(buf)
-    m.update(buf)
-    db_h.update(buf[8:]) 
+    f.write(db_buffer)
+    m.update(db_buffer)
+    db_h.update(db_buffer[8:]) 
 
 def lookup_chain(chains_json, chain_id):
     try:

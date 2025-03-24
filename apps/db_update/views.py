@@ -13,12 +13,12 @@ def index(request):
 def db_context(request):
   db = DB.objects.last()
   dbs_query = DB.objects.all().order_by('-version')[1:DELTA_DBS]
-  prev_dbs = iter_query(dbs_query, "version")
+  available_dbs = iter_query(dbs_query, "version")
 
   context = {
     "db_path": db.version + '/db.bin',
     "version": db.version,
-    "available_db_versions": prev_dbs
+    "available_db_versions": available_dbs
   }
 
   return HttpResponse(json.dumps(context), content_type='application/json')
