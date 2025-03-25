@@ -6,8 +6,6 @@ from common.errors import CompareDeltasError, DecodeEntryError, InvalidBinFileEr
 from common.utils import sign
 from django.conf import settings
 
-
-
 def decode_entry(entry, magic, parsed_db):
   if(magic == CHAIN_MAGIC):
     id = struct.unpack('<I', entry[4:8])[0]

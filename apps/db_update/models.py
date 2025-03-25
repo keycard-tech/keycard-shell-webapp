@@ -11,4 +11,4 @@ class DB(models.Model):
   db_hash = models.CharField(max_length=64, null=True, blank=True, unique=True, default=None)
 
   def __str__(self):
-        return f"{self.erc20_url}, {self.chain_url}, {self.version}"
+    return f"{self.erc20_url}, {self.chain_url}, {self.version}"

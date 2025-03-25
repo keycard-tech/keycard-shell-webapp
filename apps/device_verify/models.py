@@ -6,19 +6,19 @@ from common.utils import ishex
 from secp256k1Crypto import PublicKey
 
 def validate_uid(uid):
-    if not ishex(uid):
-      raise ValidationError("Invalid UID format")
-    elif len(uid) != 32:
-      raise ValidationError("Invalid UID length") 
-    else:
-       return uid
+  if not ishex(uid):
+    raise ValidationError("Invalid UID format")
+  elif len(uid) != 32:
+    raise ValidationError("Invalid UID length") 
+  else:
+    return uid
     
 def validate_public_key(pub_key):
   if len(pub_key) == 66:
-      try:
-         PublicKey(bytes(bytearray.fromhex(pub_key)), raw=True)
-      except Exception as err:
-         raise ValidationError("Invalid public key")  
+    try:
+      PublicKey(bytes(bytearray.fromhex(pub_key)), raw=True)
+    except Exception as err:
+      raise ValidationError("Invalid public key")  
   else:
     raise ValidationError("Invalid public key length") 
    
@@ -30,4 +30,4 @@ class Device(models.Model):
   success_counter = models.IntegerField(default=0)
 
   def __str__(self):
-        return f"{self.uid}, {self.public_key}, {self.verification_start_date}, {self.success_counter}"
+    return f"{self.uid}, {self.public_key}, {self.verification_start_date}, {self.success_counter}"
