@@ -47,13 +47,13 @@ async function handleFirmwareUpdate() : Promise<void> {
       if (fwVersion == context["version"]) {
         UIUtils.handleMessageLog(logMessage, "You already have the latest version of the firmware");
       } else {
-        progressBar.classList.remove("kpro_web__display-none");
+        progressBar.classList.remove("keycard_shell__display-none");
         UIUtils.handleFWLoadProgress(transport, fwLoad);
 
         await appEth.loadFirmware(fw);
         await transport.close();
 
-        progressBar.classList.add("kpro_web__display-none");
+        progressBar.classList.add("keycard_shell__display-none");
         UIUtils.handleMessageLog(logMessage, "Keycard Pro updated successfully");
       }
     } catch (e) {
@@ -63,7 +63,7 @@ async function handleFirmwareUpdate() : Promise<void> {
         let m = (e.statusCode == StatusCodes.SECURITY_STATUS_NOT_SATISFIED) ? "Firmware update canceled by user" :  "Error: Invalid data. Failed to update the firmware";
         UIUtils.handleMessageLog(logMessage, m);
       }
-      progressBar.classList.add("kpro_web__display-none");
+      progressBar.classList.add("keycard_shell__display-none");
     }
   });
 

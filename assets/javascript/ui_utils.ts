@@ -21,7 +21,7 @@ export namespace UIUtils {
 
   export function handleMessageLog(msgField: HTMLSpanElement, msg: string) : void {
     msgField.innerHTML = msg;
-    msgField.classList.contains("kpro_web__display-none") && msg != "" ? msgField.classList.remove("kpro_web__display-none") : msgField.classList.add("kpro_web__display-none");
+    msgField.classList.contains("keycard_shell__display-none") && msg != "" ? msgField.classList.remove("keycard_shell__display-none") : msgField.classList.add("keycard_shell__display-none");
   }
 
   export function addSelectOption(selectField: HTMLSelectElement, options: string[]) : void {

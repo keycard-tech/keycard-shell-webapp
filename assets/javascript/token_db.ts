@@ -52,11 +52,11 @@ async function handleERC20DB() : Promise<void> {
     if(versionSelect.value != "") {
       encoder.enc = await generateQR(context, mediaPrefix.value, versionSelect.value, dbQR);
       dbVersionLabel.innerHTML = "DB delta version " + context["version"] + '-' + versionSelect.value;
-      dbQRContainer.classList.remove("kpro_web__display-none");
-      dbVersionContainer.classList.remove("kpro_web__display-none");
+      dbQRContainer.classList.remove("keycard_shell__display-none");
+      dbVersionContainer.classList.remove("keycard_shell__display-none");
     } else {
-      dbQRContainer.classList.add("kpro_web__display-none");
-      dbVersionContainer.classList.add("kpro_web__display-none");
+      dbQRContainer.classList.add("keycard_shell__display-none");
+      dbVersionContainer.classList.add("keycard_shell__display-none");
     }
   });
 
@@ -71,13 +71,13 @@ async function handleERC20DB() : Promise<void> {
       if (erc20Version == context["version"]) {
         UIUtils.handleMessageLog(logMessage, "You already have the latest ERC20 database version");
       } else {
-        progressBar.classList.remove("kpro_web__display-none");
+        progressBar.classList.remove("keycard_shell__display-none");
         UIUtils.handleFWLoadProgress(transport, dbLoad);
 
         await appEth.loadERC20DB(dbArr);
         await transport.close();
 
-        progressBar.classList.add("kpro_web__display-none");
+        progressBar.classList.add("keycard_shell__display-none");
         UIUtils.handleMessageLog(logMessage, "ERC20 database updated successfully");
       }
     } catch (e) {
@@ -87,7 +87,7 @@ async function handleERC20DB() : Promise<void> {
        let m = (e.statusCode == StatusCodes.SECURITY_STATUS_NOT_SATISFIED) ? "ERC20 database update canceled by user" :  "Error: Invalid data. Failed to update the ERC20 database";
        UIUtils.handleMessageLog(logMessage, m)
       }
-      progressBar.classList.add("kpro_web__display-none");
+      progressBar.classList.add("keycard_shell__display-none");
     }
   });
 }

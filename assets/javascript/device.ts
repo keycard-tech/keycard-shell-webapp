@@ -28,10 +28,11 @@ const step2Container = document.getElementById("kpro_web__verify-step2");
 const step3Container = document.getElementById("kpro_web__verify-step3");
 const step4Container = document.getElementById("kpro_web__verify-step4");
 const qrMessage = document.getElementById("qr-message") as HTMLSpanElement;
-const qrUID = document.getElementById("qr-uid") as HTMLSpanElement;
-const qrFirstAuth = document.getElementById("qr-first-auth") as HTMLSpanElement;
-const qrLastAuth = document.getElementById("qr-last-auth") as HTMLSpanElement;
-const qrCounter = document.getElementById("qr-counter") as HTMLSpanElement;
+const stepPrompt = document.getElementById("keycard_shell__verify-step-prompt") as HTMLParagraphElement;
+const deviceSuccessQRContainer = document.getElementById("verify-success-qr-container") as HTMLDivElement;
+const verifyResultHeader = document.getElementById("verify-result-header") as HTMLHeadingElement;
+const verifyResultPrompt = document.getElementById("verify-result-prompt") as HTMLParagraphElement;
+
 
 async function verify(data: FormData, csrftoken: string, url: string) : Promise<any|void> {
   try {
@@ -70,23 +71,9 @@ function handleDeviceResponse(resp: Buffer, challenge: string) : FormData {
   return reqData;
 }
 
-function handleServerResponse(r: any) : void {
-  qrMessage.innerHTML = r['message'];
-
-  if(r['status'] == 'success') {
-    const firstAuthDate = new Date(r['first_auth']);
-    const lastAuthDate = new Date(r['last_auth']);
-
-    qrUID.innerHTML = 'UID: ' + r['uid'];
-    qrFirstAuth.innerHTML = 'First Verification: ' + firstAuthDate.toDateString() + ", " + firstAuthDate.getHours() + ":" + firstAuthDate.getMinutes();
-    qrLastAuth.innerHTML = 'Last Verification: ' + lastAuthDate.toDateString() + ", " + lastAuthDate.getHours() + ":" + lastAuthDate.getMinutes();
-    qrCounter.innerHTML = 'Verification Count: ' + r['counter'];
-  }
-}
-
 function handleVerificationComplete(r: any) : void {
-  step3Container.classList.add('kpro_web__display-none');
-  step4Container.classList.remove('kpro_web__display-none');
+  step3Container.classList.add('keycard_shell__display-none');
+  step4Container.classList.remove('keycard_shell__display-none');
 
   if(r['status'] == 'success') {
     const successQR = new QRious({element: document.getElementById('device_success__qr')}) as any;
@@ -94,9 +81,11 @@ function handleVerificationComplete(r: any) : void {
     const encoder = {enc: new UREncoder(ur, maxFragmentLength)};
 
     QRUtils.generateQRPart(encoder, successQR, false, 400);
-  }
+    deviceSuccessQRContainer.classList.remove('keycard_shell__display-none');
 
-  handleServerResponse(r);
+    verifyResultHeader.innerText = "Your Shell is authentic"
+    verifyResultPrompt.innerHTML = "Scan the QR code with your Shell to verify the site hasn't been compromised by malicious extensions or viruses."
+  }
 }
 
 async function onScanSuccess(decodedText: any, challenge: string, decoder: URDecoder, csrftoken: string, html5QrCode: Html5Qrcode) : Promise<void> {
@@ -111,8 +100,8 @@ async function onScanSuccess(decodedText: any, challenge: string, decoder: URDec
     handleVerificationComplete(r);
 
   } else {
-    step3Container.classList.add('kpro_web__display-none');
-    step4Container.classList.remove('kpro_web__display-none');
+    step3Container.classList.add('keycard_shell__display-none');
+    step4Container.classList.remove('keycard_shell__display-none');
     qrMessage.innerHTML = 'Error: Invalid QR Code. Please make sure you are scanning the QR from your device.';
   }
 
@@ -137,9 +126,10 @@ async function handleVerifyDevice() : Promise<void> {
   QRUtils.generateQRPart(encoder, verifyQR, false, 400);
 
   next_btn.addEventListener("click", () => {
-    if (step2Container.classList.contains('kpro_web__display-none')) {
-      step1Container.classList.add('kpro_web__display-none');
-      step2Container.classList.remove('kpro_web__display-none');
+    if (step2Container.classList.contains('keycard_shell__display-none')) {
+      step1Container.classList.add('keycard_shell__display-none');
+      step2Container.classList.remove('keycard_shell__display-none');
+      stepPrompt.innerHTML = `Go to Settings / Device / Verification on your Shell and scan this QR to initiate the device verification.<br>`;
     }
   });
 
@@ -150,8 +140,8 @@ async function handleVerifyDevice() : Promise<void> {
   });
 
   scan_btn.addEventListener("click", async () => {
-    step2Container.classList.add('kpro_web__display-none');
-    step3Container.classList.remove('kpro_web__display-none');
+    step2Container.classList.add('keycard_shell__display-none');
+    step3Container.classList.remove('keycard_shell__display-none');
     html5QrCode.start(
       { facingMode: { exact: "environment"} },
       config,
