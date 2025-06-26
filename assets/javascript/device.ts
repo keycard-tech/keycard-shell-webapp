@@ -32,6 +32,9 @@ const stepPrompt = document.getElementById("keycard_shell__verify-step-prompt") 
 const deviceSuccessQRContainer = document.getElementById("verify-success-qr-container") as HTMLDivElement;
 const verifyResultHeader = document.getElementById("verify-result-header") as HTMLHeadingElement;
 const verifyResultPrompt = document.getElementById("verify-result-prompt") as HTMLParagraphElement;
+const scanFinishedButtonLink = document.getElementById("device_verify__scan-finished-link") as HTMLLinkElement;
+const scanFinishedButton = document.getElementById("device_verify__scan-finished") as HTMLInputElement;
+const scanVerificationCountWarning = document.getElementById("device-verification-count-warning") as HTMLDivElement;
 
 
 async function verify(data: FormData, csrftoken: string, url: string) : Promise<any|void> {
@@ -61,7 +64,6 @@ function handleDeviceResponse(resp: Buffer, challenge: string) : FormData {
   const deviceId = (resp[2] as any).toString("hex");
   const deviceChallenge = (resp[6] as any).toString("hex");
   const signature = (resp[7] as any).toString("hex");
-  console.log(deviceId);
 
   reqData.append(keys[2], deviceId);
   reqData.append(keys[6], deviceChallenge);
@@ -83,28 +85,51 @@ function handleVerificationComplete(r: any) : void {
     QRUtils.generateQRPart(encoder, successQR, false, 400);
     deviceSuccessQRContainer.classList.remove('keycard_shell__display-none');
 
-    verifyResultHeader.innerText = "Your Shell is authentic"
-    verifyResultPrompt.innerHTML = "Scan the QR code with your Shell to verify the site hasn't been compromised by malicious extensions or viruses."
+    verifyResultHeader.innerText = "Your Shell is authentic";
+    verifyResultPrompt.innerHTML = "Scan the QR code with your Shell to verify the site hasn't been compromised by malicious extensions or viruses.";
+    scanFinishedButtonLink.href = "https://keycard.tech/keycard";
+
+    if(r['counter'] > 1) {
+        scanVerificationCountWarning.classList.remove('keycard_shell__display-none');
+    } 
+  } else {
+    handleQRErrorUI();
   }
 }
 
-async function onScanSuccess(decodedText: any, challenge: string, decoder: URDecoder, csrftoken: string, html5QrCode: Html5Qrcode) : Promise<void> {
-  await stopScanning(html5QrCode);
-
-  const data = QRUtils.decodeQR(decoder, decodedText);
-  const status = data[1];
-
-  if (verState[status as keyof typeof verState] == "dev_auth_device") {
-    const reqData = handleDeviceResponse(data, challenge);
-    const r = await verify(reqData, csrftoken, postReqURL) as any;
-    handleVerificationComplete(r);
-
-  } else {
+function handleQRErrorUI(qrError?: boolean) : void {
     step3Container.classList.add('keycard_shell__display-none');
     step4Container.classList.remove('keycard_shell__display-none');
-    qrMessage.innerHTML = 'Error: Invalid QR Code. Please make sure you are scanning the QR from your device.';
-  }
+    verifyResultHeader.innerText = qrError ? "Shell was not verified" : "Your Shell is not authentic";
+    verifyResultPrompt.innerHTML = qrError ? "Something went wrong. Go to Settings/Device/ Verification on your Shell and try again." : "Check Keycard Shell documentation for more details or contact us.";
+    scanFinishedButton.value = qrError ? "Try again" : "Learn more";
+    if(qrError) {
+        scanFinishedButtonLink.addEventListener("click", (e) => {
+            location.reload();
+            e.preventDefault();
+        });
+    } else {
+        scanFinishedButtonLink.href = "https://keycard.tech/docs/overview";
+    }
+    
+}
 
+async function onScanSuccess(decodedText: any, challenge: string, decoder: URDecoder, csrftoken: string, html5QrCode: Html5Qrcode) : Promise<void> {
+    await stopScanning(html5QrCode);
+    try {
+        const data = QRUtils.decodeQR(decoder, decodedText);
+        const status = data[1];
+    
+        if (verState[status as keyof typeof verState] == "dev_auth_device") {
+            const reqData = handleDeviceResponse(data, challenge);
+            const r = await verify(reqData, csrftoken, postReqURL) as any;
+            handleVerificationComplete(r);
+        } else {
+            handleQRErrorUI();
+        }
+    } catch(e) {
+        handleQRErrorUI(true);
+    }
 }
 
 function onScanFailure(error: any) : void {

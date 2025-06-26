@@ -13,11 +13,13 @@
     --text-font-weight-500: 500;
     --text-48: 48px;
     --text-32: 32px;
+    --text-31: 31px;
     --text-24: 24px;
     --text-22: 20px;
     --text-20: 20px;
     --text-16: 16px;
     --text-14: 14px;
+    --text-13: 13px;
     --text-12: 12px;
     --text-line-height-32: 32px;
     --text-line-height-28: 28px;
@@ -34,6 +36,8 @@
     --white-95: #FFFFFFF2;
     --shadow-color: #01010114;
     --orange: #FF6400;
+    --orange-5: #FF7D460D;
+    --orange-10: #FF7D461A;
     --neutral-solid-25: #FAFBFC;
     --neutral-solid-20: #E7EAEE;
     --background-blur: 40px;
@@ -42,6 +46,7 @@
     --border-radius-16: 16px;
     --container-border-radius: 28px;
     --text-letter-spacing: -2%;
+    --warning-letter-spacing: -.3%;
     --qr-width: 296px;
     --qr-heigth: 296px;
 
@@ -229,7 +234,7 @@ body {
 
 .keycard_shell__h2 {
     font-family: var(--text-font-lora);
-    font-size: var(--text-32);
+    font-size: var(--text-31);
     line-height: var(--header-line-height);
     font-weight: var(--text-font-weight);
     letter-spacing: var(--text-letter-spacing);
@@ -473,7 +478,6 @@ body {
     display: flex;
     flex-direction: column;
     height: 100%;
-    min-height: 966px;
     gap: 24px;
 }
 
@@ -583,7 +587,6 @@ body {
 /* Verify page */
 .keycard_shell__device-container {
     width: 100%;
-    min-height: 580px;
     border-radius: var(--container-border-radius);
     border: solid 1px var(--white-12);
     background-color: var(--white-4);
@@ -629,7 +632,8 @@ body {
 }
 
 .keycard_shell__action-prompt-container {
-    height: 44px;
+    min-height: 44px;
+    height: 100%;
 }
 
 .keycard_shell__action-prompt {
@@ -639,6 +643,7 @@ body {
     line-height: var(--text-line-height);
     letter-spacing: var(--text-letter-spacing);
     color: var(--white-80);
+    overflow-wrap: break-word;
 }
 
 .keycard_shell__enable-camera-container {
@@ -708,6 +713,37 @@ body {
     }
 }
 
+.keycard_shell__device-verification-warning-container {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    min-height: 76px;
+    background-color: var(--orange-5);
+    border: solid 1px var(--orange-10);
+    padding: 11px 12px;
+    border-radius: var(--border-radius-12);
+    box-sizing: border-box;
+    align-items: center;
+    
+}
+
+.keycard_shell__device-verification-warning-icon-container {
+    width: 16px;
+}
+
+.keycard_shell__device-verification-warning-prompt {
+    font-family: var(--text-font-inter);
+    font-weight: var(--text-font-weight);
+    font-size: var(--text-13);
+    color: var(--white-95);
+    letter-spacing: var(--warning-letter-spacing);
+    line-height: var(--text-line-height-20);
+}
+
+.keycard_shell__device-verification-warning-link {
+    border-bottom: solid 1px var(--white-95);
+}
+
 /* QR style */
 
 .keycard_shell__qr-container {
@@ -731,7 +767,8 @@ body {
 }
 
 .keycard_shell__qr-success {
-    padding: 8px;
+    padding: 10px;
+    box-sizing: border-box;
 }
 
 /* Button */
