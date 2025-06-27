@@ -9,7 +9,7 @@
 </div> 
 <div class="keycard_shell__verify-step-prompt-container">
     <div class="keycard_shell__verify-step-prompt">
-        <span id="keycard_shell__verify-step-prompt">Ensure your Shell is authentic and check its verification history. </span>
+        <span class="keycard_shell__verify-step-prompt">Ensure your Shell is authentic and check its verification history. </span>
         <span>Please, read <a href="#" class="keycard_shell__verify-step-prompt-help-link">help article for more details about verification</a>.</span>
     </div>
 </div>
@@ -89,35 +89,79 @@
     </div>
   </div>
 </div>
-<div class="keycard_shell__bottom-content-container">
-    <div class="keycard_shell__db-update">
-        <div class="keycard_shell__help-header">
-            <h3 class="keycard_shell__h3">Update token database</h3>
+<div class="keycard_shell__bottom">
+    <div class="keycard_shell__bottom-heading-container keycard_shell__display-none" id="bottom-heading">
+        <div class="keycard_shell__bottom-heading">
+            <h2 class="keycard_shell__h2" id="verify-result-header">What's next?</h2>
         </div>
-        <div class="keycard_shell__help-prompt">
-            <p class="keycard_shell__help-prompt-text">Keep your token list up to date so Shell can recognize new tokens in transactions.  Update to latest version</p>
-        </div>
-        <div class="keycard_shell__help-links">
-            <ul class="keycard_shell__help-links-list">
-                <li class="keycard_shell__help-links-list-el"><a href="mailto:support@keycard.tech" class="keycard_shell__help-link">Get in touch</a></li>
-                <li class="keycard_shell__help-links-list-el"><a href="https://discord.com/invite/uJAXk7jFhZ" class="keycard_shell__help-link"><img src="{% static 'keycard_shell/img/discord.svg' %}" class="keycard_shell__help-link-img" alt="Discord"></a></li>
-                <li class="keycard_shell__help-links-list-el"><a href="https://x.com/Keycard_" class="keycard_shell__help-link"><img src="{% static 'keycard_shell/img/twitter.svg' %}" class="keycard_shell__help-link-img" alt="Discord"></a></li>
-            </ul>
+        <div class="keycard_shell__bottom-prompt-container">
+            <span class="keycard_shell__bottom-prompt">Keep your Shell secure and up-to-date and join our community</span>
         </div>
     </div>
-    <div class="keycard_shell__help-container">
-        <div class="keycard_shell__help-header">
-            <h3 class="keycard_shell__h3">Have questions?</h3>
+    <div class="keycard_shell__bottom-content-container" id="bottom-content-container">
+        <div class="keycard_shell__bottom-menu-part">
+            <div class="keycard_shell__bottom-menu-header">
+                <h3 class="keycard_shell__h3">Have questions?</h3>
+            </div>
+            <div class="keycard_shell__bottom-menu-prompt">
+                <p class="keycard_shell__bottom-menu-prompt-text">Reach out to our team or engage with our community on Discord or X. <span class="keycard_shell__align-text"></span></p>
+            </div>
+            <div class="keycard_shell__help-links">
+                <ul class="keycard_shell__help-links-list">
+                    <li class="keycard_shell__help-links-list-el"><a href="mailto:support@keycard.tech" class="keycard_shell__help-link">Get in touch</a></li>
+                    <li class="keycard_shell__help-links-list-el"><a href="https://discord.com/invite/uJAXk7jFhZ" class="keycard_shell__help-link"><img src="{% static 'keycard_shell/img/discord.svg' %}" class="keycard_shell__help-link-img" alt="Discord"></a></li>
+                    <li class="keycard_shell__help-links-list-el"><a href="https://x.com/Keycard_" class="keycard_shell__help-link"><img src="{% static 'keycard_shell/img/twitter.svg' %}" class="keycard_shell__help-link-img" alt="Discord"></a></li>
+                </ul>
+            </div>
         </div>
-        <div class="keycard_shell__help-prompt">
-            <p class="keycard_shell__help-prompt-text">Reach out to our team or engage with our community on Discord or X.</p>
+        <div class="keycard_shell__bottom-menu-part keycard_shell__display-none" id="update-fw">
+            <div class="keycard_shell__bottom-menu-header">
+                <h3 class="keycard_shell__h3">Upgrade firmware</h3>
+            </div>
+            <div class="keycard_shell__bottom-menu-prompt">
+                <p class="keycard_shell__bottom-menu-prompt-text">Get the latest features and security improvements by installing the newest firmware. Update to <span id="fw-update-version"></span></p>
+            </div>
+            <div class="keycard_shell__update-links">
+                <div class="keycard_shell__update-links-list">
+                    <span class="keycard_shell__update-links-el">
+                        <a href="{% url 'firmware:firmware-index' %}" id="update-db-usb-link" class="keycard_shell__update-link">
+                            <img src="{% static 'keycard_shell/img/firmware.svg' %}" alt="FW">
+                            <span>Update firmware</span>
+                        </a>
+                    </span>
+                    <span class="keycard_shell__update-links-el-no-bg">
+                        <a href="" id="update-db-qr-link" class="keycard_external-link">
+                            <span>Release notes</span>
+                            <img src="{% static 'keycard_shell/img/external.svg' %}" class="keycard_shell__help-link-img" alt="External">
+                        </a>
+                    </span>
+                </div>
+            </div>
         </div>
-        <div class="keycard_shell__help-links">
-            <ul class="keycard_shell__help-links-list">
-                <li class="keycard_shell__help-links-list-el"><a href="mailto:support@keycard.tech" class="keycard_shell__help-link">Get in touch</a></li>
-                <li class="keycard_shell__help-links-list-el"><a href="https://discord.com/invite/uJAXk7jFhZ" class="keycard_shell__help-link"><img src="{% static 'keycard_shell/img/discord.svg' %}" class="keycard_shell__help-link-img" alt="Discord"></a></li>
-                <li class="keycard_shell__help-links-list-el"><a href="https://x.com/Keycard_" class="keycard_shell__help-link"><img src="{% static 'keycard_shell/img/twitter.svg' %}" class="keycard_shell__help-link-img" alt="Discord"></a></li>
-            </ul>
+        <div class="keycard_shell__bottom-menu-part keycard_shell__display-none" id="update-db">
+            <div class="keycard_shell__bottom-menu-header">
+                <h3 class="keycard_shell__h3">Update token database</h3>
+            </div>
+            <div class="keycard_shell__bottom-menu-prompt">
+                <p class="keycard_shell__bottom-menu-prompt-text">Keep your token list up to date so Shell can recognize new tokens in transactions. Update to <span id="db-update-version"></span></p>
+            </div>
+            <div class="keycard_shell__update-links">
+                <div class="keycard_shell__update-links-list">
+                    <span class="keycard_shell__update-links-el">
+                        <a href="" id="update-db-usb-link" class="keycard_shell__update-link">
+                            <img src="{% static 'keycard_shell/img/keycard-pro.svg' %}" alt="Shell">
+                            <span>Connect device</span>
+                        </a>
+                    </span>
+                    <span class="keycard_shell__update-links-el-no-bg">or</span>
+                    <span class="keycard_shell__update-links-el">
+                        <a href="" id="update-db-qr-link" class="keycard_shell__update-link">
+                            <img src="{% static 'keycard_shell/img/qr-code.svg' %}" class="keycard_shell__help-link-img" alt="QR">
+                            <span>Scan QR</span>
+                        </a>
+                    </span>
+                </div>
+            </div>
         </div>
     </div>
 </div>

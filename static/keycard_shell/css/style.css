@@ -46,6 +46,7 @@
     --border-radius-16: 16px;
     --container-border-radius: 28px;
     --text-letter-spacing: -2%;
+    --bm-letter-spacing: -.75px;
     --warning-letter-spacing: -.3%;
     --qr-width: 296px;
     --qr-heigth: 296px;
@@ -261,6 +262,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-wrap: wrap;
     height: 3em;
 }
 
@@ -294,6 +296,7 @@ body {
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
+    flex-wrap: wrap;
     flex: 1 1 50%;
     text-align: right;
     align-items: center;
@@ -351,6 +354,7 @@ body {
     height: 40px;
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
 }
 
 .keycard_shell__logo {
@@ -391,6 +395,7 @@ body {
     height: 40px;
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
 }
 
 .keycard_shell__footer-menu-containers {
@@ -408,6 +413,7 @@ body {
     flex: 1 1 25%;
     display: flex;
     flex-direction: column;
+    flex-wrap: wrap;
     padding: 0 24px;
     border-left: dashed 1px var(--white-20);
     gap: 1.5em;
@@ -425,6 +431,7 @@ body {
 .keycard_shell__footer-menu-list {
     display: flex;
     flex-direction: column;
+    flex-wrap: wrap;
     gap: 8px;
 }
 
@@ -449,11 +456,12 @@ body {
     display: flex;
     flex-direction: row;
     align-items: flex-end;
+    flex-wrap: wrap;
 }
 
 .keycard_shell__copyright {
-   flex: 1 1 50%;
-   font-family: var(--text-font-inter);
+    flex: 1 1 50%;
+    font-family: var(--text-font-inter);
     font-weight: var(--text-font-weight);
     font-size: var(--text-16);
     color: var(--white-80);
@@ -477,6 +485,7 @@ body {
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
+    flex-wrap: wrap;
     height: 100%;
     gap: 24px;
 }
@@ -511,11 +520,13 @@ body {
     margin: 24px auto;
     display: flex;
     flex-direction: column;
+    flex-wrap: wrap;
 }
 
 .keycard_shell__modal-prompt-header-container {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
 }
 
 .keycard_shell__modal-prompt-header {
@@ -562,6 +573,7 @@ body {
     width: 100%;
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     background-color: var(--white-4);
     border: outset var(--white-12) 1px;
     border-radius: 16px;
@@ -598,6 +610,9 @@ body {
 .keycard_shell__verify-step {
     display: flex;
     flex-direction: column;
+    flex-wrap: wrap;
+    transform: translate(0, 0);
+    transition: transform 1s;
 }
 
 .keycard_shell__verify-step-prompt-container {
@@ -653,6 +668,7 @@ body {
     background-color: var(--white-4);
     display: flex;
     flex-direction: column;
+    flex-wrap: wrap;
     justify-content: center;
     align-items: center;
     border-radius: var(--container-border-radius);
@@ -754,6 +770,7 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    flex-wrap: wrap;
     border-radius: var(--border-radius-12);
     border: solid 1px var(--neutral-solid-20);
     margin-top: 6px;
@@ -796,19 +813,16 @@ body {
 }
 
 /* Bottom content */
-.keycard_shell__help-container {
-    width: 435px;
-}
-
 .keycard_shell__bottom-content-container {
     width: 100%;
     display: flex;
     flex-direction: row;
     align-items: center;
+    gap: 24px;
 }
 
-.keycard_shell__help-container {
-    width: 445px;
+.keycard_shell__bottom-menu-part {
+    width: 32%;
     min-height: 190px;
     padding: 20px 24px 24px 24px;
     background-color: var(--white-4);
@@ -819,22 +833,33 @@ body {
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
+    flex-wrap: wrap;
     gap: 24px;
 } 
 
-.keycard_shell__help-prompt-text {
+.keycard_shell__bottom-menu-prompt-text {
     font-family: var(--text-font-inter);
     font-size: var(--text-16);
     font-weight: var(--text-font-weight);
     line-height: var(--text-line-height);
     letter-spacing: var(--text-letter-spacing);
     color: var(--white-60);
+    letter-spacing: var(--bm-letter-spacing);
+    min-height: 44px;
 }
 
-.keycard_shell__help-links-list {
+.keycard_shell__align-text {
+    display: inline-block;
+    width: 150px;
+    height: 16px;
+    visibility: none;
+}
+
+.keycard_shell__help-links-list, .keycard_shell__update-links-list {
     display: flex;
     flex-direction: row;
-    gap: 12px
+    flex-wrap: wrap;
+    gap: 12px;
 }
 
 .keycard_shell__help-links-list-el {
@@ -849,6 +874,29 @@ body {
     height: 40px;
 }
 
+.keycard_shell__update-links-el {
+   padding: 8px 10px;  
+   background-color: var(--white-95);
+   border-radius: var(--border-radius-12);
+   border: solid 1px var(--white-8);
+   box-sizing: border-box;
+   display: inline-block;
+   height: 40px;
+}
+
+.keycard_shell__update-links-el-no-bg {
+    padding: 8px 10px; 
+    height: 40px;
+    vertical-align: baseline;
+    box-sizing: border-box;
+    font-family: var(--text-font-inter);
+    font-size: var(--text-16);
+    line-height: var(--text-line-height);
+    font-weight: var(--text-font-weight);
+    letter-spacing: var(--text-letter-spacing);
+    color: var(--white-60); 
+}
+
 .keycard_shell__help-link {
     font-family: var(--text-font-inter);
     font-size: var(--text-16);
@@ -858,7 +906,57 @@ body {
     color: var(--white-95);
 }
 
+.keycard_shell__update-link {
+    font-family: var(--text-font-inter);
+    font-size: var(--text-16);
+    line-height: var(--text-line-height);
+    font-weight: var(--header-font-weight);
+    letter-spacing: var(--text-letter-spacing);
+    color: var(--dark-100);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.keycard_external-link {
+   display: flex;
+   flex-direction: row;
+   align-items: center;
+   gap: 4px;
+   flex-wrap: wrap; 
+}
+
+.keycard_shell__bottom-heading-container {
+    min-height: 124px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 20px;
+    box-sizing: border-box;
+    transform: translate(0, 0);
+    transition: transform 1s;
+}
+
+.keycard_shell__bottom-prompt {
+    font-family: var(--text-font-inter);
+    font-size: var(--text-20);
+    line-height: var(--text-line-height-28);
+    font-weight: var(--text-font-weight);
+    letter-spacing: var(--text-letter-spacing);
+    color: var(--white-80);
+}
+
+#update-db, #update-fw {
+   transform: translate(0, 0);
+   transition: transform 1s; 
+}
+
 /* Hide */
 .keycard_shell__display-none {
-    display: none;
+    visibility: hidden;
+    max-height: 0;
+    min-height: 0;
+    transform: translate(-.5%, 0);
 }

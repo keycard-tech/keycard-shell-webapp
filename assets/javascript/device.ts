@@ -35,6 +35,13 @@ const verifyResultPrompt = document.getElementById("verify-result-prompt") as HT
 const scanFinishedButtonLink = document.getElementById("device_verify__scan-finished-link") as HTMLLinkElement;
 const scanFinishedButton = document.getElementById("device_verify__scan-finished") as HTMLInputElement;
 const scanVerificationCountWarning = document.getElementById("device-verification-count-warning") as HTMLDivElement;
+const dbUpdateVersion = document.getElementById("db-update-version") as HTMLSpanElement;
+const fwUpdateVersion = document.getElementById("fw-update-version") as HTMLSpanElement;
+const bottomHeading = document.getElementById("bottom-heading") as HTMLDivElement;
+const updateDB = document.getElementById("update-db") as HTMLDivElement;
+const updateFW = document.getElementById("update-fw") as HTMLDivElement;
+const bottomContainer = document.getElementById("bottom-content-container") as HTMLDivElement;
+
 
 
 async function verify(data: FormData, csrftoken: string, url: string) : Promise<any|void> {
@@ -76,6 +83,10 @@ function handleDeviceResponse(resp: Buffer, challenge: string) : FormData {
 function handleVerificationComplete(r: any) : void {
   step3Container.classList.add('keycard_shell__display-none');
   step4Container.classList.remove('keycard_shell__display-none');
+  bottomHeading.classList.remove('keycard_shell__display-none');
+  bottomContainer.style.flexDirection = "row-reverse";
+  updateDB.classList.remove('keycard_shell__display-none');
+  updateFW.classList.remove('keycard_shell__display-none');
 
   if(r['status'] == 'success') {
     const successQR = new QRious({element: document.getElementById('device_success__qr')}) as any;
@@ -116,6 +127,7 @@ function handleQRErrorUI(qrError?: boolean) : void {
 
 async function onScanSuccess(decodedText: any, challenge: string, decoder: URDecoder, csrftoken: string, html5QrCode: Html5Qrcode) : Promise<void> {
     await stopScanning(html5QrCode);
+
     try {
         const data = QRUtils.decodeQR(decoder, decodedText);
         const status = data[1];
@@ -149,6 +161,11 @@ async function handleVerifyDevice() : Promise<void> {
   const html5QrCode = new Html5Qrcode("device_verify__qr-reader");
   const config = {fps: 10, qrbox: 600, aspectRatio: 1};
   QRUtils.generateQRPart(encoder, verifyQR, false, 400);
+
+  const ercDBContext = await fetch("../context").then((r: any) => r.json());
+  const fwContext = await fetch("../firmware/context").then((r) => r.json());
+  dbUpdateVersion.innerHTML = ercDBContext["version"];
+  fwUpdateVersion.innerHTML = fwContext["version"];
 
   next_btn.addEventListener("click", () => {
     if (step2Container.classList.contains('keycard_shell__display-none')) {
