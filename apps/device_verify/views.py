@@ -30,11 +30,7 @@ keys = {
 }
 
 def index(request):
-  context = {
-    "challenge": secrets.token_hex(32)
-  }
-
-  return render(request, 'keycard_shell/device_verify.html', context)
+  return render(request, 'keycard_shell/device_verify.html', context=None)
 
 def verify_signature(uid, challenge, signature, public_key):
   m = hashlib.sha256()
@@ -87,6 +83,9 @@ def verify(request):
     signature = request.POST.get('signature')
     initial_challenge = request.POST.get('initial_challenge')
     device = None
+    
+    print(challenge)
+    print(initial_challenge)
 
     try:
       device = Device.objects.get(uid=device_id)

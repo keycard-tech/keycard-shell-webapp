@@ -2,7 +2,6 @@
 {% load static %}
 {% block content %}
 <link rel="stylesheet" href="{% static '/keycard_shell/css/style.css' %}">
-<input type="hidden" id="device_verify__challenge" name="chall" value="{{ challenge }}">
 <input type="hidden" id="device_verify__csfr" name="csfr" value="{{ csrf_token }}">
 <div class="keycard_shell__page-header-container">
     <h1 class="keycard_shell__page-header">Verify authenticity of Shell</h1>

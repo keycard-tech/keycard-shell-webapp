@@ -23,7 +23,6 @@ export namespace QRUtils {
   export function generateQRPart(encoder: {enc: UREncoder}, qrCanv: any, timeout: boolean, size: number) : void {
     if(encoder.enc) {
       let part = encoder.enc.nextPart();
-      console.log(encoder.enc.messageLength);
       qrCanv.padding = (encoder.enc.fragmentsLength == 1 && encoder.enc.messageLength >= 200) ? 42 : null;
       displayQRPart(part.toUpperCase(), qrCanv, size);
     }
@@ -33,8 +32,8 @@ export namespace QRUtils {
     }
   }
 
-  export function encodeChallenge(challenge: String) : Buffer {
-    return Buffer.from("a20101065820" + challenge, "hex");
+  export function encodeChallenge(challenge: Uint8Array) : Buffer {
+    return Buffer.from([0xa2, 0x01, 0x01, 0x06, 0x58, 0x20, ...challenge]);
   }
 
   export function decodeQR(decoder: URDecoder, qr: string) : Buffer {
