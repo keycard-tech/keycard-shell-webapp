@@ -1,9 +1,6 @@
 import { QRUtils } from "./qr_utils";
 import {UR, UREncoder, URDecoder} from '@ngraveio/bc-ur'
-import {Html5Qrcode, Html5QrcodeScanner} from "html5-qrcode";
-import { Html5QrcodeCameraScanConfig, Html5QrcodeConfigs } from "html5-qrcode/esm/html5-qrcode";
-
-
+import {Html5Qrcode} from "html5-qrcode";
 
 const QRious = require('qrious');
 const postReqURL = './verify';
@@ -41,8 +38,6 @@ const bottomHeading = document.getElementById("bottom-heading") as HTMLDivElemen
 const updateDB = document.getElementById("update-db") as HTMLDivElement;
 const updateFW = document.getElementById("update-fw") as HTMLDivElement;
 const bottomContainer = document.getElementById("bottom-content-container") as HTMLDivElement;
-
-
 
 async function verify(data: FormData, csrftoken: string, url: string) : Promise<any|void> {
   try {
@@ -190,7 +185,7 @@ async function handleVerifyDevice() : Promise<void> {
   const scan_btn = document.getElementById("device_verify__scan-button");
   const verifyQR = new QRious({element: document.getElementById('device_verify__qr')}) as any;
 
-  const challenge = crypto.getRandomValues(new Uint8Array(32))
+  const challenge = crypto.getRandomValues(new Uint8Array(32));
 
   const payload = QRUtils.encodeChallenge(challenge);
   const ur = new UR(payload, "dev-auth");

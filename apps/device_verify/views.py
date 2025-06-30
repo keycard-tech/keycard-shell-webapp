@@ -39,7 +39,7 @@ def verify_signature(uid, challenge, signature, public_key):
   m.update(bytes(bytearray.fromhex(uid)))
   m.update(bytes(bytearray.fromhex(challenge)))
   h = m.digest()
-  sig = public_key.ecdsa_deserialize_compact(bytes(bytearray.fromhex(signature)))
+  _, sig = public_key.ecdsa_signature_normalize(public_key.ecdsa_deserialize_compact(bytes(bytearray.fromhex(signature))))
 
   return public_key.ecdsa_verify(h, sig, raw=True)
 
