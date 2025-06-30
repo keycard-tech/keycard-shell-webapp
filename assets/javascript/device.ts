@@ -89,9 +89,14 @@ function handleVerificationComplete(r: any) : void {
   step3Container.classList.add('keycard_shell__display-none');
   step4Container.classList.remove('keycard_shell__display-none');
   bottomHeading.classList.remove('keycard_shell__display-none');
-  bottomContainer.style.flexDirection = "row-reverse";
   updateDB.classList.remove('keycard_shell__display-none');
   updateFW.classList.remove('keycard_shell__display-none');
+
+  if(window.innerWidth < 700) {
+    bottomContainer.style.flexDirection = "column-reverse";
+  } else {
+    bottomContainer.style.flexDirection = "row-reverse";
+  }
 
   if(r['status'] == 'success') {
     const successQR = new QRious({element: document.getElementById('device_success__qr')}) as any;
@@ -156,8 +161,7 @@ function onScanFailure(error: any) : void {
 }
 
 async function videoPermissionsGranted() : Promise<boolean> {
-    let devices = await navigator.mediaDevices.enumerateDevices();
-    return devices.find((device) => device.kind == "videoinput").deviceId != "";
+    return (await navigator.permissions.query({name: 'camera'})).state == "granted";
 }
 
 async function startScanning(challenge: Uint8Array, decoder: URDecoder, csrftoken: string) : Promise<void> {
