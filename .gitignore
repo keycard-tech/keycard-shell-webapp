@@ -91,6 +91,7 @@ local_settings.py
 .env.prod.db
 db.sqlite3
 node_modules/
+static/keycard_shell/js
 uploads/
 data/
 selftest-cert.crt
