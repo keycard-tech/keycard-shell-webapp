@@ -970,6 +970,11 @@ body {
   .keycard_shell__pre-sale-banner-container  {
     padding: 0 10px;
     box-sizing: border-box;
+    justify-content: center;
+  }
+
+  .keycard_shell__pre-sale-banner {
+    text-align: center;
   }
 
   .keycard_shell__page-header {
