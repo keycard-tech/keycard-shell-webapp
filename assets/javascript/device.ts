@@ -77,11 +77,6 @@ function handleDeviceResponse(resp: Buffer, challenge: Uint8Array) : FormData {
   reqData.append(keys[7], signature);
   reqData.append(keys[8], Buffer.from(challenge).toString("hex"));
 
-  console.log(resp);
-  console.log(deviceChallenge);
-  console.log(challenge);
-  console.log(signature);
-
   return reqData;
 }
 
@@ -141,8 +136,6 @@ async function onScanSuccess(decodedText: any, challenge: Uint8Array, decoder: U
     try {
         const data = QRUtils.decodeQR(decoder, decodedText);
         const status = data[1];
-
-        console.log(decodedText);
     
         if (verState[status as keyof typeof verState] == "dev_auth_device") {
             const reqData = handleDeviceResponse(data, challenge);

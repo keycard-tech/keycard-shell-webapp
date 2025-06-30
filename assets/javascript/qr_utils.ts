@@ -47,7 +47,7 @@ export namespace QRUtils {
     }
     else {
       const error = decoder.resultError()
-      console.log('Error found while decoding', error)
+      console.log('Error while decoding', error)
       return;
     }
   }

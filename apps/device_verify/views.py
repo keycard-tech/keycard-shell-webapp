@@ -83,9 +83,6 @@ def verify(request):
     signature = request.POST.get('signature')
     initial_challenge = request.POST.get('initial_challenge')
     device = None
-    
-    print(challenge)
-    print(initial_challenge)
 
     try:
       device = Device.objects.get(uid=device_id)
