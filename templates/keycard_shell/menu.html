@@ -6,15 +6,21 @@
     <div class="keycard_shell__logo-container">
        <a href="https://keycard.tech"><img class="keycard_shell__logo" src="{% static 'keycard_shell/img/logo.svg' %}" alt="Logo"> </a>
     </div>
-    <ul class="kpro_web__menu" id="kpro_web__menu">
-        <li class="kpro_web__menu-element" id="kpro_web__menu-element-keycard">
+    <div class="kpro_web__menu" id="kpro_web__menu">
+        <div class="keycard_shell__mobile-menu-container" id="mobile-menu-link-container">
+            <a href="#" class="keycard_shell__mobile-menu" id="mobile-menu-link">
+                <img src="{% static 'keycard_shell/img/menu.svg' %}" alt="Mobile menu" id="mobile-menu-img" class="keycard_shell__mobile-menu-img">
+                <img src="{% static 'keycard_shell/img/close.svg' %}" alt="Mobile menu" id="close-menu-img" class="keycard_shell__mobile-menu-img keycard_shell__display-none">
+            </a>
+        </div>
+        <div class="kpro_web__menu-element keycard_shell__mobile-menu-element" id="kpro_web__menu-element-keycard">
             <a href="https://keycard.tech/keycard" class="kpro_web__menu-element-link {% if request.path == 'https://keycard.tech/keycard' %} active {% endif %}" id="kpro_web__menu-element-keycard">Keycard</a>
-        </li>
-        <li class="kpro_web__menu-element" id="kpro_web__menu-element-keycard-shell">
+        </div>
+        <div class="kpro_web__menu-element keycard_shell__mobile-menu-element" id="kpro_web__menu-element-keycard-shell">
             <a href="https://keycard.tech/keycard-shell" class="kpro_web__menu-element-link {% if request.path == 'https://keycard.tech/keycard-shell' %} active {% endif %}" id="kpro_web__menu-element-keycard-shell">Keycard Shell</a>
-        </li>
-        <li class="kpro_web__menu-element" id="kpro_web__menu-element-keycard-buy">
+        </div>
+        <div class="kpro_web__menu-element" id="kpro_web__menu-element-keycard-buy-container">
             <button class="kpro_web__menu-element-link kpro_web__menu-btn" id="kpro_web__menu-element-keycard-buy">Buy Keycard</button>
-        </li>
-    </ul>
+        </div>
+    </div>
 </div>

@@ -5,7 +5,8 @@ module.exports = {
   entry: {
     token_db: './assets/javascript/token_db.ts',
     device: './assets/javascript/device.ts',
-    firmware: './assets/javascript/firmware.ts'
+    firmware: './assets/javascript/firmware.ts',
+    menu: './assets/javascript/menu.ts'
   },
   module: {
     rules: [

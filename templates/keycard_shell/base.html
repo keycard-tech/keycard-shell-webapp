@@ -10,9 +10,14 @@
     </head>
     <body>
     <div class="keycard-shell__main-container">
-        {% block menu %}
-            {% include './menu.html' %}
-        {% endblock %}
+        <div class="keycard_shell__menu-fixed" id="menu-fixed">
+            {% block menu %}
+                {% include './menu.html' %}
+            {% endblock %}
+            {% block mobile_menu %}
+                {% include './mobile_menu.html' %}
+            {% endblock %}
+        </div>
         <div class="keycard_shell__content-container">
             {% block content %}
             {% endblock %}
@@ -22,4 +27,5 @@
         {% endblock %}
     </div>
     </body>
+    <script src="{% static '/keycard_shell/js/menu.js' %}"></script>
 </html>
