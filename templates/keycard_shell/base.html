@@ -21,6 +21,9 @@
         <div class="keycard_shell__content-container">
             {% block content %}
             {% endblock %}
+            {% block bottom_links %}
+                {% include './bottom_links.html' %}
+            {% endblock %}
         </div>
         {% block footer %}
             {% include './footer.html' %}

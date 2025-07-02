@@ -32,12 +32,6 @@ const verifyResultPrompt = document.getElementById("verify-result-prompt") as HT
 const scanFinishedButtonLink = document.getElementById("device_verify__scan-finished-link") as HTMLLinkElement;
 const scanFinishedButton = document.getElementById("device_verify__scan-finished") as HTMLInputElement;
 const scanVerificationCountWarning = document.getElementById("device-verification-count-warning") as HTMLDivElement;
-const dbUpdateVersion = document.getElementById("db-update-version") as HTMLSpanElement;
-const fwUpdateVersion = document.getElementById("fw-update-version") as HTMLSpanElement;
-const bottomHeading = document.getElementById("bottom-heading") as HTMLDivElement;
-const updateDB = document.getElementById("update-db") as HTMLDivElement;
-const updateFW = document.getElementById("update-fw") as HTMLDivElement;
-const bottomContainer = document.getElementById("bottom-content-container") as HTMLDivElement;
 
 async function verify(data: FormData, csrftoken: string, url: string) : Promise<any|void> {
   try {
@@ -78,15 +72,6 @@ function handleDeviceResponse(resp: Buffer, challenge: Uint8Array) : FormData {
 function handleVerificationComplete(r: any) : void {
   step3Container.classList.add('keycard_shell__display-none');
   step4Container.classList.remove('keycard_shell__display-none');
-  bottomHeading.classList.remove('keycard_shell__display-none');
-  updateDB.classList.remove('keycard_shell__display-none');
-  updateFW.classList.remove('keycard_shell__display-none');
-
-  if(window.innerWidth < 700) {
-    bottomContainer.style.flexDirection = "column-reverse";
-  } else {
-    bottomContainer.style.flexDirection = "row-reverse";
-  }
 
   if(r['status'] == 'success') {
     const successQR = new QRious({element: document.getElementById('device_success__qr')}) as any;
@@ -192,11 +177,6 @@ async function handleVerifyDevice() : Promise<void> {
   const encoder = {enc: new UREncoder(ur, maxFragmentLength)};
   const decoder = new URDecoder();
   QRUtils.generateQRPart(encoder, verifyQR, false, 400);
-
-  const ercDBContext = await fetch("../context").then((r: any) => r.json());
-  const fwContext = await fetch("../firmware/context").then((r) => r.json());
-  dbUpdateVersion.innerHTML = ercDBContext["version"];
-  fwUpdateVersion.innerHTML = fwContext["version"];
 
   next_btn.addEventListener("click", async () => {
     if (step2Container.classList.contains('keycard_shell__display-none')) {
