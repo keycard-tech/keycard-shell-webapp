@@ -2,30 +2,81 @@
 {% load static %}
 {% block content %}
 <input type="hidden" id="db_updater__media-prefix" name="db_updater__media-prefix" value="{% get_media_prefix %}">
-<div class="keycard_shell__modal-prompt-container">
-    <div class="keycard_shell__modal-prompt-header-container">
-        <h1 class="keycard_shell__modal-prompt-header">Select current database version</h1>
-        {% block back_btn %}
-        {% include './back_btn.html' %}
-        {% endblock %}
+<!--<div class="animation"></div>-->
+<div class="keycard_shell__page-heading-container">
+    <h1 class="keycard_shell__page-heading" id="db-page-heading">Update ERC-20 token database</h1>
+</div> 
+<div class="keycard_shell__page-top-prompt-container">
+    <div class="keycard_shell__page-top-prompt">
+        <span class="keycard_shell__page-top-prompt-content" id="db-page-prompt">If you’d like to keep your Keycard Shell fully air gaped select update over QR.</span>
     </div>
-    <p class="keycard_shell__modal-prompt-text">Go to Settings / Device / Update ERC-20 database on your Shell and select you current database version</p>
-    <div class="keycard_shell__delta-select-container">
-        <select name="db-current-version" id="db-current-version" class="keycard_shell__delta-select">
-            <option value="">Select database version</option>
-        </select>
-        <img src="{% static 'keycard_shell/img/chevron-down.svg' %}" alt="Down">
+</div>
+<div class="keycard_shel__db-update-steps-container">
+    <div class="keycard_shel__db-main-container" id="start-db-update-screen">
+        <div class="keycard_shell__db-start-update-container" id="update-via-qr">
+            <div class="keycard_shell__db-start-update-img-container">
+                <img src="{% static 'keycard_shell/img/db-qr.png' %}" class="keycard_shell__db-start-update-img" alt="DB QR">
+            </div>
+            <div class="keycard_shell__db-start-action-container">
+                <div class="keycard_shell__db-start-action-text-container">
+                    <h1 class="keycard_shell__page-heading">Scan &amp; go</h1>
+                    <span class="keycard_shell__db-start-action-text">Scan QR-code using Keycard Shell</span>
+                </div>
+                <div class="keycard_shell__db-btn-container">
+                    <div class="keycard_shell__btn-container keycard_shell__db-btn">
+                        <input id="erc20db-qr-update-btn" class="keycard_shell__btn keycard_shell__db-btn-inline" type="button" value="Update over the air">
+                    </div>
+                </div>
+            </div>
+        </div>    
+        <div class="keycard_shell__db-start-update-container" id="update-via-usb">
+            <div class="keycard_shell__db-start-update-img-container">
+                <img src="{% static 'keycard_shell/img/db-usb.png' %}" class="keycard_shell__db-start-update-img" alt="DB Usb">
+            </div>
+            <div class="keycard_shell__db-start-action-container">
+                <div class="keycard_shell__db-start-action-text-container">
+                    <h1 class="keycard_shell__page-heading">Connect via cable</h1>
+                    <span class="keycard_shell__db-start-action-text">Connect your Keycard Shell via USB-C cable</span>
+                </div>
+                <div class="keycard_shell__db-btn-container">
+                    <div class="keycard_shell__btn-container keycard_shell__db-btn">
+                        <input id="erc20db-usb-update-btn" class="keycard_shell__btn" type="button" value="Update via cable">
+                        <span class="keycard_shell__db-usb-info">
+                            <img src="{% static 'keycard_shell/img/desktop.svg' %}" alt="Desctop" class="keycard_shell-db-usb-info-image">
+                            <span class="keycard_shell__no-bg-btn keycard_shell__db-usb-info-text">Only for Desktop</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>    
+    </div>   
+    <div class="keycard_shell__db-update-qr-action-container keycard_shel__db-update-step keycard_shell__display-none" id="start-db-qr-update-screen">
+        <div class="keycard_shel__db-update-step-content-container keycard_shell__step-action-el">
+            <div class="keycard_shell__db-update-step-content-heading-container">
+                <h3 class="keycard_shell__db-update-step-content-heading">Please select your current database version and scan the QR code to download updates</h3>
+            </div>
+            <p class="keycard_shell__db-update-step-prompt">ERC20 DB version</p>
+            <div class="keycard_shell__select-field-container">
+                <select name="db-current-version" id="db-current-version" class="keycard_shell__select-field">
+                    <option value="">Select database version</option>
+                </select>
+                <img src="{% static 'keycard_shell/img/down.svg' %}" alt="Chevron down" class="keycard_shell__select-chevron">
+            </div>
+            <div class="keycard_shell__qr-container keycard_shell__db-qr-container keycard_shell__display-none" id="qr-container">
+                <div>
+                    <canvas id="qr" class="keycard_shell__qr keycard_shell__db-qr"></canvas>
+                </div>
+            </div> 
+        </div>
+    </div>
+    <div class="keycard_shell__back-btn-container keycard_shell__display-none" id="back-btn-container">
+        <a href="#" class="keycard_shell__back-btn" id="back-btn">
+            <img src="{% static 'keycard_shell/img/right.svg' %}" alt="Right" class="keycard_shell__back-btn-img">
+            <span class="keycard_shell__no-bg-btn">Select other update method</span>
+        </a>
     </div>
 </div>
 
-<div class="keycard_shell__display-none" id="qr-container">
-    <div>
-        <canvas id="qr"></canvas>
-    </div>
-</div>
-<div class="keycard_shell__display-none" id="version-container">
-    <span id="db-version-label"></span>
-</div>
 <!--
     <div class="db_updater__label-container">
         <h1 class="db_updater__label">...or connect your Keycard Pro to update ERC20 &amp; Chain database</h1>

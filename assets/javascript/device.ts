@@ -1,4 +1,5 @@
 import { QRUtils } from "./qr_utils";
+import { TextStr } from "./text_str";
 import {UR, UREncoder, URDecoder} from '@ngraveio/bc-ur'
 import {Html5Qrcode} from "html5-qrcode";
 
@@ -27,7 +28,7 @@ const step3Container = document.getElementById("kpro_web__verify-step3");
 const step4Container = document.getElementById("kpro_web__verify-step4");
 const stepPrompt = document.getElementById("keycard_shell__verify-step-prompt") as HTMLParagraphElement;
 const deviceSuccessQRContainer = document.getElementById("verify-success-qr-container") as HTMLDivElement;
-const verifyResultHeader = document.getElementById("verify-result-header") as HTMLHeadingElement;
+const verifyResultHeading = document.getElementById("verify-result-heading") as HTMLHeadingElement;
 const verifyResultPrompt = document.getElementById("verify-result-prompt") as HTMLParagraphElement;
 const scanFinishedButtonLink = document.getElementById("device_verify__scan-finished-link") as HTMLLinkElement;
 const scanFinishedButton = document.getElementById("device_verify__scan-finished") as HTMLInputElement;
@@ -81,8 +82,8 @@ function handleVerificationComplete(r: any) : void {
     QRUtils.generateQRPart(encoder, successQR, false, 400);
     deviceSuccessQRContainer.classList.remove('keycard_shell__display-none');
 
-    verifyResultHeader.innerText = "Your Shell is authentic";
-    verifyResultPrompt.innerHTML = "Scan the QR code with your Shell to verify the site hasn't been compromised by malicious extensions or viruses.";
+    verifyResultHeading.innerText = TextStr.verifyAuthenticHeading;
+    verifyResultPrompt.innerHTML = TextStr.verifySuccessPrompt;
     scanFinishedButtonLink.href = "https://keycard.tech/keycard";
 
     if(r['counter'] > 1) {
@@ -96,9 +97,9 @@ function handleVerificationComplete(r: any) : void {
 function handleQRErrorUI(qrError?: boolean) : void {
     step3Container.classList.add('keycard_shell__display-none');
     step4Container.classList.remove('keycard_shell__display-none');
-    verifyResultHeader.innerText = qrError ? "Shell was not verified" : "Your Shell is not authentic";
-    verifyResultPrompt.innerHTML = qrError ? "Something went wrong. Go to Settings/Device/ Verification on your Shell and try again." : "Check Keycard Shell documentation for more details or contact us.";
-    scanFinishedButton.value = qrError ? "Try again" : "Learn more";
+    verifyResultHeading.innerText = qrError ? TextStr.verifyErrorHeading : TextStr.verifyNotAuthenticHeading;
+    verifyResultPrompt.innerHTML = qrError ? TextStr.verifyErrorPrompt: TextStr.verifyFailPrompt;
+    scanFinishedButton.value = qrError ? TextStr.btnTryAgain : TextStr.btnLearnMore;
     if(qrError) {
         scanFinishedButtonLink.addEventListener("click", (e) => {
             location.reload();
@@ -186,7 +187,7 @@ async function handleVerifyDevice() : Promise<void> {
         } else {
             step1Container.classList.add('keycard_shell__display-none');
             step2Container.classList.remove('keycard_shell__display-none');
-            stepPrompt.innerHTML = `Go to Settings / Device / Verification on your Shell and scan this QR to initiate the device verification.<br>`;    
+            stepPrompt.innerHTML = TextStr.stepPrompt;    
         }
     }
   });

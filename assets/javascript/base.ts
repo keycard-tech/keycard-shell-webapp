@@ -58,8 +58,19 @@ function hideBottomMenuSection() : void {
     });
 }
 
-function handleMenu() : void {
-   mobileMenuLink.addEventListener("click", () => {
+async function handleBaseUI() : Promise<void> {
+    const ercDBContext = await fetch("../context").then((r: any) => r.json());
+    const fwContext = await fetch("../firmware/context").then((r) => r.json());
+
+    hideBottomMenuSection();
+
+    window.onscroll = () => menuScroll();
+    window.onresize = () => resetMenu();
+
+    dbUpdateVersion.innerHTML = ercDBContext["version"];
+    fwUpdateVersion.innerHTML = fwContext["version"];
+
+    mobileMenuLink.addEventListener("click", () => {
     if(fixedMenu.classList.contains("keycard_shell__menu-fixed-opened")) {
         fixedMenu.classList.remove("keycard_shell__menu-fixed-opened");
         closeMenuImg.classList.add("keycard_shell__display-none");
@@ -76,26 +87,13 @@ function handleMenu() : void {
         buyBtn.style.display = "none";
     }
    }); 
-}
-
-async function handleBottomMenu() : Promise<void> {
-    const ercDBContext = await fetch("../context").then((r: any) => r.json());
-    const fwContext = await fetch("../firmware/context").then((r) => r.json());
-
-    hideBottomMenuSection();
-
-    dbUpdateVersion.innerHTML = ercDBContext["version"];
-    fwUpdateVersion.innerHTML = fwContext["version"];
 
     bottomHeading.classList.remove('keycard_shell__display-none');
     updateDB.classList.remove('keycard_shell__display-none');
     updateFW.classList.remove('keycard_shell__display-none');
     verifyDevice.classList.remove('keycard_shell__display-none');
-
 }
 
-handleMenu();
-handleBottomMenu();
-window.onscroll = () => menuScroll();
-window.onresize = () => resetMenu();
+handleBaseUI();
+
 
