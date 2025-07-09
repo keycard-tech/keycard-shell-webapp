@@ -1,7 +1,6 @@
 from django.contrib import admin
 from django import forms
 from django.contrib.auth.models import Group
-from django.contrib.admin.models import LogEntry
 from django.db import IntegrityError, transaction
 from django.contrib import messages
 from django.utils.html import format_html
@@ -23,18 +22,20 @@ class UpdateDBForm(forms.ModelForm):
         fields = [
             'erc20_url',
             'chain_url',
+            'abi_url',
             'version',
             'db_hash'
         ]
         widgets = {
             'erc20_url': forms.TextInput(),
             'chain_url': forms.TextInput(),
+            'abi_url': forms.TextInput(),
             'version': forms.TextInput(attrs={'readonly': 'readonly'}),
             'db_hash': forms.HiddenInput(),
         }
 
 class UpdateDBAdmin(admin.ModelAdmin):
-    list_display = ('erc20_url', 'chain_url', 'creation_date', 'download_db_files')
+    list_display = ('erc20_url', 'chain_url', 'abi_url', 'creation_date', 'download_db_files')
     form = UpdateDBForm
 
     def download_db_files(self, obj):
@@ -45,9 +46,9 @@ class UpdateDBAdmin(admin.ModelAdmin):
     def get_changeform_initial_data(self, request):
         last_entry = DB.objects.last()
         if last_entry:
-            def_vals = {'erc20_url': last_entry.erc20_url, 'chain_url': last_entry.chain_url}
+            def_vals = {'erc20_url': last_entry.erc20_url, 'chain_url': last_entry.chain_url, 'abi_url': last_entry.abi_url}
         else:
-             def_vals = {'erc20_url': None, 'chain_url': None, }
+             def_vals = {'erc20_url': None, 'chain_url': None, 'abi_url': None}
 
         def_vals["version"] = datetime.datetime.now().strftime("%Y%m%d")
 
@@ -63,9 +64,7 @@ class UpdateDBAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         try:
             db_form_data = form.cleaned_data
-            dbs_query = DB.objects.all().order_by('-version')[:DELTA_DBS]
-            available_dbs = iter_query(dbs_query, "version")
-            db = DBUpdate(erc20_url = db_form_data.get('erc20_url'), chain_url = db_form_data.get('chain_url'), db_version = db_form_data.get('version'), prev_dbs = available_dbs)
+            db = DBUpdate(erc20_url = db_form_data.get('erc20_url'), chain_url = db_form_data.get('chain_url'), abi_url = db_form_data.get('abi_url'), db_version = db_form_data.get('version'))
             db_file_hash = db.upload_db()
             obj.db_hash = db_file_hash
 

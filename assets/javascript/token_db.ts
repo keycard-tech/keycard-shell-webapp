@@ -14,6 +14,40 @@ if (!('process' in window)) {
   window.process = {}
 }
 
+const mediaPrefix = document.getElementById('db_updater__media-prefix') as HTMLInputElement;
+const dbUSBUpdateBtn = document.getElementById("btn-db-usb-update") as HTMLButtonElement;
+const logMessage = document.getElementById("kpro-db-web-msg") as HTMLSpanElement;
+const dbLoad = document.getElementById("db-progress-bar") as HTMLProgressElement;
+const versionSelect = document.getElementById("db-current-version") as HTMLSelectElement;
+const dbQR = new QRious({element: document.querySelector('canvas')}) as any;
+const dbQRContainer = document.getElementById("qr-container") as HTMLDivElement;
+const backBtn = document.getElementById("back-btn") as HTMLAnchorElement;
+const backBtnContainer = document.getElementById("back-btn-container") as HTMLDivElement;
+
+const startQRUpdateBtn = document.getElementById("erc20db-qr-update-btn") as HTMLButtonElement;
+const startUsbUpdateBtn = document.getElementById("erc20db-usb-update-btn") as HTMLButtonElement;
+const startUpdateScreen = document.getElementById("start-db-update-screen") as HTMLDivElement;
+const startQRUpdateScreen = document.getElementById("start-db-qr-update-screen") as HTMLDivElement;
+const startUsbUpdateScreen = document.getElementById("start-db-usb-update-screen") as HTMLDivElement;
+const usbUpdateVersionScreen = document.getElementById("db-usb-update-version-screen") as HTMLDivElement;
+const usbDBUpdatingScreen = document.getElementById("db-usb-update-in-progress-screen") as HTMLDivElement;
+const usbUpdateSuccessScreen = document.getElementById("db-usb-update-success-screen") as HTMLDivElement;
+const usbUpdateFailedScreen = document.getElementById("db-usb-update-failed-screen") as HTMLDivElement;
+  
+const displayNoneClass = "keycard_shell__display-none";
+
+const pageHeading = document.getElementById("db-page-heading") as HTMLHeadElement;
+const pagePrompt = document.getElementById("db-page-prompt") as HTMLSpanElement;
+
+const updateSuccessMessage = document.getElementById("db-update-finished-success-message") as HTMLSpanElement;
+const updateErrorMessage = document.getElementById("db-update-finished-err-message") as HTMLSpanElement;
+const updatedDBVersion = document.getElementById("db-updated-version") as HTMLSpanElement;
+
+const maxFrLength = 400;
+
+const latestDBVersion = document.getElementById("latest-db-version") as HTMLSpanElement;
+const erc20dbVersionProgress = document.getElementById("update-progress-db-version") as HTMLSpanElement;
+
 async function generateQR(context: any, mediaPrefix: string, currentVersion: string, maxFragmentLength: number, dbQR: any) : Promise<UREncoder> {
   const resp = await fetch(mediaPrefix + context["version"] + '/deltas/delta-' + context["version"] + '-' + currentVersion + '.bin');
   const deltaArr = await resp.arrayBuffer();
@@ -23,32 +57,36 @@ async function generateQR(context: any, mediaPrefix: string, currentVersion: str
   return new UREncoder(ur, maxFragmentLength);
 }
 
-async function handleERC20DB() : Promise<void> {
-  const mediaPrefix = document.getElementById('db_updater__media-prefix') as HTMLInputElement;
-  const dbUSBUpdateBtn = document.getElementById("btn-db-usb-update") as HTMLButtonElement;
-  const progressBar = document.getElementById("db-progress");
-  const logMessage = document.getElementById("kpro-db-web-msg") as HTMLSpanElement;
-  const dbLoad = document.getElementById("db-progress-bar") as HTMLProgressElement;
-  const versionSelect = document.getElementById("db-current-version") as HTMLSelectElement;
-  const dbQR = new QRious({element: document.querySelector('canvas')}) as any;
-  const dbQRContainer = document.getElementById("qr-container") as HTMLDivElement;
-  const backBtn = document.getElementById("back-btn");
-  const backBtnContainer = document.getElementById("back-btn-container");
+function renderStartScreen(activeStep: HTMLDivElement) : void {
+    if(activeStep) {
+        pageHeading.innerHTML = TextStr.UpdateStartHeading;
+        pagePrompt.innerHTML = TextStr.updateStartPrompt;
+        activeStep.classList.add(displayNoneClass);
+        activeStep.classList.remove("keycard_shell__active-step");
+        backBtnContainer.classList.add(displayNoneClass);
+        startUpdateScreen.classList.remove(displayNoneClass);
+    }
+}
 
+function renderNextScreeen(currentScreen: HTMLDivElement, nextScreen: HTMLDivElement, backBtn?: boolean) : void {
+    currentScreen.classList.add(displayNoneClass);
+
+    if(currentScreen.classList.contains("keycard_shell__active-step")) {
+        currentScreen.classList.remove("keycard_shell__active-step");
+    }
+    
+    nextScreen.classList.remove(displayNoneClass);
+    nextScreen.classList.add("keycard_shell__active-step");
+    
+    if(backBtn) {
+        backBtnContainer.classList.remove(displayNoneClass);
+    }   
+}
+
+async function handleERC20DB() : Promise<void> {
   const context = await fetch("./context").then((r: any) => r.json());
   const resp = await fetch(mediaPrefix.value + context["db_path"]);
   const dbArr = await resp.arrayBuffer();
-
-  const startDBQRUpdateBtn = document.getElementById("erc20db-qr-update-btn") as HTMLButtonElement;
-  const startDBUpdateScreen = document.getElementById("start-db-update-screen") as HTMLDivElement;
-  const startDBQRUpdateScreen = document.getElementById("start-db-qr-update-screen") as HTMLDivElement;
-
-  const displayNoneClass = "keycard_shell__display-none";
-
-  const pageHeading = document.getElementById("db-page-heading") as HTMLHeadElement;
-  const pagePrompt = document.getElementById("db-page-prompt") as HTMLSpanElement;
-
-  const maxFrLength = 400;
 
   UIUtils.addSelectOption(versionSelect, context["available_db_versions"]);
 
@@ -57,29 +95,16 @@ async function handleERC20DB() : Promise<void> {
 
   let encoder: {enc: UREncoder | undefined} = {enc: undefined};
 
-  //dbLoad.max = dbArr.byteLength;
+  dbLoad.max = dbArr.byteLength;
 
-  startDBQRUpdateBtn.addEventListener("click", (e) => {
+  latestDBVersion.innerHTML = context["version"];
+  erc20dbVersionProgress.innerHTML = `${TextStr.progressVersionPrompt} ${context["version"]}`
+
+  startQRUpdateBtn.addEventListener("click", () => {
     pageHeading.innerHTML = TextStr.QRUpdateHeading;
     pagePrompt.innerHTML = TextStr.QrUpdatePrompt;
-    startDBUpdateScreen.classList.add(displayNoneClass);
-    startDBQRUpdateScreen.classList.remove(displayNoneClass);
-    startDBQRUpdateScreen.classList.add("keycard_shell__active-step");
-    backBtnContainer.classList.remove(displayNoneClass);
-    e.preventDefault();
+    renderNextScreeen(startUpdateScreen, startQRUpdateScreen, true);
   });
-
-  backBtn.addEventListener("click", (e) => {
-    const activeStep = document.getElementsByClassName("keycard_shell__active-step")[0];
-
-    if(activeStep) {
-        activeStep.classList.add(displayNoneClass);
-        activeStep.classList.remove("keycard_shell__active-step");
-        backBtnContainer.classList.add(displayNoneClass);
-        startDBUpdateScreen.classList.remove(displayNoneClass);
-    }
-    e.preventDefault();
-  })
 
   versionSelect.addEventListener("change", async() => {
     if(versionSelect.value != "") {
@@ -92,34 +117,81 @@ async function handleERC20DB() : Promise<void> {
 
   setTimeout(() => {QRUtils.generateQRPart(encoder, dbQR, true, 450)}, 500);
 
-  /* dbUSBUpdateBtn.addEventListener("click", async () => {
+  startUsbUpdateBtn.addEventListener("click", async () => {
+    if(appEth) {
+        pagePrompt.innerHTML = TextStr.shellConnectedPrompt; 
+        renderNextScreeen(startUpdateScreen, usbUpdateVersionScreen, true);
+    } else {
+        pageHeading.innerHTML = TextStr.UsbUpdateHeading;
+        pagePrompt.innerHTML = "";
+        renderNextScreeen(startUpdateScreen, startUsbUpdateScreen, true);
+        
+        try {
+            transport = await TransportWebHID.create();
+            appEth = new KProJS.Eth(transport);
+
+            transport.on("disconnect", async () => {
+                const activeStep = document.getElementsByClassName("keycard_shell__active-step")[0] as HTMLDivElement;
+
+                await transport.close();
+                transport = null;
+                appEth = null;
+                
+                updateErrorMessage.innerHTML = "Error connecting to device";
+                renderNextScreeen(activeStep, usbUpdateFailedScreen);
+            });
+
+            renderNextScreeen(startUsbUpdateScreen, usbUpdateVersionScreen, false);
+            pagePrompt.innerHTML = TextStr.shellConnectedPrompt;
+        } catch(err) {
+            renderStartScreen(startUsbUpdateScreen);
+        }
+    }
+  });
+
+  dbUSBUpdateBtn.addEventListener("click", async () => {
+    updatedDBVersion.innerHTML = `Version ${context["version"]}`;
     try {
-      transport = await TransportWebHID.create();
-      appEth = new KProJS.Eth(transport);
-      let { erc20Version } = await appEth.getAppConfiguration();
+        let { erc20Version } = await appEth.getAppConfiguration();
 
       if (erc20Version == context["version"]) {
-        UIUtils.handleMessageLog(logMessage, "You already have the latest ERC20 database version");
+        updateSuccessMessage.innerHTML = "Database already up to date";
+        renderNextScreeen(usbUpdateVersionScreen, usbUpdateSuccessScreen, false);
+        pagePrompt.innerHTML = TextStr.shellDisconnectPrompt;
+        backBtnContainer.classList.add(displayNoneClass);
       } else {
-        progressBar.classList.remove("keycard_shell__display-none");
+        renderNextScreeen(usbUpdateVersionScreen, usbDBUpdatingScreen, false);
+        backBtnContainer.classList.add(displayNoneClass);
         UIUtils.handleFWLoadProgress(transport, dbLoad);
 
         await appEth.loadERC20DB(dbArr);
         await transport.close();
 
-        progressBar.classList.add("keycard_shell__display-none");
-        UIUtils.handleMessageLog(logMessage, "ERC20 database updated successfully");
+        updateSuccessMessage.innerHTML = "Database updated";
+        renderNextScreeen(usbDBUpdatingScreen, usbUpdateSuccessScreen);
+        pagePrompt.innerHTML = TextStr.shellDisconnectPrompt;
       }
     } catch (e) {
-      if (e instanceof KProJS.KProError.TransportOpenUserCancelled) {
-        UIUtils.handleMessageLog(logMessage, "Error connecting to device. Check if Keycard Pro is connected");
-      } else {
-       let m = (e.statusCode == StatusCodes.SECURITY_STATUS_NOT_SATISFIED) ? "ERC20 database update canceled by user" :  "Error: Invalid data. Failed to update the ERC20 database";
-       UIUtils.handleMessageLog(logMessage, m)
-      }
-      progressBar.classList.add("keycard_shell__display-none");
+        pagePrompt.innerHTML = "";
+        const activeStep = document.getElementsByClassName("keycard_shell__active-step")[0] as HTMLDivElement;
+        if (e instanceof KProJS.KProError.TransportOpenUserCancelled) {
+            updateErrorMessage.innerHTML = "Error connecting to device";
+            renderNextScreeen(activeStep, usbUpdateFailedScreen);
+        } else {
+            updateErrorMessage.innerHTML = (e.statusCode == StatusCodes.SECURITY_STATUS_NOT_SATISFIED) ? "Database update canceled by user" :  "Database transfer failed";
+            renderNextScreeen(activeStep, usbUpdateFailedScreen);
+        }
+      
+      backBtnContainer.classList.add(displayNoneClass);
+      await transport.close();
     }
-  }); */
+  });
+
+  backBtn.addEventListener("click", (e) => {
+    const activeStep = document.getElementsByClassName("keycard_shell__active-step")[0] as HTMLDivElement;
+    renderStartScreen(activeStep);
+    e.preventDefault();
+  });
 }
 
 handleERC20DB();

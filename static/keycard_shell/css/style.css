@@ -590,6 +590,9 @@ body {
     display: flex;
     flex-direction: row;
     gap: 24px;
+    transform: translate(0, 0);
+    transition: transform 1s;
+
 }
 
 .keycard_shell__db-start-update-container {
@@ -754,6 +757,177 @@ body {
 
 .keycard_shell__db-usb-info {
     display: none;
+}
+
+.keycard_shel__db-update-usb-container {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+    margin: 0 auto;
+    align-items: center;
+    justify-content: center;
+}
+
+.keycard_shell__db-update-usb-prompt-container {
+    width: 28%;
+    flex-grow: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.keycard_shell__db-update-usb-heading {
+    font-family: var(--text-font-lora);
+    font-size: var(--text-32);
+    font-weight: var(--header-font-weight);
+    letter-spacing: var(--text-letter-spacing);
+    line-height: var(--header-line-height);
+    color: var(--white-95);
+}
+
+.keycard_shell__db-update-usb-prompt {
+    font-family: var(--text-font-inter);
+    font-weight: var(--text-font-weight);
+    font-size: var(--text-16);
+    letter-spacing: var(--text-letter-spacing);
+    line-height: var(--text-line-height);
+    color: var(--white-60);
+}
+
+.keycard_shell__db-update-version-container {
+    padding: 5px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.keycard_shell__db-update-version {
+    padding: 4px 14px;
+    height: 48px;
+    box-sizing: border-box;
+    background-color: var(--white-4);
+    border: solid 1px var(--white-12);
+    border-radius: var(--border-radius-16);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: var(--white-95);
+    font-family: var(--text-font-inter);
+    font-weight: var(--text-font-weight);
+    letter-spacing: var(--text-letter-spacing);
+    font-size: var(--text-16);
+    line-height: var(--text-line-height);
+}
+
+.keycard_shell__load-progress-bar-container {
+    width: 100%;
+}
+
+.keycard_shell__load-progress-bar {
+    width: 100%;
+    height: 12px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+   appearance: none;
+   background-color: var(--white-4);
+   border: solid 1px var(--white-12);
+   border-radius: var(--border-radius-16);
+}
+
+.keycard_shell__load-progress-bar[value]::-webkit-progress-bar {
+    background-color: var(--white-4);
+    border-radius: var(--border-radius-16);
+}
+
+.keycard_shell__load-progress-bar[value]::-moz-progress-bar {
+    background-color: var(--orange);
+    border-radius: var(--border-radius-16); 
+}
+
+.keycard_shell__load-progress-bar[value]::-webkit-progress-value {
+    background-color: var(--orange);
+    border-radius: var(--border-radius-16);
+}
+
+.keycard_shell__db-update-progress-prompt {
+    font-family: var(--text-font-inter);
+    font-weight: var(--text-font-weight);
+    font-size: var(--text-16);
+    color: var(--orange);
+    line-height: var(--text-line-height);
+    letter-spacing: var(--text-letter-spacing);
+}
+
+.keycard_shell__db-update-progress-prompt-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.keycard_shell__update-finished-screen-container {
+    width: 100%;
+    height: 420px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+    justify-content: center;
+}
+
+.keycard_shell__update-finished-img-container {
+    width: 380px;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.keycard_shell__update-finished-img {
+    width: 120px;
+    height: 120px;
+}
+
+.keycard_shell__update-finished-prompt-container {
+    width: 380px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    justify-content: center;
+    align-items: center;
+}
+
+.keycard_shell__update-finished-prompt {
+    color: var(--white-80);
+    font-family: var(--text-font-inter);
+    font-size: var(--text-16);
+    font-weight: var(--text-font-weight-500);
+    line-height: var(--text-line-height);
+    letter-spacing: var(--text-letter-spacing);
+}
+
+.keycard_shell__update-success-version-prompt {
+    color: var(--white-60);
+    font-weight: var(--text-font-weight);
+}
+
+.keycard_shell__update-finished-back-btn {
+    background-color: var(--orange);
+    border-radius: var(--border-radius-12);
+    border: solid 1px var(--white-12);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    box-sizing: border-box;
+    height: 40px;
+    line-height: var(--text-line-height);
+    font-size: var(--text-font-inter);
+    font-size: var(--text-16);
+    font-weight: var(--text-font-weight-500);
+    letter-spacing: var(--text-letter-spacing);
+    color: var(--white-95);
+    margin-top: 14px;
 }
 
 /* Verify page */
@@ -1401,40 +1575,45 @@ body {
 }
 
 @keyframes plugAnimation {
-    0% { 
+    0%, 10% { 
         background-image: url('../img/cable.png'); 
     }
-    10% {
-       background-image: url('../img/cable.png');  
+    10%, 25%, 50% { 
+        background-image: url('../img/cable_plugging.png'); 
     }
-    25% { 
-        background-image: url('../img/cable-plugging.png'); 
+    55%, 60%, 75%, 90% {
+       background-image: url('../img/cable_plugged.png');  
     }
-    50% { 
-        background-image: url('../img/cable-plugging.png');
-    }
-    60% {
-       background-image: url('../img/cable-plugged.png');  
-    }
-    75% {     
-        background-image: url('../img/cable-plugged.png'); 
-    }
-    90% {
-        background-image: url('../img/cable-plugged.png'); 
-    }
-    100% { 
+    90%, 100% { 
         background-image: url('../img/cable.png');
     }
 }
 
-.animation {
+/* Animation */
+
+.keycard_shell__device-plug-animation-container {
+    flex-grow: 0; 
+    padding: 4px;
+    box-sizing: border-box;
+}
+
+.keycard_shell__device-plug-animation {
     width: 670px;
     height: 206px;
+    border-radius: var(--border-radius-16);
     background-image: url(../img/cable.png);
     background-size: cover;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
     background-repeat: no-repeat;
-    animation: plugAnimation 2s infinite;
-    animation-delay: 5s;
+    background-position: center;
+    animation: plugAnimation 1s infinite;
+    -webkit-animation: plugAnimation 3s infinite;
+    -moz-animation: plugAnimation 3s infinite;
+    -o-animation: plugAnimation 3s infinite;
+    -ms-animation: plugAnimation 3s infinite;
+    animation-delay: 0s;
     animation-timing-function: ease-in-out;
     -webkit-animation-timing-function: ease-in-out;
 }

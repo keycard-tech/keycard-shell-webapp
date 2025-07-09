@@ -1,12 +1,7 @@
-import json
 import struct
-import hashlib
 
-from common.consts import CHAIN_MAGIC, ERC20_MAGIC, VERSION_MAGIC
-from common.errors import InvalidChainDBFile, InvalidAddressLength, InvalidTokenDBFile, ProcessTokenError, InvalidTokenList
-from common.utils import sign
-
-
+from common.consts import CHAIN_MAGIC, ERC20_MAGIC
+from common.errors import InvalidChainDBFile, InvalidAddressLength, InvalidTokenDBFile, ProcessTokenError
 
 def serialize_addresses(addresses):
   res = b''
@@ -38,21 +33,6 @@ def serialize_token(token):
       bytes(token["ticker"], "ascii") + b'\0'
   except Exception as err:
     raise InvalidTokenDBFile(err)  
-
-def serialize_db(f, m, chains, tokens, db_version, db_h):
-  db_buffer = struct.pack("<HHI", VERSION_MAGIC, 4, db_version)
-
-  for chain in chains.values():
-    serialized_chain = serialize_chain(chain)
-    db_buffer = db_buffer + serialized_chain
-
-  for token in tokens.values():
-    serialized_token = serialize_token(token)
-    db_buffer = db_buffer + serialized_token
-
-  f.write(db_buffer)
-  m.update(db_buffer)
-  db_h.update(db_buffer[8:]) 
 
 def lookup_chain(chains_json, chain_id):
   try:
@@ -92,26 +72,3 @@ def process_token(tokens, chains, token_json, chains_json):
     token["addresses"][chain_id] = token_json["address"]
   except Exception as err:
     raise ProcessTokenError(err)
-
-def generate_token_bin_file(token_list, chain_list, output, db_version):
-  token_list = json.load(open(token_list))
-  chain_list = json.load(open(chain_list))
-  m = hashlib.sha256()
-  db_h = hashlib.sha256()
-
-  tokens = {}
-  chains = {}
-
-  try:
-    for token in token_list["tokens"]:
-      process_token(tokens, chains, token, chain_list)
-  except Exception as err:
-    raise InvalidTokenList        
-
-  with open(output, 'wb') as f:
-    serialize_db(f, m, chains, tokens, db_version, db_h)
-    m_hash = m.digest()
-    signature = sign(m_hash)
-    db_hash = db_h.digest()
-    f.write(signature)
-  return db_hash.hex()

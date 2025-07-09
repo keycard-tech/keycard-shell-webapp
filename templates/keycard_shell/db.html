@@ -2,7 +2,6 @@
 {% load static %}
 {% block content %}
 <input type="hidden" id="db_updater__media-prefix" name="db_updater__media-prefix" value="{% get_media_prefix %}">
-<!--<div class="animation"></div>-->
 <div class="keycard_shell__page-heading-container">
     <h1 class="keycard_shell__page-heading" id="db-page-heading">Update ERC-20 token database</h1>
 </div> 
@@ -69,6 +68,61 @@
             </div> 
         </div>
     </div>
+    <div class="keycard_shell__db-update-qr-action-container keycard_shel__db-update-step keycard_shell__display-none" id="start-db-usb-update-screen">
+        <div class="keycard_shel__db-update-usb-container">
+            <div class="keycard_shell__device-plug-animation-container">
+                <div class="keycard_shell__device-plug-animation"></div>
+            </div>
+            <div class="keycard_shell__db-update-usb-prompt-container">
+                <h2 class="keycard_shell__db-update-usb-heading">Unlock and connect your device</h2>
+                <span class="keycard_shell__db-update-usb-prompt">Connect your Keycard Shell via USB-c cable directly, do not use USB-hubs and adapters, approve connection request in browser.</span>
+            </div>
+        </div>
+    </div>
+    <div class="keycard_shell__db-update-qr-action-container keycard_shel__db-update-step keycard_shell__display-none" id="db-usb-update-version-screen">
+        <div class="keycard_shel__db-update-step-content-container keycard_shell__step-action-el">
+            <div class="keycard_shell__db-update-version-container">
+                <p class="keycard_shell__db-update-step-prompt">ERC20 DB version</p>
+                <span class="keycard_shell__db-update-version" id="latest-db-version"></span>
+            </div>
+            <div class="keycard_shell__btn-container keycard_shell__db-btn">
+                <input id="btn-db-usb-update" class="keycard_shell__btn keycard_shell__db-btn-inline" type="button" value="Transfer to Device">
+            </div>
+        </div>
+    </div>
+    <div class="keycard_shell__db-update-qr-action-container keycard_shel__db-update-step keycard_shell__display-none" id="db-usb-update-in-progress-screen">
+        <div class="keycard_shel__db-update-step-content-container keycard_shell__step-action-el">
+            <div class="keycard_shell__db-update-progress-prompt-container">
+                <span class="keycard_shell__db-update-progress-prompt">Please do not disconnect device.</span>
+                <span class="keycard_shell__db-update-step-prompt" id="update-progress-db-version"></span>
+            </div>
+            <div id="db-progress" class="keycard_shell__load-progress-bar-container">
+                <progress id="db-progress-bar" value="0" class="keycard_shell__load-progress-bar"></progress>
+            </div>
+        </div>
+    </div>
+    <div class="keycard_shell__db-update-qr-action-container keycard_shel__db-update-step keycard_shell__display-none" id="db-usb-update-success-screen">
+        <div class="keycard_shell__update-finished-screen-container">
+            <div class="keycard_shell__update-finished-img-container">
+                <img src="{% static 'keycard_shell/img/success.svg' %}" alt="DB Update Success" class="keycard_shell__update-finished-img">
+            </div>
+            <div class="keycard_shell__update-finished-prompt-container">
+                <span class="keycard_shell__update-finished-prompt" id="db-update-finished-success-message">Database updated</span>
+                <span class="keycard_shell__update-finished-prompt keycard_shell__update-success-version-prompt" id="db-updated-version">Version 20250325</span>
+            </div>
+        </div>
+    </div>
+    <div class="keycard_shell__db-update-qr-action-container keycard_shel__db-update-step keycard_shell__display-none" id="db-usb-update-failed-screen">
+        <div class="keycard_shell__update-finished-screen-container">
+            <div class="keycard_shell__update-finished-img-container">
+                <img src="{% static 'keycard_shell/img/fail.svg' %}" alt="DB Update Fail" class="keycard_shell__update-finished-img">
+            </div>
+            <div class="keycard_shell__update-finished-prompt-container">
+                <span class="keycard_shell__update-finished-prompt" id="db-update-finished-err-message"></span>
+                <a href="{% url 'db:db-index' %}" class="keycard_shell__update-finished-back-btn">Try again</a>
+            </div>
+        </div>
+    </div>
     <div class="keycard_shell__back-btn-container keycard_shell__display-none" id="back-btn-container">
         <a href="#" class="keycard_shell__back-btn" id="back-btn">
             <img src="{% static 'keycard_shell/img/right.svg' %}" alt="Right" class="keycard_shell__back-btn-img">
@@ -77,23 +131,8 @@
     </div>
 </div>
 
-<!--
-    <div class="db_updater__label-container">
-        <h1 class="db_updater__label">...or connect your Keycard Pro to update ERC20 &amp; Chain database</h1>
-      </div>
-      <div class="db_updater__btn-container">
-          <button class="kpro_web__btn group" id="btn-db-usb-update">
-              <span class="material-icons-sharp kpro_web__fw-btn-icon" id="fw-icon">usb</span>
-              <span class="kpro_web__fw-btn-label">Update ERC20 Database</span>
-          </button>
-          <div id="db-progress" class="kpro_web__fw-load-progress-bar-container keycard_shell__display-none">
-              <progress id="db-progress-bar" value="0"></progress>
-          </div>
-          <div class="kpro_web__msg-container">
-              <span id="kpro-db-web-msg" class="keycard_shell__display-none kpro_web__msg"></span>
-          </div>
-      </div>
-    -->
+
+    
 
 <script src="{% static '/keycard_shell/js/token_db.js' %}"></script>
 {% endblock %}

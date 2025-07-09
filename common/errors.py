@@ -14,6 +14,9 @@ class InvalidAddressLength(Exception):
       pass
 class InvalidTokenList(Exception):
     pass 
+  
+class InvalidAbiList(Exception):
+  pass  
 class ZipError(Exception):
     def __init__(self, path):
         self.path = path

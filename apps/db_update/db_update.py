@@ -1,11 +1,10 @@
 import itertools
 import json
 from urllib.error import HTTPError
+from apps.db_update.shell_db import generate_token_bin_file
 from common.errors import InvalidJSONFileError
 from common.utils import makedirs, deletedirs, zip_db_files
 from django.conf import settings
-from .token_db import generate_token_bin_file
-from .db_delta import generate_db_deltas
 from urllib.request import urlopen, Request
 from pathlib import Path
 
@@ -23,30 +22,29 @@ def upload_db_file(r_path, w_path):
 class DBUpdate:
   element_id = itertools.count()
 
-  def __init__(self, erc20_url, chain_url, db_version, prev_dbs):
+  def __init__(self, erc20_url, chain_url, abi_url, db_version):
     self.id = next(self.element_id)
     self.erc20_url = str(erc20_url)
     self.chain_url = str(chain_url)
+    self.abi_url = str(abi_url)
     self.db_version = str(db_version)
-    self.dbs = prev_dbs
+
 
   def upload_db(self):
     try: 
       p = settings.MEDIA_ROOT + '/' + self.db_version
       makedirs(p)
 
-      delta_out_path = p + '/deltas'
-      makedirs(delta_out_path)
-
       erc20_out_path = p + '/erc20.json'
       chain_out_path = p + '/chain.json'
+      abi_out_path = p + '/abi.json'
       bin_output = p + '/db.bin'
       zip_path = p + '/' + self.db_version + '.zip'
 
       upload_db_file(self.erc20_url, erc20_out_path)
       upload_db_file(self.chain_url, chain_out_path)
-      file_hash = generate_token_bin_file(erc20_out_path, chain_out_path, bin_output, int(self.db_version))
-      generate_db_deltas(self.db_version, self.dbs, delta_out_path)
+      upload_db_file(self.abi_url, abi_out_path)
+      file_hash = generate_token_bin_file(erc20_out_path, chain_out_path, abi_out_path, bin_output, int(self.db_version))
       zip_db_files(Path(p), Path(zip_path))
       return file_hash
     except Exception as err: 
