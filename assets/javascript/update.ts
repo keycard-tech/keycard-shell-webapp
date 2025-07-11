@@ -18,7 +18,6 @@ const updateFailedScreen = document.getElementById("update-failed-screen") as HT
 const startUpdateBtn =  document.getElementById("start-screen-btn") as HTMLButtonElement;
 const transferDataBtn = document.getElementById("transfer-data-btn") as HTMLButtonElement;
 
-const selectUpdatePrompt = document.getElementById("select-update-text") as HTMLSpanElement;
 const progressPrompt = document.getElementById("update-progress-step-prompt") as HTMLSpanElement;
 const progressPercent = document.getElementById("update-progress-percent") as HTMLSpanElement;
 
@@ -43,7 +42,6 @@ const pageTopContainer = document.getElementById("page-top-text") as HTMLDivElem
 const startScreenHeading = document.getElementById("start-screen-heading") as HTMLHeadElement;
 const startScreenPrompt = document.getElementById("start-screen-prompt") as HTMLSpanElement;
 
-const updateSuccessMessage = document.getElementById("update-finished-success-message") as HTMLSpanElement;
 const updateErrorMessage = document.getElementById("update-finished-err-message") as HTMLSpanElement;
 
 const latestVersionColor = "#23ADA0";
@@ -182,19 +180,19 @@ async function handleShellUpdate() : Promise<void> {
         showNextScreen(selectUpdateScreen, updateInProgressScreen);
 
         try {
-            if(fwUpdateCheckbox.checked && !isFWLatest) {
-                updateProgressBar.max = fwData.byteLength;
-                progressPrompt.innerHTML = TextStr.progressFWPrompt + fwContext["version"];
-                UIUtils.handleUpdateLoadProgress(transport, updateProgressBar, progressPercent);
-                await appEth.loadFirmware(fwData);
-                updateProgressBar.value = 0;
-            }
-
             if(dbUpdateCheckbox.checked && !isDBLatest) {
                 updateProgressBar.max = dbData.byteLength;
                 progressPrompt.innerHTML = TextStr.progressDBPrompt + dbContext["version"];
                 UIUtils.handleUpdateLoadProgress(transport, updateProgressBar, progressPercent);
                 await appEth.loadERC20DB(dbData);
+                updateProgressBar.value = 0;
+            }
+
+            if(fwUpdateCheckbox.checked && !isFWLatest) {
+                updateProgressBar.max = fwData.byteLength;
+                progressPrompt.innerHTML = TextStr.progressFWPrompt + fwContext["version"];
+                UIUtils.handleUpdateLoadProgress(transport, updateProgressBar, progressPercent);
+                await appEth.loadFirmware(fwData);
                 updateProgressBar.value = 0;
             }
 
@@ -207,7 +205,7 @@ async function handleShellUpdate() : Promise<void> {
                 updateErrorMessage.innerHTML = "Error connecting to device";
                 showNextScreen(activeStep, updateFailedScreen);
             } else {
-                updateErrorMessage.innerHTML = (err.statusCode == StatusCodes.SECURITY_STATUS_NOT_SATISFIED) ? "Database update canceled by user" :  "Database transfer failed";
+                updateErrorMessage.innerHTML = (err.statusCode == StatusCodes.SECURITY_STATUS_NOT_SATISFIED) ? "Update canceled by user" :  "Update transfer failed";
                 showNextScreen(activeStep, updateFailedScreen);
             }
             await transport.close();
