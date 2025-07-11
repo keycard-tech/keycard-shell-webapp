@@ -16,13 +16,16 @@ export namespace TextStr {
     /* Update ERC20 Consts */
 
     export const UpdateStartHeading = "Update ERC-20 token database";
-    export const QRUpdateHeading = "Update ERC-20 token database via QR";
-    export const UsbUpdateHeading = "Update ERC-20 token database via cable";
-
-    export const updateStartPrompt = "If you’d like to keep your Keycard Shell fully air gaped select update over QR.";
-    export const QrUpdatePrompt = `Go to Settings → Update ERC-20 database → Press <span class="keycard_shell_devuce-ok-btn">●</span> on Keycard Shell`;
     export const shellConnectedPrompt = "Keycard Shell successfully connected";
     export const shellDisconnectPrompt = "You can disconnect Keycard Shell";
 
-    export const progressVersionPrompt = "Transferring ERC-20 token database version ";
+    export const progressDBPrompt = "Transferring database version ";
+    export const progressFWPrompt = "Transferring firmware version ";
+
+    export const startScreenHeadingDesktop = "Connect your Keycard Shell";
+    export const startScreenHeadingMobile = "Connect via cable";
+
+    export const startScreenPromptDesktop = "Unlock device before connecting via USB-C cable";
+    export const startScreenPromptMobile = "Connect your Keycard Shell via USB-C cable";
+
 }

@@ -7,11 +7,8 @@ const fixedMenu = document.getElementById("menu-fixed") as HTMLImageElement;
 const mobileMenu = document.getElementById("mobile-menu-container") as HTMLDivElement;
 
 const bottomContainer = document.getElementById("bottom-content-container") as HTMLDivElement;
-const dbUpdateVersion = document.getElementById("db-update-version") as HTMLSpanElement;
-const fwUpdateVersion = document.getElementById("fw-update-version") as HTMLSpanElement;
 const bottomHeading = document.getElementById("bottom-heading") as HTMLDivElement;
-const updateDB = document.getElementById("db") as HTMLDivElement;
-const updateFW = document.getElementById("firmware") as HTMLDivElement;  
+const updateShell = document.getElementById("update") as HTMLDivElement;  
 const verifyDevice = document.getElementById("verify") as HTMLDivElement;
 const nextSteps = document.getElementsByClassName("keycard_shell__steps");
 
@@ -59,16 +56,10 @@ function hideBottomMenuSection() : void {
 }
 
 async function handleBaseUI() : Promise<void> {
-    const ercDBContext = await fetch("../context").then((r: any) => r.json());
-    const fwContext = await fetch("../firmware/context").then((r) => r.json());
-
     hideBottomMenuSection();
 
     window.onscroll = () => menuScroll();
     window.onresize = () => resetMenu();
-
-    dbUpdateVersion.innerHTML = ercDBContext["version"];
-    fwUpdateVersion.innerHTML = fwContext["version"];
 
     mobileMenuLink.addEventListener("click", () => {
     if(fixedMenu.classList.contains("keycard_shell__menu-fixed-opened")) {
@@ -89,8 +80,7 @@ async function handleBaseUI() : Promise<void> {
    }); 
 
     bottomHeading.classList.remove('keycard_shell__display-none');
-    updateDB.classList.remove('keycard_shell__display-none');
-    updateFW.classList.remove('keycard_shell__display-none');
+    updateShell.classList.remove('keycard_shell__display-none');
     verifyDevice.classList.remove('keycard_shell__display-none');
 }
 

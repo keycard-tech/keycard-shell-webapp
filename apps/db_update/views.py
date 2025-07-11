@@ -8,7 +8,7 @@ from common.utils import iter_query
 DELTA_DBS = 500
 
 def index(request):
-  return render(request, 'keycard_shell/db.html')
+  return render(request, 'keycard_shell/shell_update.html')
 
 def db_context(request):
   db = DB.objects.last()

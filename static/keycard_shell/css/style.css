@@ -44,6 +44,7 @@
     --neutral-solid-20: #E7EAEE;
     --background-blur: 40px;
     --input-height: 48px;
+    --checkbox-border-radius: 8px;
     --border-radius-12: 12px;
     --border-radius-16: 16px;
     --container-border-radius: 28px;
@@ -558,13 +559,13 @@ body {
 }
 
 /* Page Top */
-.keycard_shell__page-top-prompt-container {
+.keycard_shell__page-top-container {
     padding-left: 20px;
     box-sizing: border-box;
     width: 100%;
 }
 
-.keycard_shell__page-top-prompt, .keycard_shell__page-top-prompt-content {
+.keycard_shell__page-top-text-container, .keycard_shell__page-top-text {
     font-family: var(--text-font-inter);
     font-size: var(--text-20);
     font-weight: var(--text-font-weight);
@@ -573,252 +574,251 @@ body {
     color: var(--white-80);
 }
 
-.keycard_shell__page-top-prompt-help-link {
+.keycard_shell__page-top-help-link {
     border-bottom: 1px solid var(--white-80);
 }
 
-/* DB page */
-.keycard_shel__db-update-steps-container {
+/* Update page */
+.keycard_shel__update-steps-container {
     width: 100%;
     display: flex;
     flex-direction: column;
+    flex-wrap: wrap;
 }
 
-.keycard_shel__db-main-container {
-    box-sizing: border-box;
+.keycard_shell__start-update-container {
     width: 100%;
-    display: flex;
-    flex-direction: row;
-    gap: 24px;
-    transform: translate(0, 0);
-    transition: transform 1s;
-
-}
-
-.keycard_shell__db-start-update-container {
-    flex-grow: 0;
-    flex-basis: 50%;
+    height: 600px;
     display: flex;
     flex-direction: column;
     padding: 40px 0 60px 0;
     box-sizing: border-box;
-    width: 50%;
     background-color: var(--white-4);
     border: 1px solid var(--white-12);
     border-radius: var(--container-border-radius);
     -webkit-backdrop-filter: blur(40px);
     backdrop-filter: blur(40px);
     align-items: center;
+    flex-wrap: wrap;
 }
 
-.keycard_shell__db-start-update-img-container {
-    width: 520px;
-}
-
-.keycard_shell__db-start-update-img {
+.keycard_shell__start-screen-container {
     width: 100%;
-}
-
-.keycard_shell__db-start-action-text-container {
-    margin-top: -40px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 24px;
-    padding-bottom: 10px;
-    box-sizing: border-box;
 }
 
-.keycard_shell__db-start-action-text {
-    font-family: var(--text-font-inter);
-    font-size: var(--text-16);
-    line-height: var(--text-line-height);
-    font-weight: var(--text-font-weight);
-    color: var(--white-60);
-    letter-spacing: var(--text-letter-spacing);
-}
-
-.keycard_shell__db-btn-container {
+.keycard_shell__start-update-img-container {
+    width: 684px;
     text-align: center;
 }
 
-.keycard_shell__db-btn {
-    display: inline-block;
+.keycard_shell__start-update-img {
+    width: 78%;
 }
 
-.keycard_shell__db-btn-inline {
+.keycard_shell__start-update-text-container {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    align-items: center;
+    justify-content: center;
+    width: 434px;
+    margin-top: -130px;
+    flex-wrap: wrap;
+}
+
+.keycard_shell__update-heading {
+    text-align: center;
+}
+
+.keycard_shell__update-prompt-container {
+    width: 216px;
+    height: 44px;
+    text-align: center;
+}
+
+.keycard_shell__update-prompt {
+    font-family: var(--text-font-inter);
+    font-weight: var(--text-font-weight);
+    font-size: var(--text-16);
+    letter-spacing: var(--text-letter-spacing);
+    line-height: var(--text-line-height);
+    color: var(--white-60);
+}
+
+.keycard_shell__connect-usb-text-container {
+    width: 494px;
+    height: 180px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin-top: -60px;
+    flex-wrap: wrap;
+}
+
+.keycard_shell__select-update_container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    align-items: flex-start;
+    width: 380px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.keycard_shell__update_btn {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+.keycard_shell__checkbox-fields-contaner {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.keycard_shell__checkbox-field-top-label {
+    font-family: var(--text-font-inter);
+    font-size: var(--text-12);
+    line-height: var(--text-line-height-20);
+    font-weight: var(--header-font-weight);
+    letter-spacing: var(--text-letter-spacing);
+    text-transform: uppercase;
+    color: var(--white-80);
+}
+
+.keycard_shell__checkbox-field-container {
+    width: 100%;
+    background-color: var(--white-4);
+    border: solid 1px var(--white-12);
+    border-radius: var(--border-radius-16);
+    padding: 12px 16px;
+    box-sizing: border-box;
+    height: 48px;
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+    align-items: center;
+}
+
+.keycard_shell__checkbox-field {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 24px;
+    height: 24px;
+    margin: 0;
+    border: solid 1px var(--white-12);
+    box-sizing: border-box;
+    background-color: var(--white-4);
+    border-radius: var(--checkbox-border-radius);
+    display: grid;
+    place-content: center;
+}
+
+.keycard_shell__checkbox-field::before {
+  background-image: url(../img/check.svg);  
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: var(--orange);
+  content: "";
+  width: 23px;
+  height: 23px;
+  border-radius: var(--checkbox-border-radius);
+  transform: scale(0);
+  transition: 120ms transform ease-in-out;
+}
+
+.keycard_shell__checkbox-field:checked::before {
+  transform: scale(1);
+}
+
+.keycard_shell__checkbox-field-label {
+    font-family: var(--text-font-inter);
+    font-size: var(--text-16);
+    font-weight: var(--text-font-weight);
+    line-height: var(--text-line-height);
+    letter-spacing: var(--text-letter-spacing);
+    color: var(--white-95);
+}
+
+.keycard_shell__update-status {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    justify-content: flex-end;
+    color: var(--orange);
+    flex-wrap: wrap;
+}
+
+.keycard_shell__update-finished-screen-container {
+    width: 100%;
+    height: 600px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    align-items: center;
+    justify-content: center;
+    background-image: url(../img/update_finished_bg.png);
+    background-size: cover;
+    background-position: center;
+    flex-wrap: wrap;
+}
+
+.keycard_shell__update-finished-img-container {
+    width: 494px;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.keycard_shell__update-finished-img {
+    width: 90px;
+    height: 90px;
+}
+
+.keycard_shell__update-finished-prompt-container {
+    width: 494px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    flex-wrap: wrap;
+}
+
+.keycard_shell__update-finished-prompt {
+    color: var(--white-80);
+    font-family: var(--text-font-inter);
+    font-size: var(--text-16);
+    font-weight: var(--text-font-weight-500);
+    line-height: var(--text-line-height);
+    letter-spacing: var(--text-letter-spacing);
+}
+
+.keycard_shell__update-btn-inline {
     padding: 0 10px;
     box-sizing: border-box;
 }
 
-.keycard_shel__db-update-step {
-    width: 100%;
-    max-width: 100%;
-    flex-grow: 0;
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    transform: translate(0, 0);
-    transition: transform 1s;
-    border-radius: var(--container-border-radius);
-    border: solid 1px var(--white-12);
-    background-color: var(--white-4);
-    -webkit-backdrop-filter: blur(40px);
-    backdrop-filter: blur(40px);
-    padding: 20px;
-    box-sizing: border-box;
-    align-items: center;
-    justify-content: center;
-}
-
-.keycard_shel__db-update-step-content-container {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.keycard_shell__db-update-step-content-heading {
-    font-family: var(--text-font-inter);
-    font-weight: var(--text-font-weight);
-    font-size: var(--text-16);
-    letter-spacing: var(--text-letter-spacing);
-    line-height: var(--text-line-height);
-    color: var(--white-80);
-}
-
-.keycard_shell__db-update-step-prompt {
-    font-family: var(--text-font-inter);
-    font-weight: var(--header-font-weight);
-    font-size: var(--text-12);
-    line-height: var(--text-line-height-20);
-    letter-spacing: var(--text-letter-spacing);
-    color: var(--white-80);
-}
-
-.keycard_shell__select-field-container {
-    width: 100%;
-    height: 48px;
-    background: var(--white-4);
-    border: solid 1px var(--white-12);
-    border-radius: var(--border-radius-16);
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end; 
-    align-items: center;
-    padding: 4px;
-    position: relative;
-}
-
-.keycard_shell__select-field {
-    appearance: none;
-    background: none;
-    left: 10px;
-    border: none;
-    color: var(--white-95);
-    font-family: var(--text-font-inter);
-    font-weight: var(--text-font-weight);
-    letter-spacing: var(--text-letter-spacing);
-    line-height: var(--text-line-height);
-    font-size: var(--text-16);
-    width: 95%;
-    outline: none;
-    position: absolute;
-    box-sizing: border-box;
-}
-
-.keycard_shell__select-chevron {
-    width: 40px;
-    height: 40px;
-    background-color: var(--white-8);
-    border-radius: var(--border-radius-12);
-    padding: 10px;
-    box-sizing: border-box;
-}
-
-.keycard_shell__db-qr-container {
+.keycard_shell__update_progress_container {
     width: 380px;
-}
-
-.keycard_shell__back-btn-container {
-    width: 100%;
-    height: 46px;
-    padding: 12px 20px;
-    box-sizing: border-box;
-}
-
-.keycard_shell__back-btn {
-    display: flex;
-    flex-direction: row;
-    gap: 8px;
-    align-items: center;
-}
-
-.keycard_shell__db-usb-info {
-    display: none;
-}
-
-.keycard_shel__db-update-usb-container {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    gap: 16px;
-    margin: 0 auto;
-    align-items: center;
-    justify-content: center;
-}
-
-.keycard_shell__db-update-usb-prompt-container {
-    width: 28%;
-    flex-grow: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-}
-
-.keycard_shell__db-update-usb-heading {
-    font-family: var(--text-font-lora);
-    font-size: var(--text-32);
-    font-weight: var(--header-font-weight);
-    letter-spacing: var(--text-letter-spacing);
-    line-height: var(--header-line-height);
-    color: var(--white-95);
-}
-
-.keycard_shell__db-update-usb-prompt {
-    font-family: var(--text-font-inter);
-    font-weight: var(--text-font-weight);
-    font-size: var(--text-16);
-    letter-spacing: var(--text-letter-spacing);
-    line-height: var(--text-line-height);
-    color: var(--white-60);
-}
-
-.keycard_shell__db-update-version-container {
-    padding: 5px;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.keycard_shell__db-update-version {
-    padding: 4px 14px;
-    height: 48px;
-    box-sizing: border-box;
-    background-color: var(--white-4);
-    border: solid 1px var(--white-12);
-    border-radius: var(--border-radius-16);
+    height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    color: var(--white-95);
-    font-family: var(--text-font-inter);
-    font-weight: var(--text-font-weight);
-    letter-spacing: var(--text-letter-spacing);
-    font-size: var(--text-16);
-    line-height: var(--text-line-height);
+    flex-wrap: wrap;
 }
 
 .keycard_shell__load-progress-bar-container {
@@ -851,58 +851,40 @@ body {
     border-radius: var(--border-radius-16);
 }
 
-.keycard_shell__db-update-progress-prompt {
+.keycard_shell__update-progress-prompt {
     font-family: var(--text-font-inter);
     font-weight: var(--text-font-weight);
     font-size: var(--text-16);
     color: var(--orange);
     line-height: var(--text-line-height);
     letter-spacing: var(--text-letter-spacing);
+    padding-bottom: 12px;
 }
 
-.keycard_shell__db-update-progress-prompt-container {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.keycard_shell__update-finished-screen-container {
-    width: 100%;
-    height: 420px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    align-items: center;
-    justify-content: center;
-}
-
-.keycard_shell__update-finished-img-container {
-    width: 380px;
-    text-align: center;
-    margin-bottom: 15px;
-}
-
-.keycard_shell__update-finished-img {
-    width: 120px;
-    height: 120px;
-}
-
-.keycard_shell__update-finished-prompt-container {
-    width: 380px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    justify-content: center;
-    align-items: center;
-}
-
-.keycard_shell__update-finished-prompt {
-    color: var(--white-80);
+.keycard_shell__update-step-prompt {
+    display: inline-block;
+    width: 70%;
     font-family: var(--text-font-inter);
-    font-size: var(--text-16);
-    font-weight: var(--text-font-weight-500);
-    line-height: var(--text-line-height);
+    font-weight: var(--text-font-weight);
+    font-size: var(--text-12);
+    color: var(--white-80);
     letter-spacing: var(--text-letter-spacing);
+    line-height: var(--text-line-height-20);
+}
+
+.keycard_shell__update-step-progress-container {
+    width: 100%;
+}
+
+.keycard_shell__update-step-percent {
+    width: 28%;
+    text-align: right;
+}
+
+.keycard_shell__update-progress-prompt-container {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
 }
 
 .keycard_shell__update-success-version-prompt {
@@ -928,6 +910,44 @@ body {
     letter-spacing: var(--text-letter-spacing);
     color: var(--white-95);
     margin-top: 14px;
+    flex-wrap: wrap;
+}
+
+.keycard_shell__update-success-prompt-container {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+.keycard_shell__update-success-prompt {
+   font-family: var(--text-font-inter);
+   font-weight: var(--text-font-weight);
+   font-size: var(--text-16);
+   color: var(--white-60);
+   line-height: var(--text-line-height);
+   letter-spacing: var(--text-letter-spacing);
+}
+
+.keycard_shell__update-success-prompt-orange {
+    color: var(--orange);
+}
+
+.keycard_shell__update-success-img-container {
+    width: 284px;
+    display: flex;
+    flex-direction: column;
+}
+
+.keycard_shell__update-success-img {
+    width: 100%;
+}
+
+.keycard_shell__success-container {
+    margin-top: -90px;
+}
+
+.keycard_shell__update_desktop_only_container {
+    display: none;
 }
 
 /* Verify page */
@@ -1122,6 +1142,11 @@ body {
     color: var(--white-95);
     font-weight: var(--header-font-weight);
     line-height: var(--text-line-height);
+    opacity: 1;
+}
+
+.keycard_shell__btn:disabled {
+    opacity: .5;
 }
 
 .keycard_shell_devuce-ok-btn {
@@ -1297,12 +1322,6 @@ body {
     }
 }
 
-@media (min-width: 600px) and (max-width: 1100px)  {
-    .keycard_shell__db-start-update-img-container {
-        width: 440px;
-    }
-}
-
 @media (min-width: 200px) and (max-width: 950px) {
   body {
     position: relative;
@@ -1469,7 +1488,7 @@ body {
     flex-direction: column;
   }
 
-  .keycard_shell__db-start-update-container {
+  .keycard_shell__start-update-container {
     width: 100%;
   }
 
@@ -1491,58 +1510,60 @@ body {
         flex-basis: 45%;
     }
 
-    .keycard_shell__db-start-update-container {
-        align-items: flex-start;
-        padding: 24px;
-        box-sizing: border-box;
-    }
-
-    .keycard_shell__db-start-update-img-container {
+    #start-screen-btn {
         display: none;
     }
 
-    .keycard_shell__db-start-action-text-container {
-        align-items: flex-start;
-        width: 70%;
-        gap: 20px;
-        margin: 0;
+    #update-start-image {
+        display: none;
     }
 
-    .keycard_shell__db-btn-container {
+    .keycard_shell__start-update-text-container {
+        margin-top: 0;
+    }
+
+    .keycard_shell__start-update-container  {
+        height: 100%;
+        padding: 24px 27px;
+    }
+
+    .keycard_shell__start-update-text-container {
+        width: 100%;
+        justify-content: flex-start;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .keycard_shell__update-prompt-container {
         text-align: left;
     }
 
-    .keycard_shell__db-usb-info {
+    .keycard_shell__update_desktop_only_container {
+        width: 100%;
+        height: 40px;
         display: flex;
         flex-direction: row;
         gap: 10px;
-        padding: 10px;
-    }
-
-    .keycard_shell__db-usb-info-text {
-        color: var(--white-95);
-    }
-
-    #update-via-qr {
-        height: 200px;
-        background-image: url(../img/db_qr_update.png);
-        background-size: 72%;
+        flex-wrap: wrap;
+        align-items: center;
+        background-image: url("../img/usb_cable.png");
+        background-position-x: 160px;
+        background-position-y: center;
+        background-size: 180px;
         background-repeat: no-repeat;
-        background-position-x: 244%;
-        background-position-y: 30%;
     }
 
-    #update-via-usb {
-        height: 200px;
-        background-image: url(../img/usb_cable.png);
-        background-size: 48%;
-        background-repeat: no-repeat;
-        background-position-x: 125%;
-        background-position-y: 108%;
-    }
-
-    #erc20db-usb-update-btn {
+    .keycard_shell__btn-container {
         display: none;
+    }
+
+    .keycard_shell__update_desktop_only-text {
+        font-family: var(--text-font-inter);
+        font-size: var(--text-16);
+        font-weight: var(--text-font-weight-500);
+        line-height: var(--text-line-height);
+        letter-spacing: var(--bm-letter-spacing);
+        color: var(--white-95);
     }
 }
 
@@ -1576,16 +1597,16 @@ body {
 
 @keyframes plugAnimation {
     0%, 10% { 
-        background-image: url('../img/cable.png'); 
+        background-image: url('../img/cable.svg'); 
     }
     10%, 25%, 50% { 
-        background-image: url('../img/cable_plugging.png'); 
+        background-image: url('../img/cable_plugging.svg'); 
     }
     55%, 60%, 75%, 90% {
-       background-image: url('../img/cable_plugged.png');  
+       background-image: url('../img/cable_plugged.svg');  
     }
     90%, 100% { 
-        background-image: url('../img/cable.png');
+        background-image: url('../img/cable.svg');
     }
 }
 
@@ -1598,22 +1619,22 @@ body {
 }
 
 .keycard_shell__device-plug-animation {
-    width: 670px;
-    height: 206px;
+    width: 620px;
+    height: 344px;
     border-radius: var(--border-radius-16);
-    background-image: url(../img/cable.png);
+    background-image: url(../img/cable.svg);
     background-size: cover;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
-    animation: plugAnimation 1s infinite;
-    -webkit-animation: plugAnimation 3s infinite;
-    -moz-animation: plugAnimation 3s infinite;
-    -o-animation: plugAnimation 3s infinite;
-    -ms-animation: plugAnimation 3s infinite;
-    animation-delay: 0s;
+    animation: plugAnimation 2s infinite;
+    -webkit-animation: plugAnimation 2s infinite;
+    -moz-animation: plugAnimation 2s infinite;
+    -o-animation: plugAnimation 2s infinite;
+    -ms-animation: plugAnimation 2s infinite;
+    animation-delay: 1s;
     animation-timing-function: ease-in-out;
     -webkit-animation-timing-function: ease-in-out;
 }

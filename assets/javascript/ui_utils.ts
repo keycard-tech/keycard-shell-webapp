@@ -1,19 +1,20 @@
 import Transport from "kprojs/lib/transport";
 
 export namespace UIUtils {
-  export function handleFWLoadProgress(transport: Transport, loadBar: HTMLProgressElement) : void {
-    let fwI = 0;
+  export function handleUpdateLoadProgress(transport: Transport, loadBar: HTMLProgressElement, progressPercent: HTMLSpanElement) : void {
+    let dataI = 0;
 
-    if (fwI == 0) {
-      fwI = 1;
+    if (dataI == 0) {
+      dataI = 1;
       let pBarProgress = 0;
       transport.on("chunk-loaded", (progress: any) => {
         if (progress >= loadBar.max) {
           transport.off("chunk-loaded", () => {});
-          fwI = 0;
+          dataI = 0;
         } else {
-          pBarProgress += progress
+          pBarProgress += progress;
           loadBar.value = pBarProgress;
+          progressPercent.innerHTML = `${Math.round((pBarProgress / loadBar.max) * 100)} %`;
         }
       })
     }

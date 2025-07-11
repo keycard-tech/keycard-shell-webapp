@@ -42,50 +42,25 @@
                 </div>
             </div>
         </div>
-        <div class="keycard_shell__bottom-menu-part keycard_shell__steps keycard_shell__display-none" id="firmware">
+        <div class="keycard_shell__bottom-menu-part keycard_shell__steps keycard_shell__display-none" id="update">
             <div class="keycard_shell__bottom-menu-header">
-                <h3 class="keycard_shell__h3">Upgrade firmware</h3>
+                <h3 class="keycard_shell__h3">Upgrade Shell</h3>
             </div>
             <div class="keycard_shell__bottom-menu-prompt">
-                <p class="keycard_shell__bottom-menu-prompt-text">Get the latest features and security improvements by installing the newest firmware. Update to <span id="fw-update-version"></span></p>
+                <p class="keycard_shell__bottom-menu-prompt-text">Get the latest features and security improvements by installing the newest firmware and db. </span></p>
             </div>
             <div class="keycard_shell__update-links">
                 <div class="keycard_shell__update-links-list">
                     <span class="keycard_shell__update-links-el">
-                        <a href="{% url 'firmware:firmware-index' %}" id="update-db-usb-link" class="keycard_shell__update-link">
+                        <a href="{% url 'db:update-index' %}" id="update-db-usb-link" class="keycard_shell__update-link">
                             <img src="{% static 'keycard_shell/img/firmware.svg' %}" alt="FW">
-                            <span>Update firmware</span>
+                            <span>Update Shell</span>
                         </a>
                     </span>
                     <span class="keycard_shell__update-links-el-no-bg">
                         <a href="" id="update-db-qr-link" class="keycard_external-link">
                             <span>Release notes</span>
                             <img src="{% static 'keycard_shell/img/external.svg' %}" class="keycard_shell__help-link-img" alt="External">
-                        </a>
-                    </span>
-                </div>
-            </div>
-        </div>
-        <div class="keycard_shell__bottom-menu-part keycard_shell__steps keycard_shell__display-none" id="db">
-            <div class="keycard_shell__bottom-menu-header">
-                <h3 class="keycard_shell__h3">Update token database</h3>
-            </div>
-            <div class="keycard_shell__bottom-menu-prompt">
-                <p class="keycard_shell__bottom-menu-prompt-text">Keep your token list up to date so Shell can recognize new tokens in transactions. Update to <span id="db-update-version"></span></p>
-            </div>
-            <div class="keycard_shell__update-links">
-                <div class="keycard_shell__update-links-list">
-                    <span class="keycard_shell__update-links-el">
-                        <a href="" id="update-db-usb-link" class="keycard_shell__update-link">
-                            <img src="{% static 'keycard_shell/img/keycard-pro.svg' %}" alt="Shell">
-                            <span>Connect device</span>
-                        </a>
-                    </span>
-                    <span class="keycard_shell__update-links-el-no-bg">or</span>
-                    <span class="keycard_shell__update-links-el">
-                        <a href="" id="update-db-qr-link" class="keycard_shell__update-link">
-                            <img src="{% static 'keycard_shell/img/qr-code.svg' %}" class="keycard_shell__help-link-img" alt="QR">
-                            <span>Scan QR</span>
                         </a>
                     </span>
                 </div>

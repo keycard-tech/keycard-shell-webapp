@@ -23,7 +23,7 @@ from django.conf.urls.static import static
 urlpatterns = [
   path('admin/', admin.site.urls),
   path('', include("apps.db_update.urls", namespace='default')),
-  path('db/', include("apps.db_update.urls")),
+  path('update/', include("apps.db_update.urls")),
   path('verify/', include("apps.device_verify.urls")),
   path('firmware/', include("apps.firmware_update.urls")),
   path('', include('pagedown.urls')),
