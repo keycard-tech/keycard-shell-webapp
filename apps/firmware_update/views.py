@@ -4,6 +4,10 @@ from django.shortcuts import render
 from .models import Firmware
 
 # Create your views here.
+
+def index(request):
+  return render(request, 'keycard_shell/fw_release_notes.html')
+
 def fw_context(request):
   fw = Firmware.objects.last()
 

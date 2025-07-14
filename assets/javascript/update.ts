@@ -53,6 +53,8 @@ const changelogContainer = document.getElementById("changelog") as HTMLSpanEleme
 
 const updateProgressBar = document.getElementById("update-progress-bar") as HTMLProgressElement;
 
+const selectUpdateText = document.getElementById("select-update-text") as HTMLSpanElement;
+
 const mobileScreen = 600;
 
 let isDBLatest : boolean;
@@ -67,16 +69,25 @@ function preloadImage(imgUrl: string) : HTMLImageElement {
 
 function checkLatestVersion(deviceVersion: number, webVersion: number, updateStatus: HTMLSpanElement, checkField: HTMLInputElement, container: HTMLDivElement) : boolean {
     if(webVersion <= deviceVersion) {
-        updateStatus.innerHTML = "Latest";
+        updateStatus.innerHTML = TextStr.latest;
         updateStatus.style.color = latestVersionColor;
         checkField.disabled = true;
         container.style.opacity = ".5";
         return true;
     } else {
-        updateStatus.innerHTML = "Newest version";
+        updateStatus.innerHTML = TextStr.updateAvailable;
         updateStatus.style.color = newestVersionColor;
         return false;
     }
+}
+
+function showStartScreen(activeScreen: HTMLDivElement) : void {
+    activeScreen.classList.add(hideScreenClass);
+
+    if(activeScreen.classList.contains(activeScreenClass)) {
+        activeScreen.classList.remove(activeScreenClass);
+    }
+    startUpdateScreen.classList.remove(hideScreenClass);
 }
 
 function showNextScreen(currentScreen: HTMLDivElement, nextScreen: HTMLDivElement) : void {
@@ -116,10 +127,6 @@ async function handleShellUpdate() : Promise<void> {
     fwUpdateCheckboxLabel.innerHTML = `${fwContext["version"]}`;
     dbUpdateCheckboxLabel.innerHTML = `${dbContext["version"]}`;
 
-    const cableImage = preloadImage("../static/keycard_shell/img/cable.svg");
-    const cablePluggingImage = preloadImage("../static/keycard_shell/img/cable_plugging.svg");
-    const cablePluggedImage = preloadImage("../static/keycard_shell/img/cable_plugged.svg");
-
     transferDataBtn.disabled = !(dbUpdateCheckbox.checked || fwUpdateCheckbox.checked);
 
     window.onresize = () => handleMobileUI();
@@ -145,35 +152,37 @@ async function handleShellUpdate() : Promise<void> {
                     transport = null;
                     appEth = null;
                             
-                    updateErrorMessage.innerHTML = "Error connecting to device";
-                    showNextScreen(activeStep, updateFailedScreen);
+                    if(!activeStep.isEqualNode(updateSuccessScreen)) {
+                        updateErrorMessage.innerHTML = "Error connecting to device";
+                        showNextScreen(activeStep, updateFailedScreen);
+                    }
                 });
                 
                 showNextScreen(connectDeviceScreen, selectUpdateScreen);
                 pageTopContainer.classList.remove("keycard_shell__hide");
                 pagePrompt.innerHTML = TextStr.shellConnectedPrompt;
+
+
             } catch(err) {
-               console.log("here"); 
+               console.log("Connection error");
             }
-        } else {
-            pageTopContainer.classList.remove("keycard_shell__hide");
-            pagePrompt.innerHTML = TextStr.shellConnectedPrompt; 
-            showNextScreen(connectDeviceScreen, selectUpdateScreen); 
         }
 
-        transferDataBtn.disabled = isDBLatest && isFWLatest;
-
+        selectUpdateText.innerHTML = (isDBLatest && isFWLatest) ? TextStr.noUpdateNeeded : TextStr.selectiveUpdate;
+        transferDataBtn.style.display = (isDBLatest && isFWLatest) ? "none" : "inherit";
         e.preventDefault();
     });
 
     dbUpdateCheckbox.addEventListener("change", () => {
-        transferDataBtn.disabled = !(dbUpdateCheckbox.checked || fwUpdateCheckbox.checked );
+        let fwChecked = isFWLatest ? false : fwUpdateCheckbox.checked;
+        transferDataBtn.disabled = !(dbUpdateCheckbox.checked || fwChecked);
         dbUpdateCheckboxContainer.style.opacity = dbUpdateCheckbox.checked ? fieldEnabled : fieldDisabled;
     });
 
     fwUpdateCheckbox.addEventListener("change", () => {
-        transferDataBtn.disabled = !(dbUpdateCheckbox.checked || fwUpdateCheckbox.checked);
-        fwUpdateCheckboxContainer.style.opacity = dbUpdateCheckbox.checked ? fieldEnabled : fieldDisabled;
+        let dbChecked = isDBLatest ? false : dbUpdateCheckbox.checked;
+        transferDataBtn.disabled = !(fwUpdateCheckbox.checked || dbChecked);
+        fwUpdateCheckboxContainer.style.opacity = fwUpdateCheckbox.checked ? fieldEnabled : fieldDisabled;
     });
 
     transferDataBtn.addEventListener("click", async() => {
@@ -205,16 +214,13 @@ async function handleShellUpdate() : Promise<void> {
                 updateErrorMessage.innerHTML = "Error connecting to device";
                 showNextScreen(activeStep, updateFailedScreen);
             } else {
-                updateErrorMessage.innerHTML = (err.statusCode == StatusCodes.SECURITY_STATUS_NOT_SATISFIED) ? "Update canceled by user" :  "Update transfer failed";
+                updateErrorMessage.innerHTML = (err.statusCode == StatusCodes.SECURITY_STATUS_NOT_SATISFIED) ? TextStr.updateCanceled:  TextStr.updateFailed;
                 showNextScreen(activeStep, updateFailedScreen);
             }
             await transport.close();
         }
 
         await transport.close();
-
-
-
     });
 
 }

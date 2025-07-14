@@ -658,7 +658,7 @@ body {
     justify-content: center;
     align-items: center;
     text-align: center;
-    margin-top: -60px;
+    margin-top: -50px;
     flex-wrap: wrap;
 }
 
@@ -948,6 +948,20 @@ body {
 
 .keycard_shell__update_desktop_only_container {
     display: none;
+}
+
+.keycard_shell__release-notes-container:nth-child(odd) {
+    margin-bottom: 15px;
+}
+
+.keycard_shell__release-notes {
+    font-family: var(--text-font-inter);
+    font-size: var(--text-14);
+    font-weight: var(--text-font-weight);
+    line-height: var(--text-line-height-20);
+    letter-spacing: var(--text-letter-spacing);
+    color: var(--white-60);
+    border-bottom: solid 1px var(--white-60);
 }
 
 /* Verify page */
@@ -1535,23 +1549,9 @@ body {
     max-width: 100%;
   }
 
-  .keycard_shel__db-main-container  {
-    flex-direction: column;
-  }
-
   .keycard_shell__start-update-container {
     width: 100%;
   }
-
-  .keycard_shell__db-qr-container {
-    width: 320px;
-  }
-}
-
-@media (min-width: 450px) and (max-width: 950px) {
-    .keycard_shell__db-start-update-img-container {
-        width: 400px;
-    }
 }
 
 @media (min-width: 200px) and (max-width: 450px) {
@@ -1646,21 +1646,6 @@ body {
     display: none;
 }
 
-@keyframes plugAnimation {
-    0%, 10% { 
-        background-image: url('../img/cable.svg'); 
-    }
-    10%, 25%, 50% { 
-        background-image: url('../img/cable_plugging.svg'); 
-    }
-    55%, 60%, 75%, 90% {
-       background-image: url('../img/cable_plugged.svg');  
-    }
-    90%, 100% { 
-        background-image: url('../img/cable.svg');
-    }
-}
-
 /* Animation */
 
 .keycard_shell__device-plug-animation-container {
@@ -1669,23 +1654,14 @@ body {
     box-sizing: border-box;
 }
 
-.keycard_shell__device-plug-animation {
+.keycard_shell__plug-animation-container {
     width: 620px;
     height: 344px;
     border-radius: var(--border-radius-16);
-    background-image: url(../img/cable.svg);
-    background-size: cover;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    animation: plugAnimation 2s infinite;
-    -webkit-animation: plugAnimation 2s infinite;
-    -moz-animation: plugAnimation 2s infinite;
-    -o-animation: plugAnimation 2s infinite;
-    -ms-animation: plugAnimation 2s infinite;
-    animation-delay: 1s;
-    animation-timing-function: ease-in-out;
-    -webkit-animation-timing-function: ease-in-out;
+    text-align: center;
+    vertical-align: center;
+}
+
+.keycard_shell__plug-animation {
+    width: 95%;
 }

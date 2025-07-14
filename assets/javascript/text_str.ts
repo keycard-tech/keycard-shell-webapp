@@ -28,4 +28,13 @@ export namespace TextStr {
     export const startScreenPromptDesktop = "Unlock device before connecting via USB-C cable";
     export const startScreenPromptMobile = "Connect your Keycard Shell via USB-C cable";
 
+    export const latest = "Up to date";
+    export const updateAvailable = "New version";
+
+    export const noUpdateNeeded = "The database and firmware are up to date";
+    export const selectiveUpdate = "Update available — selective update supported";
+
+    export const updateCanceled = "Update canceled by user";
+    export const updateFailed = "Update transfer failed";
+
 }

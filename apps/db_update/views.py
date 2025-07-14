@@ -10,6 +10,9 @@ DELTA_DBS = 500
 def index(request):
   return render(request, 'keycard_shell/shell_update.html')
 
+def release_notes(request):
+  return render(request, 'keycard_shell/db_release_notes.html')
+
 def db_context(request):
   db = DB.objects.last()
   dbs_query = DB.objects.all().order_by('-version')[1:DELTA_DBS]

@@ -33,7 +33,9 @@
     </div>
     <div class="keycard_shell__start-update-container keycard_shell__display-none" id="connect-device-screen">
         <div class="keycard_shell__device-plug-animation-container">
-            <div class="keycard_shell__device-plug-animation"></div>
+            <div class="keycard_shell__plug-animation-container">
+                <img src="{% static 'keycard_shell/img/plug_animation.webp' %}" alt="Cable" class="keycard_shell__plug-animation">
+            </div>
         </div>
         <div class="keycard_shell__connect-usb-text-container">
             <h2 class="keycard_shell__page-heading keycard_shell__connect-heading">Unlock and connect your device</h2>
@@ -52,7 +54,10 @@
                 <div class="keycard_shell__checkbox-field-container" id="firmware-update-container">
                     <input type="checkbox" id="firmware-update" name="firmware-update" class="keycard_shell__checkbox-field" checked>
                     <label for="firmware-update" id="firmware-update-label" class="keycard_shell__checkbox-field-label"></label>
-                    <span id="fw-update-status" class="keycard_shell__update-status keycard_shell__update-prompt">Newest version</span>
+                    <span id="fw-update-status" class="keycard_shell__update-status keycard_shell__update-prompt">New version</span>
+                </div>
+                <div class="keycard_shell__release-notes-container">
+                    <a href="{% url 'firmware:release-notes' %}" target="_blank" class="keycard_shell__release-notes">Release notes</a>
                 </div>
                 <div class="keycard_shell__checkbox-field-top-label-container">
                     <span class="keycard_shell__checkbox-field-top-label">Database version</span>
@@ -60,7 +65,10 @@
                 <div class="keycard_shell__checkbox-field-container" id="db-update-container">
                     <input type="checkbox" id="db-update" name="db-update" class="keycard_shell__checkbox-field" checked>
                     <label for="db-update" id="db-update-label" class="keycard_shell__checkbox-field-label"></label>
-                    <span id="db-update-status" class="keycard_shell__update-status keycard_shell__update-prompt">Newest version</span>
+                    <span id="db-update-status" class="keycard_shell__update-status keycard_shell__update-prompt">New version</span>
+                </div>
+                <div class="keycard_shell__release-notes-container">
+                    <a href="{% url 'db:db-release-notes' %}" target="_blank" class="keycard_shell__release-notes">Release notes</a>
                 </div>
             </div>
             <div class="keycard_shell__btn-container keycard_shell__update_btn">
@@ -89,10 +97,6 @@
             </div>
             <div class="keycard_shell__update-finished-prompt-container keycard_shell__success-container">
                 <span class="keycard_shell__page-heading" id="update-finished-success-message">Update successfully transferred</span>
-                <div class="keycard_shell__update-success-prompt-container">
-                    <span class="keycard_shell__update-success-prompt keycard_shell__update-success-prompt-orange">Not installed yet</span>
-                    <span class="keycard_shell__update-success-prompt">Follow the instructions on Keycard Shell</span>      
-                </div>
             </div>
         </div>
     </div>
