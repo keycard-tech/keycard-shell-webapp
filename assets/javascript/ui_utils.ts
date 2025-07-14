@@ -1,3 +1,4 @@
+import { CameraDevice } from "html5-qrcode";
 import Transport from "kprojs/lib/transport";
 
 export namespace UIUtils {
@@ -25,9 +26,9 @@ export namespace UIUtils {
     msgField.classList.contains("keycard_shell__display-none") && msg != "" ? msgField.classList.remove("keycard_shell__display-none") : msgField.classList.add("keycard_shell__display-none");
   }
 
-  export function addSelectOption(selectField: HTMLSelectElement, options: string[]) : void {
+  export function addCameraSelectOption(selectField: HTMLSelectElement, options: CameraDevice[]) : void {
     for(let i = 0; i < options.sort().length; i++) {
-      let option = new Option(options[i],options[i]);
+      let option = new Option(options[i].label,options[i].id);
       selectField.add(option, undefined);
     }
   }
