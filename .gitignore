@@ -96,3 +96,6 @@ uploads/
 data/
 selftest-cert.crt
 selftest-cert.key
+
+cert.crt
+cert.key
