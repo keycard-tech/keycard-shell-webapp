@@ -55,7 +55,7 @@ const updateProgressBar = document.getElementById("update-progress-bar") as HTML
 
 const selectUpdateText = document.getElementById("select-update-text") as HTMLSpanElement;
 
-const mobileScreen = 600;
+const mobileScreen = 959;
 
 let isDBLatest : boolean;
 let isFWLatest: boolean;

@@ -16,7 +16,7 @@ const menuScrollBgColor = "#FFFFFF0A";
 const btnScrollBgColor = "#FF6400";
 const btnBgColor = "#FFFFFF14";
 const headerHeigth = 136;
-const minResizeScreenWidth = 950;
+const minResizeScreenWidth = 959;
 
 function menuScroll() : void {
   if (document.body.scrollTop > headerHeigth || document.documentElement.scrollTop > headerHeigth) {
@@ -66,12 +66,14 @@ async function handleBaseUI() : Promise<void> {
         fixedMenu.classList.remove("keycard_shell__menu-fixed-opened");
         closeMenuImg.classList.add("keycard_shell__display-none");
         mobileMenuImg.classList.remove("keycard_shell__display-none");
+        mobileMenu.classList.remove("keycard_shell__mobile-menu-opened");
         mobileMenu.classList.add("keycard_shell__mobile-menu-hidden");
         document.body.style.overflow = "inherit";
         buyBtn.style.display = "inherit";
     } else {
         fixedMenu.classList.add("keycard_shell__menu-fixed-opened");
         closeMenuImg.classList.remove("keycard_shell__display-none");
+        mobileMenu.classList.add("keycard_shell__mobile-menu-opened");
         mobileMenuImg.classList.add("keycard_shell__display-none");
         mobileMenu.classList.remove("keycard_shell__mobile-menu-hidden");
         document.body.style.overflow = "hidden";
