@@ -9,51 +9,23 @@ from common.consts import PAGE_SIZE, VERSION_MAGIC, WORD_SIZE
 from common.errors import InvalidAbiList, InvalidTokenList
 from common.utils import sign
 
-def pad_write(f, buf):
-    f.write(buf)
-    
-    size = len(buf)
-    padlen = WORD_SIZE - (size % WORD_SIZE)
-
-    while padlen > 0:
-        f.write((0x80 | padlen).to_bytes(1))
-        padlen = padlen - 1
-        size = size + 1
-
-    while size < PAGE_SIZE:
-        f.write(0xff.to_bytes(1))
-        size = size + 1
-
-def db_write(f, m, buf, entry):
-    if m != None:
-        m.update(entry)
-        f.write(entry)
-        return b''
-    
-    if len(buf) + len(entry) <= PAGE_SIZE:
-        return buf + entry
-    else:
-        pad_write(f, buf)
-        return entry
-
 def serialize_db(f, m, chains, tokens, abis, db_version, db_h):
-  db_buffer = db_write(f, m, b'', struct.pack("<HHI", VERSION_MAGIC, 4, db_version))
-  
+  db_buffer = struct.pack("<HHI", VERSION_MAGIC, 4, db_version)
+
   for chain in chains.values():
     serialized_chain = serialize_chain(chain)
-    db_buffer = db_write(f, m, db_buffer, serialized_chain)
+    db_buffer = db_buffer + serialized_chain
 
   for token in tokens.values():
     serialized_token = serialize_token(token)
-    db_buffer = db_write(f, m, db_buffer, serialized_token)
-
+    db_buffer = db_buffer + serialized_token
+    
   for abi in abis.values():
     serialized_abi = serialize_abi(abi)
-    db_buffer = db_write(f, m, db_buffer, serialized_abi)
-        
-  if len(db_buffer) > 0:
-    pad_write(f, db_buffer)  
+    db_buffer = db_buffer + serialized_abi
 
+  f.write(db_buffer)
+  m.update(db_buffer)
   db_h.update(db_buffer[8:]) 
   
 def generate_token_bin_file(token_list, chain_list, abi_list, output, db_version):
@@ -75,7 +47,7 @@ def generate_token_bin_file(token_list, chain_list, abi_list, output, db_version
       raise InvalidTokenList       
     
   try:
-    for abi in abi_list:
+    for abi in abi_list["abis"]:
       process_abi(abis, abi)
   except Exception as err:
       raise InvalidAbiList        
