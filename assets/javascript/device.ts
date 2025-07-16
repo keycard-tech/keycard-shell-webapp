@@ -35,6 +35,8 @@ const scanFinishedButtonLink = document.getElementById("device_verify__scan-fini
 const scanFinishedButton = document.getElementById("device_verify__scan-finished") as HTMLInputElement;
 const scanVerificationCountWarning = document.getElementById("device-verification-count-warning") as HTMLDivElement;
 
+const bc = new BroadcastChannel('process_channel');
+
 async function verify(data: FormData, csrftoken: string, url: string) : Promise<any|void> {
   try {
     return await fetch(url, {
@@ -71,7 +73,8 @@ function handleDeviceResponse(resp: Buffer, challenge: Uint8Array) : FormData {
   return reqData;
 }
 
-function handleVerificationComplete(r: any) : void {
+function handleVerificationComplete(r: any) : void { 
+  bc.postMessage({state: 'success', process: 'verify'});
   step3Container.classList.add('keycard_shell__display-none');
   step4Container.classList.remove('keycard_shell__display-none');
 

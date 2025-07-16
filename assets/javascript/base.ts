@@ -1,5 +1,5 @@
 const menu = document.getElementById("menu-fixed") as HTMLDivElement;
-const buyBtn = document.getElementById("kpro_web__menu-element-keycard-buy") as HTMLButtonElement;
+const buyBtn = document.getElementById("keycard_shel__menu-element-keycard-buy") as HTMLButtonElement;
 const mobileMenuLink = document.getElementById("mobile-menu-link") as HTMLDivElement;
 const mobileMenuImg = document.getElementById("mobile-menu-img") as HTMLImageElement;
 const closeMenuImg = document.getElementById("close-menu-img") as HTMLImageElement;
@@ -17,6 +17,8 @@ const btnScrollBgColor = "#FF6400";
 const btnBgColor = "#FFFFFF14";
 const headerHeigth = 136;
 const minResizeScreenWidth = 959;
+
+const bc = new BroadcastChannel('process_channel');
 
 function menuScroll() : void {
   if (document.body.scrollTop > headerHeigth || document.documentElement.scrollTop > headerHeigth) {
@@ -58,6 +60,8 @@ function hideBottomMenuSection() : void {
 async function handleBaseUI() : Promise<void> {
     hideBottomMenuSection();
 
+    location.pathname == "/"  ? updateShell.classList.add("keycard_shell__hide") : null;
+
     window.onscroll = () => menuScroll();
     window.onresize = () => resetMenu();
 
@@ -81,9 +85,14 @@ async function handleBaseUI() : Promise<void> {
     }
    }); 
 
-    bottomHeading.classList.remove('keycard_shell__display-none');
-    updateShell.classList.remove('keycard_shell__display-none');
-    verifyDevice.classList.remove('keycard_shell__display-none');
+    bc.onmessage = ((e) => {
+        let data = e.data;
+        if(data.state == "success") {
+            bottomHeading.classList.contains('keycard_shell__display-none') ? bottomHeading.classList.remove('keycard_shell__display-none') : null;
+            data.process == "verify" ? updateShell.classList.remove('keycard_shell__display-none') : null;
+            data.process == "update" ? verifyDevice.classList.remove('keycard_shell__display-none') : null;
+        }
+    });
 }
 
 handleBaseUI();

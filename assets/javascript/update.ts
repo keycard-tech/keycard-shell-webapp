@@ -57,6 +57,8 @@ const selectUpdateText = document.getElementById("select-update-text") as HTMLSp
 
 const mobileScreen = 959;
 
+const bc = new BroadcastChannel('process_channel');
+
 let isDBLatest : boolean;
 let isFWLatest: boolean;
 
@@ -205,6 +207,7 @@ async function handleShellUpdate() : Promise<void> {
                 updateProgressBar.value = 0;
             }
 
+            bc.postMessage({state: 'success', process: 'update'});
             showNextScreen(updateInProgressScreen, updateSuccessScreen);
             pagePrompt.innerHTML = TextStr.shellDisconnectPrompt;
         } catch(err) {
