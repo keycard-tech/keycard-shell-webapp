@@ -53,6 +53,9 @@ COPY --from=builder /usr/src/keycard_shell/requirements.txt .
 RUN pip install --upgrade pip
 RUN pip install --no-cache /wheels/*
 
+# install node & npm
+RUN apk add --update nodejs npm
+
 # copy project
 COPY . $APP_HOME
 
@@ -64,6 +67,11 @@ RUN chmod +x $APP_HOME/entrypoint.prod.sh
 RUN chown -R keycard_shell:keycard_shell $APP_HOME
 RUN mkdir -p /var/lib/keycard_shell/data
 RUN chown -R keycard_shell:keycard_shell /var/lib/keycard_shell/data
+
+# build JS, CSS
+RUN npm install
+RUN npm run build
+RUN npm cache clean --force
 
 # change to the app user
 USER keycard_shell
