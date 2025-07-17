@@ -55,6 +55,7 @@ RUN pip install --no-cache /wheels/*
 
 # install node & npm
 RUN apk add --update nodejs npm
+RUN apk add --no-cache git
 
 # copy project
 COPY . $APP_HOME
