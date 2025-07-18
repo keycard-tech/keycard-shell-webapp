@@ -1,5 +1,6 @@
 {% extends './base.html' %}
 {% load static %}
+{% block title %}Verify{% endblock title %}
 {% block content %}
 <link rel="stylesheet" href="{% static '/keycard_shell/css/style.css' %}">
 <input type="hidden" id="device_verify__csfr" name="csfr" value="{{ csrf_token }}">
