@@ -7,7 +7,7 @@
         <p><strong>OTP Secret:</strong></p>
         <p>{{ otp_secret }}</p>
         <p>Enter it inside a 2FA app (Google Authenticator, Authy) or scan the QR code below.</p>
-        {{ qr_code|safe }}
+        <div style="background-color: white;">{{ qr_code|safe }}</div>
     {% else %}
       {% if form_errors %}
 	{% for error in form_errors %}

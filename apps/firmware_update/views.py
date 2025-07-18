@@ -18,3 +18,20 @@ def fw_context(request):
 
   return HttpResponse(json.dumps(fw_context), content_type='application/json')
 
+def fws_context(request):
+  fws = Firmware.objects.all()
+  
+  data = []
+  
+  for fw in fws:
+    context = {
+      "fw_path": fw.version + '/firmware.bin',
+      "version": fw.version,
+      "creation_date": fw.creation_date.strftime('%Y-%m-%d %H:%M'),
+      "changelog": fw.version + '/changelog.md'
+    }
+    
+    data.append(context)
+    
+    return HttpResponse(json.dumps(data), content_type='application/json')
+
