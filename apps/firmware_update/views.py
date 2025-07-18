@@ -13,7 +13,6 @@ def fw_context(request):
 
   fw_context = {
     "fw_path": fw.version + '/firmware.bin',
-    "changelog_path": fw.version + '/changelog.md',
     "version": fw.version
     }
 

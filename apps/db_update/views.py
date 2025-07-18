@@ -5,8 +5,6 @@ from django.views.decorators.http import require_GET
 from django.http import HttpResponse
 from common.utils import iter_query
 
-DELTA_DBS = 500
-
 def index(request):
   return render(request, 'keycard_shell/shell_update.html')
 
@@ -15,13 +13,10 @@ def release_notes(request):
 
 def db_context(request):
   db = DB.objects.last()
-  dbs_query = DB.objects.all().order_by('-version')[1:DELTA_DBS]
-  available_dbs = iter_query(dbs_query, "version")
 
   context = {
     "db_path": db.version + '/db.bin',
-    "version": db.version,
-    "available_db_versions": available_dbs
+    "version": db.version
   }
 
   return HttpResponse(json.dumps(context), content_type='application/json')

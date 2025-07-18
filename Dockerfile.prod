@@ -16,10 +16,7 @@ RUN apk add gcc libc-dev libffi-dev postgresql-dev postgresql-libs zlib-dev jpeg
 
 # lint
 RUN pip install --upgrade pip
-RUN pip install flake8==7.1.2
-RUN pip install flake8-sarif
 COPY . /usr/src/keycard_shell/
-RUN flake8 --ignore=E501,F401 ./keycard_shell
 
 # install python dependencies
 COPY ./requirements.txt .
