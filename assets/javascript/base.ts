@@ -1,5 +1,6 @@
 const menu = document.getElementById("menu-fixed") as HTMLDivElement;
-const buyBtn = document.getElementById("keycard_shel__menu-element-keycard-buy") as HTMLButtonElement;
+const buyBtn = document.getElementById("menu-keycard-buy-btn") as HTMLButtonElement;
+const mobileBuyBtn = document.getElementById("mobile-menu-keycard-buy-btn") as HTMLButtonElement;
 const mobileMenuLink = document.getElementById("mobile-menu-link") as HTMLDivElement;
 const mobileMenuImg = document.getElementById("mobile-menu-img") as HTMLImageElement;
 const closeMenuImg = document.getElementById("close-menu-img") as HTMLImageElement;
@@ -24,9 +25,11 @@ function menuScroll() : void {
   if (document.body.scrollTop > headerHeigth || document.documentElement.scrollTop > headerHeigth) {
     menu.style.backgroundColor = menuScrollBgColor;
     buyBtn.style.backgroundColor = btnScrollBgColor;
+    mobileBuyBtn.style.backgroundColor = btnScrollBgColor;
   } else {
     menu.style.backgroundColor = "transparent";
     buyBtn.style.backgroundColor = btnBgColor;
+    mobileBuyBtn.style.backgroundColor = btnBgColor;
   }
 }
 

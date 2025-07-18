@@ -13,18 +13,18 @@
                 <img src="{% static 'keycard_shell/img/close.svg' %}" alt="Mobile menu" id="close-menu-img" class="keycard_shell__mobile-menu-img keycard_shell__display-none">
             </a>
         </div>
-        <div class="keycard_shel__menu-element keycard_shell__mobile-menu-element" id="keycard_shel__menu-element-keycard">
-            <a href="https://keycard.tech/keycard" class="keycard_shel__menu-element-link {% if request.path == 'https://keycard.tech/keycard' %} active {% endif %}" id="keycard_shel__menu-element-keycard">Keycard</a>
+        <div class="keycard_shell__menu-element keycard_shell__mobile-menu-element" id="menu-element-keycard">
+            <a href="https://keycard.tech/keycard" class="keycard_shell__menu-element-link" id="menu-keycard">Keycard</a>
         </div>
-        <div class="keycard_shel__menu-element keycard_shell__mobile-menu-element keycard_shell__menu-dropdown" id="keycard_shel__menu-element-keycard-shell">
-            <a href="https://keycard.tech/keycard-shell" class="keycard_shel__menu-element-link {% if request.path == 'https://keycard.tech/keycard-shell' %} active {% endif %}" id="keycard_shel__menu-element-keycard-shell">Keycard Shell</a>
+        <div class="keycard_shell__menu-element keycard_shell__mobile-menu-element keycard_shell__menu-dropdown" id="menu-element-keycard-shell">
+            <a href="https://keycard.tech/keycard-shell" class="keycard_shell__menu-element-link" id="menu-keycard-shell">Keycard Shell</a>
             <ul class="keycard-shell__menu-dropdown-elements">
-                <li class="keycard-shell__menu-dropdown-element"><a href="{% url 'db:update-index' %}" class="keycard_shel__menu-element-link {% if request.path == 'db:update-index' %} active {% endif %}" id="keycard_shel__menu-element-keycard-shell-update">Update</a></li>
-                <li class="keycard-shell__menu-dropdown-element"><a href="{% url 'device:verify-index' %}" class="keycard_shel__menu-element-link {% if request.path == 'device:verify-index' %} active {% endif %}" id="keycard_shel__menu-element-keycard-shell-verify">Verify device</a></li>
+                <li class="keycard-shell__menu-dropdown-element"><a href="{% url 'db:update-index' %}" class="keycard_shell__menu-element-link" id="menu-keycard-shell-update">Update</a></li>
+                <li class="keycard-shell__menu-dropdown-element"><a href="{% url 'device:verify-index' %}" class="keycard_shell__menu-element-link" id="menu-keycard-shell-verify">Verify device</a></li>
             </ul>
         </div>
-        <div class="keycard_shel__menu-element" id="keycard_shel__menu-element-keycard-buy-container">
-            <button class="keycard_shel__menu-element-link keycard_shell__menu-btn" id="keycard_shel__menu-element-keycard-buy">Buy Keycard</button>
+        <div class="keycard_shell__menu-element" id="menu-element-keycard-buy-container">
+            <button class="keycard_shell__menu-element-link keycard_shell__menu-btn" id="menu-keycard-buy-btn">Buy Keycard</button>
         </div>
     </div>
 </header>

@@ -4,7 +4,6 @@ import Eth from "kprojs/lib/eth";
 import Transport, { StatusCodes } from "kprojs/lib/transport";
 import { TextStr } from "./text_str";
 import { UIUtils } from "./ui_utils";
-import { marked } from "marked";
 
 const mediaPrefix = document.getElementById('db_updater__media-prefix') as HTMLInputElement;
 
@@ -48,8 +47,6 @@ const latestVersionColor = "#23ADA0";
 const newestVersionColor = "##FF6400";
 const fieldEnabled = "1";
 const fieldDisabled = ".5";
-
-const changelogContainer = document.getElementById("changelog") as HTMLSpanElement;
 
 const updateProgressBar = document.getElementById("update-progress-bar") as HTMLProgressElement;
 
@@ -122,9 +119,6 @@ async function handleShellUpdate() : Promise<void> {
 
     const dbData = await fetch(mediaPrefix.value + dbContext["db_path"]).then((r) => r.arrayBuffer());
     const fwData = await fetch(mediaPrefix.value + fwContext["fw_path"]).then((r) => r.arrayBuffer());
-    const changelog = await fetch(mediaPrefix.value + fwContext["changelog_path"]).then((r) => r.text());
-
-    changelogContainer.innerHTML = await marked.parse(changelog);
 
     fwUpdateCheckboxLabel.innerHTML = `${fwContext["version"]}`;
     dbUpdateCheckboxLabel.innerHTML = `${dbContext["version"]}`;
