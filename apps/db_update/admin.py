@@ -24,7 +24,7 @@ class UpdateDBForm(forms.ModelForm):
             'chain_url',
             'abi_url',
             'version',
-            'db_hash'
+            'db_hash',
         ]
         widgets = {
             'erc20_url': forms.TextInput(),
@@ -64,7 +64,8 @@ class UpdateDBAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         try:
             db_form_data = form.cleaned_data
-            db = DBUpdate(erc20_url = db_form_data.get('erc20_url'), chain_url = db_form_data.get('chain_url'), abi_url = db_form_data.get('abi_url'), db_version = db_form_data.get('version'))
+            db_creation_date = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            db = DBUpdate(erc20_url = db_form_data.get('erc20_url'), chain_url = db_form_data.get('chain_url'), abi_url = db_form_data.get('abi_url'), db_version = db_form_data.get('version'), creation_date=db_creation_date)
             db_file_hash = db.upload_db()
             obj.db_hash = db_file_hash
 

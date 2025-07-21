@@ -19,15 +19,30 @@ def upload_db_file(r_path, w_path):
     raise InvalidJSONFileError(r_path)
   except HTTPError as err:
     raise err
+  
+def generate_manifest_file(w_path, db_data):
+  try:
+    creation_date = "Creation date: " + db_data.creation_date
+    db_version = "DB Version: " + db_data.db_version
+    erc20_source = "ERC20 token list source: " + db_data.erc20_url
+    chain_source = "Chain list source: " + db_data.chain_url
+    abi_source = "ABI list source: " + db_data.abi_url
+    text_lines = [creation_date, db_version, erc20_source, chain_source, abi_source]
+      
+    with open(w_path, "w") as f: 
+      f.writelines(text_line + '\n' for text_line in text_lines)  
+  except Exception as err: 
+    raise err    
 class DBUpdate:
   element_id = itertools.count()
 
-  def __init__(self, erc20_url, chain_url, abi_url, db_version):
+  def __init__(self, erc20_url, chain_url, abi_url, db_version, creation_date):
     self.id = next(self.element_id)
     self.erc20_url = str(erc20_url)
     self.chain_url = str(chain_url)
     self.abi_url = str(abi_url)
     self.db_version = str(db_version)
+    self.creation_date = creation_date
 
 
   def upload_db(self):
@@ -38,9 +53,11 @@ class DBUpdate:
       erc20_out_path = p + '/erc20.json'
       chain_out_path = p + '/chain.json'
       abi_out_path = p + '/abi.json'
+      manifest_out_path = p + '/manifest.txt'
       bin_output = p + '/db.bin'
       zip_path = p + '/' + self.db_version + '.zip'
 
+      generate_manifest_file(manifest_out_path, self)
       upload_db_file(self.erc20_url, erc20_out_path)
       upload_db_file(self.chain_url, chain_out_path)
       upload_db_file(self.abi_url, abi_out_path)

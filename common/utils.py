@@ -19,7 +19,7 @@ def zip_db_files(db_path, zip_path):
   try:
     with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as zipf:
       for fp in db_path.glob("**/*"):
-        if fp.suffix in {".json", ".bin"}:
+        if fp.suffix in {".json", ".bin", ".txt"}:
           zipf.write(fp, arcname=fp.relative_to(db_path))
   except Exception as err:
     raise ZipError(db_path)        
