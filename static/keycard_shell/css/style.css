@@ -1414,6 +1414,55 @@ body {
     color: var(--white-80);
 }
 
+/* Release notes */
+
+.keycard_shell__relese-notes-container {
+    width: 100%;
+    padding: 0 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 24px;
+    font-family: var(--text-font-inter);
+    font-weight: var(--text-font-weight);
+}
+
+.keycard_shell__fw-release-notes {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 10px;
+    width: 100%;
+}
+
+.keycard_shell__fw-version-content {
+    font-size: var(--text-28);
+    font-family: var(--text-font-lora);
+    line-height: var(--header-line-height);
+    color: var(--white-95);
+}
+
+.keycard_shell__fw-release-date {
+    font-size: var(--text-12);
+    line-height: var(--text-line-height-20);
+    letter-spacing: var(--text-letter-spacing);
+    background-color: var(--orange);
+    text-transform: uppercase;
+    padding: 5px;
+    box-sizing: border-box;
+    border-radius: var(--border-radius-12);
+    display: inline-block;
+    margin-bottom: 20px;
+}
+
+.keycard_shell__relese-notes-container ul {
+    list-style: inside circle;
+    color: var(--white-80);
+    font-size: var(--text-14);
+    font-family: var(--text-font-inter);
+}
+
 @media (max-width: 800px) {
     .keycard-shell__copyright-container {
         flex-direction: column;

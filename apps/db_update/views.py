@@ -9,7 +9,7 @@ def index(request):
   return render(request, 'keycard_shell/shell_update.html')
 
 def release_notes(request):
-  return render(request, 'keycard_shell/db_release_notes.html')
+  return render(request, 'keycard_shell/db_version_history.html')
 
 def db_context(request):
   db = DB.objects.last()

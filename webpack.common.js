@@ -5,6 +5,7 @@ module.exports = {
   entry: {
     device: './assets/javascript/device.ts',
     update: './assets/javascript/update.ts',
+    release_notes: './assets/javascript/release_notes.ts',
     base: './assets/javascript/base.ts',
 
   },

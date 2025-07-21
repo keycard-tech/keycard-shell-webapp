@@ -2,7 +2,12 @@
 {% load static %}
 {% block title %}Firmware Release Notes{% endblock title %}
 {% block content %}
-<div>
-    <span>FW Release notes</span>
+<input type="hidden" id="db_updater__media-prefix" name="db_updater__media-prefix" value="{% get_media_prefix %}">
+<div class="keycard_shell__page-heading-container">
+    <h1 class="keycard_shell__page-heading" id="release-notes-page-heading">Release notes</h1>
+</div> 
+<div class="keycard_shell__relese-notes-container" id="release-notes-container">
+
 </div>
+<script src="{% static '/keycard_shell/js/release_notes.js' %}"></script>
 {% endblock %}

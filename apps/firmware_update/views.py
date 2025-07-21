@@ -24,14 +24,13 @@ def fws_context(request):
   data = []
   
   for fw in fws:
-    context = {
-      "fw_path": fw.version + '/firmware.bin',
-      "version": fw.version,
-      "creation_date": fw.creation_date.strftime('%Y-%m-%d %H:%M'),
-      "changelog": fw.version + '/changelog.md'
-    }
+      context = {
+        "fw_path": fw.version + '/firmware.bin',
+        "version": fw.version,
+        "changelog": fw.version + '/changelog.md'
+      }
     
-    data.append(context)
+      data.append(context)
     
-    return HttpResponse(json.dumps(data), content_type='application/json')
+  return HttpResponse(json.dumps(data), content_type='application/json')
 
