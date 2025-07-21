@@ -19,7 +19,7 @@ def fw_context(request):
   return HttpResponse(json.dumps(fw_context), content_type='application/json')
 
 def fws_context(request):
-  fws = Firmware.objects.all()
+  fws = Firmware.objects.all().order_by('-creation_date')
   
   data = []
   
