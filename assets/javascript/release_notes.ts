@@ -19,14 +19,14 @@ async function renderReleaseNotesUI(fw: any, fwId: number, changelog: string) : 
     const containerId = fwContainerId + fwId.toString();
     const versionContainerId = fwVersionId + fw["version"] as string;
     const changelogId = fwChangelogId + fw["version"] as string;
-    const fwRNContainer = UIUtils.createElement("div", containerId, fwContainerClass, releaseNotesContainer);
-
+    
+    UIUtils.createElement("div", containerId, fwContainerClass, releaseNotesContainer);
     UIUtils.createElement("div", versionContainerId, fwVersionContainerClass, releaseNotesContainer, fwVersionContent);
 
     const fwVersionChangelog = UIUtils.createElement("div", changelogId, fwChangelogContainerClass, releaseNotesContainer);
 
-    if(fwCreationDate) {
-        let formattedDate = `${fwCreationDate.getDate()} ${fwCreationDate.toLocaleString('en-GB', { month: 'short' })}, ${fwCreationDate.getFullYear()}`;
+    if(!isNaN(fwCreationDate as any)) {
+        let formattedDate = `${fwCreationDate.getDate()} ${fwCreationDate.toLocaleString('en-GB', { month: 'long' })} ${fwCreationDate.getFullYear()}`;
         changelog = changelog.substring(changelog.indexOf('\n'));
         fwVersionChangelog.innerHTML = `<span class="keycard_shell__fw-release-date">${formattedDate}</span>`
     }

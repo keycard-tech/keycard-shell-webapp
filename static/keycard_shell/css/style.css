@@ -1417,7 +1417,7 @@ body {
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
-    gap: 24px;
+    gap: 10px;
     font-family: var(--text-font-inter);
     font-weight: var(--text-font-weight);
 }
@@ -1426,7 +1426,7 @@ body {
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 5px;
     width: 100%;
 }
 
@@ -1441,13 +1441,11 @@ body {
     font-size: var(--text-12);
     line-height: var(--text-line-height-20);
     letter-spacing: var(--text-letter-spacing);
-    background-color: var(--orange);
-    text-transform: uppercase;
     padding: 5px;
     box-sizing: border-box;
     border-radius: var(--border-radius-12);
     display: inline-block;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 .keycard_shell__relese-notes-container ul {
