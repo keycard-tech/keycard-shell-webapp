@@ -1417,7 +1417,7 @@ body {
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 24px;
     font-family: var(--text-font-inter);
     font-weight: var(--text-font-weight);
 }

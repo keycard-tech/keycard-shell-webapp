@@ -20,10 +20,10 @@ async function renderReleaseNotesUI(fw: any, fwId: number, changelog: string) : 
     const versionContainerId = fwVersionId + fw["version"] as string;
     const changelogId = fwChangelogId + fw["version"] as string;
     
-    UIUtils.createElement("div", containerId, fwContainerClass, releaseNotesContainer);
-    UIUtils.createElement("div", versionContainerId, fwVersionContainerClass, releaseNotesContainer, fwVersionContent);
+    const fwRNContainer = UIUtils.createElement("div", containerId, fwContainerClass, releaseNotesContainer);
+    UIUtils.createElement("div", versionContainerId, fwVersionContainerClass, fwRNContainer, fwVersionContent);
 
-    const fwVersionChangelog = UIUtils.createElement("div", changelogId, fwChangelogContainerClass, releaseNotesContainer);
+    const fwVersionChangelog = UIUtils.createElement("div", changelogId, fwChangelogContainerClass, fwRNContainer);
 
     if(!isNaN(fwCreationDate as any)) {
         let formattedDate = `${fwCreationDate.getDate()} ${fwCreationDate.toLocaleString('en-GB', { month: 'long' })} ${fwCreationDate.getFullYear()}`;
