@@ -396,12 +396,6 @@ body {
     display: inherit;
 }
 
-.active {
-    border: solid 1px var(--white-12);
-    background-color: transparent;
-    box-shadow: inset 0px 0px 40px 40px var(--white-12);
-}
-
 .keycard_shell__menu-element-link {
     background: none;
     border: none;
@@ -453,7 +447,7 @@ body {
 }
 
 /* Footer */
-.kpro__web_footer-container {
+.keycard_shell__footer-container {
     max-height: 260px;
     width: 100%;
     padding: 8px;
@@ -461,7 +455,7 @@ body {
     margin-bottom: 20px;
 }
 
-.kpro__web_footer {
+.keycard_web_footer {
     background-color: var(--white-8);
     width: 100%;
     height: 100%;
@@ -471,7 +465,7 @@ body {
     
 }
 
-.kpro__web_footer-content-container {
+.keycard_web_footer-content-container {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -1709,6 +1703,7 @@ body {
 
   .keycard_shell__mobile-menu-buy-btn {
     background-color: var(--orange);
+    width: fit-content;
   }
 
   .keycard-shell__mobile_submenu-elements {
@@ -1760,13 +1755,13 @@ body {
     border-right: dashed 1px var(--white-20);
   }
 
-  .kpro__web_footer-container {
+  .keycard_shell__footer-container {
     min-height: 100%;
     max-height: 100%;
     margin-bottom: 0;
   }
 
-  .kpro__web_footer-content-container  {
+  .keycard_web_footer-content-container  {
     flex-direction: column;
     gap: 24px;
     width: 100%;
@@ -1985,7 +1980,7 @@ body {
         padding: 0 24px;
     }
 
-    .kpro__web_footer-container {
+    .keycard_shell__footer-container {
        width: 1504px;
        margin-left: auto;
        margin-right: auto; 
