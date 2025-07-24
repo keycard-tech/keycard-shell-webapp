@@ -23,13 +23,13 @@ def db_context(request):
 
 
 def dbs_context(request):
-  dbs = DB.objects.all()
+  dbs = DB.objects.all().order_by('-creation_date')
   
   data = []
   
   for db in dbs:
     context = {
-      "db_path": db.version + '/db.bin',
+      "zip_path": db.version + '/' + db.version + '.zip',
       "version": db.version,
       "creation_date": db.creation_date.strftime('%Y-%m-%d %H:%M'),
       "token_link": db.erc20_url,
@@ -39,7 +39,7 @@ def dbs_context(request):
     
     data.append(context)
     
-    return HttpResponse(json.dumps(data), content_type='application/json')
+  return HttpResponse(json.dumps(data), content_type='application/json')
   
   
 

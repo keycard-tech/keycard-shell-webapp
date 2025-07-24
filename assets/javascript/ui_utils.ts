@@ -32,4 +32,19 @@ export namespace UIUtils {
       selectField.add(option, undefined);
     }
   }
+
+  export function createElement(type: string, id: string, styleClass: string, parentContainer: HTMLElement, content?: string) : HTMLElement {
+    const childContainer = document.createElement(type);
+    childContainer.classList.add(styleClass);
+    childContainer.id = id;
+    childContainer.innerHTML = content ? content : null;
+
+    parentContainer.append(childContainer);
+
+    return childContainer;
+  }
+
+  export function shortLink(link: string, maxChars: number) : string {
+    return link.length <= maxChars ? link.substring(0, maxChars) : link.substring(0, maxChars) + "...";
+  }
 }
