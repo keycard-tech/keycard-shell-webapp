@@ -27,7 +27,7 @@ class Device(models.Model):
   uid = models.CharField(max_length=32, unique=True, validators=[validate_uid])
   public_key = models.CharField(max_length=66, unique=True, validators=[validate_public_key])
   verification_start_date = models.DateTimeField(null=True, blank=True, default=None)
-  success_counter = models.IntegerField(default=0)
+  success_counter = models.IntegerField(default=0, verbose_name='Counter')
 
   def __str__(self):
     return f"{self.uid}, {self.public_key}, {self.verification_start_date}, {self.success_counter}"

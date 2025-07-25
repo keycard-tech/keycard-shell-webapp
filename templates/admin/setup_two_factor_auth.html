@@ -5,21 +5,21 @@
     {% csrf_token %}
     {% if otp_secret %}
         <p><strong>OTP Secret:</strong></p>
-        <p>{{ otp_secret }}</p>
+        <p class="admin__otp_secret">{{ otp_secret }}</p>
         <p>Enter it inside a 2FA app (Google Authenticator, Authy) or scan the QR code below.</p>
-        <div style="background-color: white;">{{ qr_code|safe }}</div>
+        <div class="admin__qr_container">{{ qr_code|safe }}</div>
     {% else %}
       {% if form_errors %}
 	{% for error in form_errors %}
 	    <p class="errornote">{{ error }}</p>
 	{% endfor %}
       {% else %}
-	    <label>Click the button generate a 2FA application code.</label>
+	    <label class="admin__two_f_auth_label">Click the button to generate a 2FA application code.</label>
         <div class="submit-row">  
             <input type="submit" value="Generate">
         </div>
       {% endif %}
     {% endif %}
-      <a href="{% url 'admin:login' %}"> Back to login  </a>
+      <a href="{% url 'admin:login' %}" class="admin__two_f_auth_back_btn"> Back to login  </a>
   </form>
 {% endblock %}

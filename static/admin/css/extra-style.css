@@ -1,0 +1,282 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&display=swap');
+
+html[data-theme="dark"], html[data-theme="light"], :root { 
+    --primary: #FFFFFF14;
+    --secondary: #010101;
+    --font-family-primary: 'Inter', monospace;
+    --font-family-monospace: 'Inter', monospace;
+     --dark-100: #010101;
+    --dark-60: #01010199;
+    --dark-40: #01010155;
+    --white-4: #FFFFFF0A;
+    --white-8: #FFFFFF14;
+    --white-12: #FFFFFF1F;
+    --white-20: #FFFFFF33;
+    --white-40: #FFFFFF66;
+    --white-60: #FFFFFF99;
+    --white-80: #FFFFFFCC;
+    --white-95: #FFFFFFF2;
+    --checkbox-border-radius: 4px;
+    --container-border-radius: 28px;
+    --darkened-bg: var(--white-8);
+    --hairline-color: var(--white-8);
+    --body-bg: #010101EE;
+    --body-fg: var(--white-80);
+    --orange: #FF6400;
+    --orange-light: #FF6400EE;
+    --body-bg-lighter: var(--white-8);
+    --body-quiet-color: var(--white-95);
+    --text-22: 22px;
+    --text-20: 20px;
+    --text-16: 16px;
+    --text-14: 14px;
+    --text-12: 12px;
+    --selected-bg: var(--dark-40);
+    --object-tools-bg: var(--white-12);
+    --button-hover-bg: var(--white-12);
+}
+
+footer {
+    display: none;
+}
+
+#nav-sidebar {
+    bottom: 0;
+}
+
+#content-start #content {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+table {
+    width: 100%;
+    background-color: var(--white-4);
+}
+
+thead {
+    width: 100%;
+}
+
+thead th.sorted {
+    background-color: var(--darkened-bg);
+}
+
+tr {
+    height: auto;
+    width: 100%;
+    font-size: var(--text-14);
+    background-color: transparent !important;
+    box-sizing: border-box;
+    vertical-align: baseline;
+}
+
+tr:hover {
+    background-color: var(--dark-40) !important;
+}
+
+td, th {
+    padding: 15px 10px !important;
+    border-bottom: solid 1px var(--white-4);
+    box-sizing: border-box;
+}
+
+#changelist .actions .button {
+    border: solid 1px var(--white-20) !important;
+    background-color: transparent !important;
+}
+
+.object-tools a:link, .object-tools a:visited {
+    background-color: var(--orange);
+}
+
+.object-tools a:hover {
+    background-color: var(--orange-light) !important;
+}
+
+.object-tools a.addlink {
+    background-image: none;
+    padding: 4px 7px;
+}
+
+.module {
+    margin-bottom: 0;
+}
+
+.addlink {
+    background-image: url(../img/add.svg);
+    background-size: 15px;
+    background-position: left center;
+    padding-left: 20px;
+}
+
+.changelink {
+    background-image: url(../img/edit.svg);
+    background-size: 15px;
+    background-position: left center;
+    padding-left: 20px;
+}
+
+.viewlink {
+   background-image: url(../img/view.svg);
+   background-size: 15px;
+   background-position: left center;
+   padding-left: 20px; 
+}
+
+th a:link, th a:visited {
+    color: var(--white-80);
+    font-weight: 400;
+}
+
+thead th .text a, table thead th .text span {
+    padding: 0 !important;
+    min-height: 17px;
+}
+
+thead th.sorted .sortoptions {
+    padding: 0 !important;
+}
+
+thead th.sorted .sortoptions .ascending, thead th.sorted .sortoptions .descending {
+    background-image: url(../img/sort.svg) !important;
+    background-position: center !important;
+    background-size: 14px;
+}
+
+.sortoptions {
+    display: inherit;
+}
+
+thead th.sorted .sortoptions .sortremove {
+    visibility: visible !important;
+    background-image: url(../img/remove.svg) !important;
+    background-position: center !important;
+    background-size: 14px;
+}
+
+.sortremove::after {
+    content: "" !important;
+}
+
+.sortpriority {
+    display: none;
+}
+
+a:link, a:visited {
+    color: var(--white-80);
+    font-weight: 400;
+}
+
+a:hover, a:focus {
+    background-color: transparent !important;
+    text-decoration: none !important;
+}
+
+#changelist .actions {
+    background-color: transparent !important;
+}
+
+#changelist .actions select {
+    border: solid 1px var(--white-20) !important;
+    background-color: transparent !important;
+    outline: none;
+}
+
+#changelist .paginator {
+    background-color: transparent !important;
+    border: none !important;
+}
+
+.breadcrumbs {
+    background-color: var(--white-4) !important;
+}
+
+input[type="checkbox"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    border: solid 1px var(--white-12);
+    box-sizing: border-box;
+    background-color: var(--white-4);
+    border-radius: var(--checkbox-border-radius);
+    display: grid;
+    place-content: center;
+}
+
+input[type="checkbox"]::before {
+  background-image: url(../../keycard_shell/img/check.svg);  
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: var(--orange);
+  content: "";
+  width: 16px;
+  height: 16px;
+  border-radius: var(--checkbox-border-radius);
+  transform: scale(0);
+  transition: 120ms transform ease-in-out;
+}
+
+input[type="checkbox"]:checked::before {
+  transform: scale(1);
+}
+
+input {
+    border: solid 1px var(--white-20) !important;
+    font-family: var(--font-family-primary) !important;
+    font-weight: 300 !important;
+    outline: none;
+}
+
+.column-download_zip_file {
+    font-weight: 300;
+}
+
+.login .submit-row {
+    padding: 1em 0 !important;
+}
+
+.admin__otp_label {
+    text-transform: uppercase;
+}
+
+.admin__otp_input {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.admin__otp_input input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 8px 10px;
+}
+
+.admin__two_f_auth_label {
+    text-align: center;
+    display: block;
+    color: var(--white-80);
+}
+
+.admin__two_f_auth_back_btn {
+    color: var(--white-60) !important;
+    font-size: var(--text-12);
+    text-transform: uppercase;
+    text-align: center;
+    width: 100%;
+    display: block;
+}
+
+.admin__qr_container {
+    margin: 15px auto;
+    background-color: white;
+    width: 200px;
+    height: 200px;
+    text-align: center;
+}
+
+.admin__otp_secret {
+    color: var(--orange);
+}

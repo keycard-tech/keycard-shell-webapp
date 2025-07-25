@@ -35,12 +35,12 @@ class UpdateDBForm(forms.ModelForm):
         }
 
 class UpdateDBAdmin(admin.ModelAdmin):
-    list_display = ('erc20_url', 'chain_url', 'abi_url', 'creation_date', 'download_db_files')
+    list_display = ('erc20_url', 'chain_url', 'abi_url', 'creation_date', 'download_zip_file')
     form = UpdateDBForm
 
-    def download_db_files(self, obj):
+    def download_zip_file(self, obj):
         db_f_path = settings.MEDIA_URL + "/" + obj.version + "/" + obj.version + ".zip"
-        res = format_html("<a href='{link}'>Download DB files</a>", link=db_f_path)
+        res = format_html("<a href='{link}'>Download DB .zip</a>", link=db_f_path)
         return res
 
     def get_changeform_initial_data(self, request):
@@ -88,6 +88,18 @@ class UpdateDBAdmin(admin.ModelAdmin):
     def delete_model(self, request, obj):
         DBUpdate.delete_db(obj.version)
         super().delete_model(request, obj)
+   
+    def changelist_view(self, request, extra_context=None):
+        extra_context = {'title': 'Database List'}
+        return super(UpdateDBAdmin, self).changelist_view(request, extra_context=extra_context)   
+      
+    def change_view(self, request, object_id, form_url='', extra_context=None):
+      extra_context = extra_context or {}
+      obj = self.get_object(request=request, object_id=object_id)
+      extra_context['title'] = "Database " + obj.version
+      extra_context['subtitle'] = ""
+
+      return super().change_view(request, object_id, form_url, extra_context=extra_context)   
 
 admin.site.register(DB, UpdateDBAdmin)
 admin.site.unregister(Group)

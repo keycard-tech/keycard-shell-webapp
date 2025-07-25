@@ -2,7 +2,7 @@ from django.db import models
 
 class DB(models.Model):
   class Meta:
-    verbose_name_plural = "DB"
+    verbose_name_plural = "Database"
 
   erc20_url = models.CharField(max_length=2000, null=True, blank=True)
   chain_url = models.CharField(max_length=2000, null=True, blank=True)

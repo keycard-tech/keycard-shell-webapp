@@ -14,7 +14,10 @@
 
     <div class="form-row">
       {{ form.otp.errors }}
-      {{ form.otp.label_tag }} {{ form.otp }}
+      <span class="admin__otp_label">{{ form.otp.label_tag }}</span>
+      <div class="admin__otp_input">
+        {{ form.otp }}
+      </div>
     </div>
 
     <div class="submit-row">

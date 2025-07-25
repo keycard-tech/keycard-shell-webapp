@@ -72,6 +72,18 @@ class DeviceVerifyAdmin(admin.ModelAdmin):
         'show_save_and_add_another': False
       })
       return super().render_change_form(request, context, add, change, form_url, obj)
+    
+    def changelist_view(self, request, extra_context=None):
+        extra_context = {'title': 'Device List'}
+        return super(DeviceVerifyAdmin, self).changelist_view(request, extra_context=extra_context)
+      
+    def change_view(self, request, object_id, form_url='', extra_context=None):
+      extra_context = extra_context or {}
+      obj = self.get_object(request=request, object_id=object_id)
+      extra_context['title'] = "Device " + obj.uid
+      extra_context['subtitle'] = ""
+
+      return super().change_view(request, object_id, form_url, extra_context=extra_context)    
 
 admin.site.register(Device, DeviceVerifyAdmin)
 

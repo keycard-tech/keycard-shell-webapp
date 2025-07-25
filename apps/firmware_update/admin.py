@@ -103,6 +103,18 @@ class FirmwareAdmin(admin.ModelAdmin):
         for obj in queryset:
           delete_fw(obj.version)
       return super().delete_queryset(request, queryset)
+    
+    def changelist_view(self, request, extra_context=None):
+        extra_context = {'title': 'Firmware List'}
+        return super(FirmwareAdmin, self).changelist_view(request, extra_context=extra_context)
+      
+    def change_view(self, request, object_id, form_url='', extra_context=None):
+      extra_context = extra_context or {}
+      obj = self.get_object(request=request, object_id=object_id)
+      extra_context['title'] = "Firmware " + obj.version
+      extra_context['subtitle'] = ""
+
+      return super().change_view(request, object_id, form_url, extra_context=extra_context)     
 
 admin.site.register(Firmware, FirmwareAdmin)
 

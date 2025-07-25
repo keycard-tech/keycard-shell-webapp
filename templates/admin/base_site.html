@@ -1,4 +1,11 @@
 {% extends "admin/base_site.html" %}
-{% block extrastyle %}
-{% endblock %}
 {% load static %}
+{% block extrastyle %}<link rel="stylesheet" type="text/css" href="{% static 'admin/css/extra-style.css' %}" />
+{% endblock %}
+{% block branding %}
+<h1 id="site-name">
+    <a href="{% url 'admin:index' %}">
+        <img src="{% static 'keycard_shell/img/logo.svg' %}" height="40px" />
+    </a>
+</h1>
+{% endblock %}
