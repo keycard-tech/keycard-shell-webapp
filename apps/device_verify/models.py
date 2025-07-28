@@ -30,4 +30,4 @@ class Device(models.Model):
   success_counter = models.IntegerField(default=0, verbose_name='Counter')
 
   def __str__(self):
-    return f"{self.uid}, {self.public_key}, {self.verification_start_date}, {self.success_counter}"
+    return f"{self.uid}"

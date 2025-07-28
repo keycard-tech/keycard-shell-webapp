@@ -50,6 +50,7 @@ INSTALLED_APPS = [
   'apps.db_update',
   'apps.device_verify',
   'apps.firmware_update',
+  'apps.users',
   "django_extensions"
 ]
 
