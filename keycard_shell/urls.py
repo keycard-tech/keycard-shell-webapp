@@ -16,6 +16,7 @@ Including another URLconf
 """
 
 from django.contrib import admin
+from django.shortcuts import redirect
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
@@ -25,6 +26,7 @@ admin.site.site_title = "Admin"
 admin.site.index_title = 'Keycard Shell Admin'
 
 urlpatterns = [
+  path('admin/', lambda r: redirect(f"/admin/db_update/db/")),
   path('admin/', admin.site.urls),
   path('', include("apps.db_update.urls", namespace='default')),
   path('update/', include("apps.db_update.urls")),

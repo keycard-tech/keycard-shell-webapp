@@ -1,8 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&display=swap');
 
-html[data-theme="dark"], html[data-theme="light"], :root { 
+html[data-theme="dark"], html[data-theme="light"], html[data-theme="auto"], :root { 
     --dark-100: #010101;
+    --dark-90: #010101EE;
     --dark-60: #01010199;
     --dark-40: #01010155;
     --white-4: #FFFFFF0A;
@@ -25,6 +26,7 @@ html[data-theme="dark"], html[data-theme="light"], :root {
     --darkened-bg: var(--white-8);
     --hairline-color: var(--white-8);
     --body-fg: var(--white-80);
+    --body-bg: var(--dark-90);
     --body-bg-lighter: var(--white-8);
     --body-quiet-color: var(--white-95);
     --body-loud-color: var(--white-95);
@@ -343,4 +345,12 @@ input[type="checkbox"]:checked::before {
 
 .form-row {
     padding: 20px 0 !important;
+}
+
+th.column-is_active, th.column-is_superuser {
+    text-align: center;
+}
+
+td.field-is_active, td.field-is_superuser {
+    text-align: center;
 }
