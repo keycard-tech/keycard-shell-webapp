@@ -11,7 +11,6 @@ const bottomContainer = document.getElementById("bottom-content-container") as H
 const bottomHeading = document.getElementById("bottom-heading") as HTMLDivElement;
 const updateShell = document.getElementById("update") as HTMLDivElement;  
 const verifyDevice = document.getElementById("verify") as HTMLDivElement;
-const nextSteps = document.getElementsByClassName("keycard_shell__steps");
 
 const menuScrollBgColor = "#FFFFFF0A";
 const btnScrollBgColor = "#FF6400";
@@ -52,19 +51,7 @@ function resizeBottomMenu() : void {
     }
 }
 
-function hideBottomMenuSection() : void {
-    const currentPath = location.pathname;
-
-    Array.from(nextSteps).forEach((step) => {
-        currentPath.includes(step.id) ? step.classList.add("keycard_shell__hide") : step.classList.remove("keycard_shell__hide");
-    });
-}
-
 async function handleBaseUI() : Promise<void> {
-    hideBottomMenuSection();
-
-    location.pathname == "/"  ? updateShell.classList.add("keycard_shell__hide") : null;
-
     window.onscroll = () => menuScroll();
     window.onresize = () => resetMenu();
 
@@ -92,8 +79,8 @@ async function handleBaseUI() : Promise<void> {
         let data = e.data;
         if(data.state == "success") {
             bottomHeading.classList.contains('keycard_shell__display-none') ? bottomHeading.classList.remove('keycard_shell__display-none') : null;
-            data.process == "verify" ? updateShell.classList.remove('keycard_shell__display-none') : null;
-            data.process == "update" ? verifyDevice.classList.remove('keycard_shell__display-none') : null;
+            updateShell.classList.remove('keycard_shell__display-none');
+            verifyDevice.classList.remove('keycard_shell__display-none');
         }
     });
 }

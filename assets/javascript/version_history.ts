@@ -52,7 +52,6 @@ async function renderDBVersionHistoryUI(db: any, id: number, zipPath: string) : 
 
 async function handleDBVersionHistory() : Promise<void> {
     const dbVersionHistory = await fetch("../dbs-context").then((r) => r.json());
-    console.log(dbVersionHistory);
     
     for (let i = 0; i < dbVersionHistory.length; i++) {
         const dbZip = await fetch(mediaPrefix.value + dbVersionHistory[i]["zip_path"]);

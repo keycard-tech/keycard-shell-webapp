@@ -1,5 +1,4 @@
 from django.contrib import admin
-from django import forms
 from django.urls import path
 from django.db import IntegrityError
 from django.contrib import messages
@@ -7,33 +6,23 @@ import csv
 from django.shortcuts import redirect
 import codecs
 
-# Register your models here.
+from apps.device_verify.forms import DeviceVerifyChangeForm, DeviceVerifyForm
 
 from .models import Device, validate_uid
-class DeviceVerifyForm(forms.ModelForm):
-  class Meta:
-    model = Device
-    fields = [
-      'uid',
-      'public_key',
-      'verification_start_date',
-      'success_counter'
-    ]
-    widgets = {
-      'uid': forms.TextInput(),
-      'public_key': forms.TextInput(),
-      'verification_start_date': forms.TextInput(attrs={'readonly': 'readonly'}),
-      'success_counter': forms.TextInput(attrs={'readonly': 'readonly'}),
-    }
-    
-  def __init__(self, *args, **kwargs):
-      super().__init__(*args, **kwargs)
-      self.fields['public_key'].help_text = "'Insert a valid 66-bit hex string'"
-      self.fields['uid'].help_text = 'Insert a valid 32-bit hex string'
 class DeviceVerifyAdmin(admin.ModelAdmin):
     list_display = ('uid', 'public_key', 'verification_start_date', 'success_counter')
-    form = DeviceVerifyForm
+    
+    form = DeviceVerifyChangeForm
+    add_form = DeviceVerifyForm
+    
     change_list_template = "admin/devices_changelist.html"
+    
+    def get_form(self, request, obj=None, **kwargs):
+      defaults = {}
+      if obj is None:
+          defaults['form'] = self.add_form
+      defaults.update(kwargs)
+      return super().get_form(request, obj, **defaults)
 
     def get_urls(self):
       urls = super().get_urls()

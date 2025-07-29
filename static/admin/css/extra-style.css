@@ -60,10 +60,15 @@ html[data-theme="dark"], html[data-theme="light"], html[data-theme="auto"], :roo
     --text-14: 14px;
     --text-12: 12px;
     --background-blur: 40px;
+    --border-radius-12: 12px;
 }
 
 footer {
     display: none;
+}
+
+#header {
+    overflow: inherit;
 }
 
 #nav-sidebar {
@@ -108,9 +113,79 @@ td, th {
     box-sizing: border-box;
 }
 
+th a:link, th a:visited {
+    color: var(--white-80);
+    font-weight: 400;
+}
+
+thead th .text a, table thead th .text span {
+    padding: 0 !important;
+    min-height: 17px;
+}
+
+thead th.sorted .sortoptions {
+    padding: 0 !important;
+}
+
+thead th.sorted .sortoptions .ascending, thead th.sorted .sortoptions .descending {
+    background-image: url(../img/sort.svg) !important;
+    background-position: center !important;
+    background-size: 14px;
+}
+
+thead th.sorted .sortoptions .sortremove {
+    visibility: visible !important;
+    background-image: url(../img/remove.svg) !important;
+    background-position: center !important;
+    background-size: 14px;
+}
+
+td.field-success_counter {
+    text-align: center !important;
+}
+
+th.column-is_active, th.column-is_superuser {
+    text-align: center;
+}
+
+td.field-is_active, td.field-is_superuser {
+    text-align: center;
+}
+
+.sortoptions {
+    display: inherit;
+}
+
+.sortremove::after {
+    content: "" !important;
+}
+
+.sortpriority {
+    display: none;
+}
+
+.column-download_zip_file {
+    font-weight: 300;
+}
+
 #changelist .actions .button {
     border: solid 1px var(--white-20) !important;
     background-color: transparent !important;
+}
+
+#changelist .actions {
+    background-color: transparent !important;
+}
+
+#changelist .actions select {
+    border: solid 1px var(--white-20) !important;
+    background-color: transparent !important;
+    outline: none;
+}
+
+#changelist .paginator {
+    background-color: transparent !important;
+    border: none !important;
 }
 
 .object-tools a:link, .object-tools a:visited {
@@ -158,67 +233,34 @@ td, th {
     background-color: var(--white-4) !important; 
 }
 
-th a:link, th a:visited {
-    color: var(--white-80);
-    font-weight: 400;
-}
-
-thead th .text a, table thead th .text span {
-    padding: 0 !important;
-    min-height: 17px;
-}
-
-thead th.sorted .sortoptions {
-    padding: 0 !important;
-}
-
-thead th.sorted .sortoptions .ascending, thead th.sorted .sortoptions .descending {
-    background-image: url(../img/sort.svg) !important;
-    background-position: center !important;
-    background-size: 14px;
-}
-
-.sortoptions {
-    display: inherit;
-}
-
-thead th.sorted .sortoptions .sortremove {
-    visibility: visible !important;
-    background-image: url(../img/remove.svg) !important;
-    background-position: center !important;
-    background-size: 14px;
-}
-
-.sortremove::after {
-    content: "" !important;
-}
-
-.sortpriority {
-    display: none;
-}
-
 a:link, a:visited {
     color: var(--white-80);
     font-weight: 400;
 }
 
-#changelist .actions {
-    background-color: transparent !important;
-}
-
-#changelist .actions select {
-    border: solid 1px var(--white-20) !important;
-    background-color: transparent !important;
-    outline: none;
-}
-
-#changelist .paginator {
-    background-color: transparent !important;
-    border: none !important;
-}
-
 .breadcrumbs {
     background-color: var(--white-4) !important;
+}
+
+#id_password p:first-child {
+    display: none;
+}
+
+#user_form p:first-of-type {
+    display: none;
+}
+
+.form-row {
+    padding: 10px 0 !important;
+}
+
+.form-row input {
+    min-width: 300px;
+}
+
+.submit-row {
+    background-color: transparent !important;
+    border: none !important;
 }
 
 input[type="text"], input[type="password"], input[type="number"] {
@@ -231,8 +273,43 @@ input[type="text"], input[type="password"], input[type="number"] {
     outline: none;
 }
 
-.form-row input {
-    min-width: 300px;
+.radiolist div label {
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: 0.5em;
+  height: 18px;
+  line-height: 14px;
+}
+
+input[type="radio"] {
+  -webkit-appearance: none;
+  appearance: none;
+  background-color: var(--white-4);
+  margin: 0;
+  font: inherit;
+  color: var(--orange);
+  width: 18px;
+  min-width: 18px;
+  height: 18px;
+  border: 0.15em solid var(--orange);
+  border-radius: 50%;
+  transform: translateY(-0.075em);
+  display: grid;
+  place-content: center;
+}
+
+input[type="radio"]::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  transform: scale(0);
+  transition: 120ms transform ease-in-out;
+  box-shadow: inset 1em 1em var(--orange);
+}
+
+input[type="radio"]:checked::before {
+  transform: scale(1);
 }
 
 input[type="text"]:disabled, input[type="text"]:read-only {
@@ -272,12 +349,20 @@ input[type="checkbox"]:checked::before {
   transform: scale(1);
 }
 
-.column-download_zip_file {
-    font-weight: 300;
+.login #container {
+    background-color: var(--white-4) !important;
+    border-radius: var(--border-radius-12) !important;
+    width: 400px !important;
 }
 
 .login .submit-row {
     padding: 1em 0 !important;
+}
+
+#login-form .submit-row input[type="submit"], .admin__otp-submit-btn {
+    background-color: var(--orange);
+    font-weight: 300;
+    text-transform: uppercase;
 }
 
 .admin__otp_label {
@@ -322,35 +407,26 @@ input[type="checkbox"]:checked::before {
     color: var(--orange);
 }
 
-#header {
-    overflow: inherit;
-}
-
 .field-download_zip_file a {
     border-bottom: dashed .5px var(--white-60);
 }
 
-#id_password p:first-child {
+.theme-toggle {
     display: none;
 }
 
-#user_form p:first-of-type {
-    display: none;
+.messagelist {
+    margin: 10px 30px !important;
+    width: calc(100% - 60px);
+    box-sizing: border-box;
 }
 
-.submit-row {
+.errornote {
+    font-weight: 300;
+    background-color: transparent;
+    font-size: var(--text-13);
+}
+
+.errorlist {
     background-color: transparent !important;
-    border: none !important;
-}
-
-.form-row {
-    padding: 20px 0 !important;
-}
-
-th.column-is_active, th.column-is_superuser {
-    text-align: center;
-}
-
-td.field-is_active, td.field-is_superuser {
-    text-align: center;
 }
