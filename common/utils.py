@@ -42,3 +42,7 @@ def sign(m):
 
 def ishex(s):
     return not re.search(r"[^A-Fa-f0-9]", s)
+  
+def format_hex_string(hex_str):
+  hex_str.strip()
+  return hex_str[hex_str.lower().index('x') + 1:] if hex_str.startswith('0x') else hex_str

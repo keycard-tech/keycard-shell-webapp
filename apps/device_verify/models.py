@@ -1,11 +1,13 @@
 from django.db import models
 from django.core.exceptions import ValidationError
 
-from common.utils import ishex
+from common.utils import format_hex_string, ishex
 
 from secp256k1Crypto import PublicKey
 
 def validate_uid(uid):
+  uid = format_hex_string(uid)
+  
   if not ishex(uid):
     raise ValidationError("Invalid UID format")
   elif len(uid) != 32:
@@ -14,9 +16,12 @@ def validate_uid(uid):
     return uid
     
 def validate_public_key(pub_key):
+  pub_key = format_hex_string(pub_key)
+ 
   if len(pub_key) == 66:
     try:
       PublicKey(bytes(bytearray.fromhex(pub_key)), raw=True)
+      return pub_key
     except Exception as err:
       raise ValidationError("Invalid public key")  
   else:

@@ -352,7 +352,6 @@ input[type="checkbox"]:checked::before {
 .login #container {
     background-color: var(--white-4) !important;
     border-radius: var(--border-radius-12) !important;
-    width: 400px !important;
 }
 
 .login .submit-row {

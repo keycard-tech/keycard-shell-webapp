@@ -8,7 +8,7 @@ import codecs
 
 from apps.device_verify.forms import DeviceVerifyChangeForm, DeviceVerifyForm
 
-from .models import Device, validate_uid
+from .models import Device, validate_public_key, validate_uid
 class DeviceVerifyAdmin(admin.ModelAdmin):
     list_display = ('uid', 'public_key', 'verification_start_date', 'success_counter')
     
@@ -38,7 +38,7 @@ class DeviceVerifyAdmin(admin.ModelAdmin):
           reader = csv.reader(codecs.iterdecode(csv_file, 'utf-8'))
           data = []
           for uid, public_key in reader:
-              device = Device(uid=validate_uid(uid), public_key=validate_uid(public_key), verification_start_date=None, success_counter=0)
+              device = Device(uid=validate_uid(uid), public_key=validate_public_key(public_key), verification_start_date=None, success_counter=0)
               data.append(device)
           Device.objects.bulk_create(data)   
           self.message_user(request, "CSV file imported successfully")  
@@ -55,7 +55,7 @@ class DeviceVerifyAdmin(admin.ModelAdmin):
         messages.set_level(request, messages.ERROR)
         messages.add_message(request, messages.ERROR, f"Error reading CSV file. {err}")
 
-      return redirect('/admin/device_verify/device')    
+      return redirect('/admin/device_verify/device')  
 
     def has_change_permission(self, request, obj=None):
       return False
