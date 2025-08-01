@@ -29,6 +29,10 @@ class CustomUserAdmin(UserAdmin):
       
       return super().change_view(request, object_id, form_url, extra_context=extra_context)
     
+    def changelist_view(self, request, extra_context=None):
+        extra_context = {'title': 'Users List'}
+        return super(CustomUserAdmin, self).changelist_view(request, extra_context=extra_context)  
+    
     def render_change_form(self, request, context, add=False, change=False, form_url='', obj=None):
         context.update({
             'show_save_and_continue': False,

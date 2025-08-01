@@ -21,8 +21,8 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
-admin.site.site_header = "Admin"
-admin.site.site_title = "Admin"
+admin.site.site_header = "Keycard ShellAdmin"
+admin.site.site_title = "Keycard Shell Admin"
 admin.site.index_title = 'Keycard Shell Admin'
 
 urlpatterns = [

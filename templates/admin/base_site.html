@@ -1,5 +1,8 @@
 {% extends "admin/base_site.html" %}
 {% load static %}
+{% block extrahead %}
+    <link rel="shortcut icon" type="image/png" href="{% static 'admin/img/favicon.png' %}" >
+{% endblock %}
 {% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="{% static 'admin/css/extra-style.css' %}" />{% endblock %}
 {% block branding %}
 <h1 id="site-name">
@@ -7,4 +10,35 @@
         <img src="{% static 'keycard_shell/img/logo.svg' %}" height="40px" />
     </a>
 </h1>
+{% endblock %}
+
+{% block usertools %}
+    {% if has_permission %}
+        <div class="admin__navigation-container">
+            <div class="admin__navigation">
+                <input class="admin__toggle-menu" id="toggle-menu" type="checkbox" checked>
+                <div class="admin__menu-img"></div>
+                <ul class="admin__navigation-list">
+                    {% block welcome-msg %}
+                        <li class="admin__navigation-list-element admin__navigation-list-element-welcome">Welcome, {% firstof user.get_short_name|upper  user.get_username|upper %}</li>
+                    {% endblock %}
+                    <li class="admin__navigation-list-element"><a href="{% url 'admin:db_update_db_changelist' %}" class="admin__navigation-list-element-link">Database</a></li>
+                    <li class="admin__navigation-list-element"><a href="{% url 'admin:device_verify_device_changelist' %}" class="admin__navigation-list-element-link">Devices</a></li>
+                    <li class="admin__navigation-list-element"><a href="{% url 'admin:firmware_update_firmware_changelist' %}" class="admin__navigation-list-element-link">Firmwares</a></li>
+                    <li class="admin__navigation-list-element"><a href="{% url 'admin:auth_user_changelist' %}" class="admin__navigation-list-element-link">Users</a></li>
+                    <li class="admin__navigation-list-element"><a href="{% url 'db:update-index' %}" class="admin__navigation-list-element-link">View Site</a></li>
+                    <hr class="admin__navigation-list-element-line">
+                    {% if user.has_usable_password %}
+                        <li class="admin__navigation-list-element"><a href="{% url 'admin:password_change' %}" class="admin__navigation-list-element-link">Change password</a></li>
+                    {% endif %}
+                    <li class="admin__navigation-list-element">
+                        <form id="logout-form" method="post" action="{% url 'admin:logout' %}">
+                            {% csrf_token %}
+                            <button type="submit" class="admin__navigation-list-element-link admin__navigation-list-element-btn">Log out</button>
+                        </form>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    {% endif %}
 {% endblock %}

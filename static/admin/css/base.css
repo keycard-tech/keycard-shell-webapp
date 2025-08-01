@@ -1144,26 +1144,6 @@ a.deletelink:focus, a.deletelink:hover {
     display: none;
 }
 
-.csv-container {
-    display: block;
-    width: 100%;
-    min-height: 80px;
-    margin: .5em auto;
-}
-
-.csv-button, .csv-button:focus, .csv-button:hover, .csv-button:visited, .csv-button:link {
-
-    width: 100px;
-    padding: 7px 12px;
-    background: var(--object-tools-bg);
-    font-weight: 400;
-    font-size: 0.6875rem;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    border-radius: 15px;
-    color: white;
-}
-
 .admin-branding {
     padding: 0;
     margin: 0;
@@ -1171,19 +1151,6 @@ a.deletelink:focus, a.deletelink:hover {
     font-weight: 300;
     font-size: 1.5rem;
     color: var(--header-branding-color);
-}
-
-.csv-container-form-field {
-    position: relative;
-    width: 100px;
-    float: right;
-}
-
-.csv-button-input {
-    opacity: 0;
-    position: absolute;
-    width: 100px;
-    left: 0;
 }
 
 .main.shifted > #nav-sidebar + .content {
@@ -1224,14 +1191,4 @@ a.deletelink:focus, a.deletelink:hover {
     width: 100% !important;
     max-width: 100% !important;
     color: rgb(50, 50, 50);
-}
-
-@media (max-width: 767px) {
-    .csv-container-form-field {
-        float: left;
-    }
-
-    .csv-container {
-        min-height: 30px;
-    }
 }

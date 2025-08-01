@@ -6,7 +6,6 @@ from django.contrib import messages
 from django.utils.html import format_html
 from django.conf import settings
 from common.errors import CompareDeltasError, DecodeEntryError, InvalidAddressLength, InvalidBinFileError, InvalidJSONFileError, InvalidChainDBFile, InvalidTokenDBFile, InvalidTokenList, ProcessTokenError, SerializeDeltaError, ZipError, get_error_message
-from common.utils import iter_query
 import datetime
 
 
@@ -103,7 +102,3 @@ class UpdateDBAdmin(admin.ModelAdmin):
 
 admin.site.register(DB, UpdateDBAdmin)
 admin.site.unregister(Group)
-
-admin.site.site_header = "Keycard Shell Web"
-admin.site.site_title = "Keycard Shell Web"
-admin.site.index_title = "Admin"
