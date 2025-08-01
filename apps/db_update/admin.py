@@ -24,6 +24,7 @@ class UpdateDBForm(forms.ModelForm):
             'abi_url',
             'version',
             'db_hash',
+            'full_db_hash'
         ]
         widgets = {
             'erc20_url': forms.TextInput(),
@@ -31,6 +32,7 @@ class UpdateDBForm(forms.ModelForm):
             'abi_url': forms.TextInput(),
             'version': forms.TextInput(attrs={'readonly': 'readonly'}),
             'db_hash': forms.HiddenInput(),
+            'full_db_hash': forms.HiddenInput(),
         }
 
 class UpdateDBAdmin(admin.ModelAdmin):
@@ -65,8 +67,9 @@ class UpdateDBAdmin(admin.ModelAdmin):
             db_form_data = form.cleaned_data
             db_creation_date = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             db = DBUpdate(erc20_url = db_form_data.get('erc20_url'), chain_url = db_form_data.get('chain_url'), abi_url = db_form_data.get('abi_url'), db_version = db_form_data.get('version'), creation_date=db_creation_date)
-            db_file_hash = db.upload_db()
-            obj.db_hash = db_file_hash
+            db_file_hashes= db.upload_db()
+            obj.db_hash = db_file_hashes['db_hash']
+            obj.full_db_hash = db_file_hashes['full_db_hash']
 
             with transaction.atomic():
                 if(obj.db_hash):
@@ -93,12 +96,13 @@ class UpdateDBAdmin(admin.ModelAdmin):
         return super(UpdateDBAdmin, self).changelist_view(request, extra_context=extra_context)   
       
     def change_view(self, request, object_id, form_url='', extra_context=None):
+      self.exclude = ('db_hash',)
       extra_context = extra_context or {}
       obj = self.get_object(request=request, object_id=object_id)
       extra_context['title'] = "Database " + obj.version
       extra_context['subtitle'] = ""
 
-      return super().change_view(request, object_id, form_url, extra_context=extra_context)   
+      return super(UpdateDBAdmin, self).change_view(request, object_id, form_url, extra_context=extra_context)   
 
 admin.site.register(DB, UpdateDBAdmin)
 admin.site.unregister(Group)

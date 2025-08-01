@@ -7,6 +7,7 @@ module.exports = {
     update: './assets/javascript/update.ts',
     release_notes: './assets/javascript/release_notes.ts',
     version_history: './assets/javascript/version_history.ts',
+    air_gapped: './assets/javascript/air_gapped.ts',
     base: './assets/javascript/base.ts',
 
   },

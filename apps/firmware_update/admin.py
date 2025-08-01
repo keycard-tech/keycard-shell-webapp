@@ -9,7 +9,7 @@ from common.errors import InvalidFirmwareError, get_error_message
 
 from .models import Firmware
 from common.utils import makedirs
-from .firmware import upload_file, delete_fw, validate_firmware
+from .firmware import calc_fw_hash, upload_file, delete_fw, validate_firmware
 class FirmwareForm(forms.ModelForm):
   firmware = forms.FileField(widget=forms.FileInput(attrs={"accept": ".bin"}))
   changelog = forms.CharField(widget=AdminPagedownWidget())
@@ -18,9 +18,11 @@ class FirmwareForm(forms.ModelForm):
     model = Firmware
     fields = [
         'version',
+        'fw_hash'
     ]
     widgets = {
-        'version': forms.TextInput()
+        'version': forms.TextInput(),
+        'fw_hash': forms.HiddenInput()
     }
 class FirmwareAdmin(admin.ModelAdmin):
     form = FirmwareForm
@@ -33,6 +35,7 @@ class FirmwareAdmin(admin.ModelAdmin):
           chl_p = settings.MEDIA_ROOT + '/' + fw_version + '/changelog.md'
 
           form.base_fields['version'].disabled = True
+          form.base_fields['fw_hash'].widget = forms.Textarea(attrs={'readonly': 'readonly', 'rows': '1', 'class': 'admin__fw_hash'})
           form.base_fields['firmware'].required = False
 
           with open(chl_p, encoding="utf-8") as f:
@@ -43,7 +46,7 @@ class FirmwareAdmin(admin.ModelAdmin):
       except (FileNotFoundError, Exception) as err:
         msg = get_error_message(err)
         messages.set_level(request, messages.ERROR)
-        messages.add_message(request, messages.ERROR, err) 
+        messages.add_message(request, messages.ERROR, msg) 
 
       return form
 
@@ -63,6 +66,7 @@ class FirmwareAdmin(admin.ModelAdmin):
         fw = form_data["firmware"]
         chl = form_data["changelog"]
         output_dir = settings.MEDIA_ROOT + '/' + form_data["version"]
+        
 
         makedirs(output_dir)
 
@@ -74,7 +78,7 @@ class FirmwareAdmin(admin.ModelAdmin):
           fw_output = output_dir + '/firmware.bin'
           if validate_firmware(fw_file, form_data["version"]):
             upload_file(fw_file, fw_output, "wb", None, None)
-            
+            obj.fw_hash = calc_fw_hash(fw_file)
             with transaction.atomic():
               super().save_model(request, obj, form, change)
       except IntegrityError as err:

@@ -8,6 +8,9 @@ from common.utils import iter_query
 def index(request):
   return render(request, 'keycard_shell/shell_update.html')
 
+def air_gapped_update(request):
+  return render(request, 'keycard_shell/air_gapped_update.html')
+
 def release_notes(request):
   return render(request, 'keycard_shell/db_version_history.html')
 
@@ -16,6 +19,7 @@ def db_context(request):
 
   context = {
     "db_path": db.version + '/db.bin',
+    "hash": db.full_db_hash,
     "version": db.version
   }
 
@@ -34,7 +38,7 @@ def dbs_context(request):
       "creation_date": db.creation_date.strftime('%Y-%m-%d %H:%M'),
       "token_link": db.erc20_url,
       "chain_link": db.chain_url,
-      "abi_link": db.abi_url 
+      "abi_link": db.abi_url
     }
     
     data.append(context)

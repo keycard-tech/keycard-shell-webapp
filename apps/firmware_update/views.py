@@ -13,7 +13,8 @@ def fw_context(request):
 
   fw_context = {
     "fw_path": fw.version + '/firmware.bin',
-    "version": fw.version
+    "version": fw.version,
+    "hash": fw.fw_hash
     }
 
   return HttpResponse(json.dumps(fw_context), content_type='application/json')

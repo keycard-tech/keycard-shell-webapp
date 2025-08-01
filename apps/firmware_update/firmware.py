@@ -1,3 +1,4 @@
+import hashlib
 from common.consts import FW_VERSION_POS
 from common.errors import InvalidFirmwareError
 from common.utils import deletedirs
@@ -6,6 +7,12 @@ from django.conf import settings
 def upload_file(file, output, write_type, enc, nl):
   with open(output, write_type, encoding=enc, newline=nl) as f:
     f.write(file)
+    
+def calc_fw_hash(data):
+  fw_h = hashlib.sha256()
+  fw_h.update(data)
+  return fw_h.digest().hex()
+      
 
 def validate_firmware(fw, version):
   fw_ver = list(map(int, version.split("."))) 

@@ -61,9 +61,9 @@ class DBUpdate:
       upload_db_file(self.erc20_url, erc20_out_path)
       upload_db_file(self.chain_url, chain_out_path)
       upload_db_file(self.abi_url, abi_out_path)
-      file_hash = generate_token_bin_file(erc20_out_path, chain_out_path, abi_out_path, bin_output, int(self.db_version))
+      file_h = generate_token_bin_file(erc20_out_path, chain_out_path, abi_out_path, bin_output, int(self.db_version))
       zip_db_files(Path(p), Path(zip_path))
-      return file_hash
+      return file_h
     except Exception as err: 
       deletedirs(p) 
       raise err

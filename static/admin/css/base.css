@@ -1156,39 +1156,3 @@ a.deletelink:focus, a.deletelink:hover {
 .main.shifted > #nav-sidebar + .content {
     max-width: 100%;
 }
-
-.wmd-panel textarea {
-    padding: 0;
-    margin: 0;
-}
-
-.wmd-wrapper {
-    width:  87%;
-}
-
-.wmd-button-bar {
-    border: none !important;
-    min-width: 100% !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    height: 40px;
-}
-
-.wmd-input, #wmd-input-id_changelog {
-    background: rgb(40, 40, 40) !important;
-    border: none !important;
-    border-top: var(10, 10, 10) solid 2px !important;
-    border-radius: 0 !important;
-    min-width: 100% !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    outline: none !important;
-    padding: .8em;
-    box-sizing: border-box;
-}
-
-.wmd-preview {
-    width: 100% !important;
-    max-width: 100% !important;
-    color: rgb(50, 50, 50);
-}

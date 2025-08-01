@@ -58,5 +58,7 @@ def generate_token_bin_file(token_list, chain_list, abi_list, output, db_version
     signature = sign(m_hash)
     db_hash = db_h.digest()
     f.write(signature)
+    
+    db_hashes = {'db_hash': db_hash.hex(), 'full_db_hash': m_hash.hex()}
   
-  return db_hash.hex()
+  return db_hashes

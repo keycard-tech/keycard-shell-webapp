@@ -1,0 +1,55 @@
+{% extends './base.html' %}
+{% load static %}
+{% block content %}
+<input type="hidden" id="upate__media-prefix" name="update__media-prefix" value="{% get_media_prefix %}">
+<div class="keycard_shell__page-heading-container">
+    <h1 class="keycard_shell__page-heading" id="release-notes-page-heading">Update firmware and database in air-gapped mode</h1>
+</div> 
+<div class="keycard_shell__page-top-container">
+    <div class="keycard_shell__page-top-text-container">
+        <span class="keycard_shell__page-top-text">Air-gapped updates offer maximum security and control, keeping your Shell up to date without ever touching an internet-connected machine. Read article <a href="#" class="keycard_shell__page-top-help-link" target="_blank">Updating Shell firmware and database in in air-gapped mode</a> to learn more.</span>
+    </div>
+</div>
+<div class="keycard_shell__ag_update_steps">
+    <div class="keycard_shell__ag_update_step">
+        <div class="keycard_shell__ag_update_step-head-container">
+            <h3 class="keycard_shell__ag_update_step-heading">1.&nbsp; Download stand-alone Shell updater app</h3>
+            <span class="keycard_shell__ag_update_step-description">Standalone updater app allows you to update Shell without using internet and web-browser.</span>
+        </div>
+        <div class="keycard_shell__select-app">
+            <label for="op-system-selector" class="keycard_shell__checkbox-field-top-label">Select OS</label>
+            <div class="keycard_shell__select-field-container">
+                <select name="op-system" id="op-system-selector" class="keycard_shell__select-field">
+                    <option value="windows">Windows</option>
+                    <option value="mac">macOS</option>
+                    <option value="linux">Linux</option>
+                </select>
+                <img src="{% static 'keycard_shell/img/down.svg' %}" alt="Chevron down" class="keycard_shell__select-chevron">
+            </div>
+        </div>
+        <div class="keycard_shell__btn-container keycard_shell__btn-ag-container">
+            <a href="" class="keycard_shell__btn keycard_shell__btn-ag" id="download-app-btn" >
+                <img src="{% static 'keycard_shell/img/download.svg' %}" alt="Download" width="20px" height="20px">
+                <span>Download Shell Updater</span>
+            </a>
+        </div>
+        <div class="keycard_shell__btn-container keycard_shell__ag_changelog-container">
+            <a href="" class="keycard_shell__btn keycard_shell__ag_changelog" id="app-changelog" >
+                <img src="{% static 'keycard_shell/img/changelog.svg' %}" alt="Changelog" width="20px" height="20px">
+                <span>View changelog</span>
+            </a>
+        </div>
+        <div class="keycard_shell__ag_hash_check_container">
+            <span class="keycard_shell__ag_hash_check_text"> Check the integrity using SHA256 checksum.</span>
+            <div class="keycard_shell__ag_hash_container">
+                <span class="keycard_shell__ag_hash_check_text keycard_shell__ag_hash-label">•  SHA256:</span>
+                <span class="keycard_shell__ag_hash" id="app-hash">7d9a1b8c72f48f8cf46dbf3cbe847fca104a6bfa3e79f72df1eaed7cc6ff5692</span>
+            </div>
+            <span class="keycard_shell__ag_hash_check_text">
+                Use shasum -a 256 to validate your download before using it. Read <a href="#" class="keycard_shell__page-top-help-link" target="_blank">Help article</a> for detailed instruction. Copy Shell updater app to freshly formatted USB stick. To avoid hidden malware, always format the USB drive before transferring files.
+            </span>
+        </div>
+    </div>
+</div>
+<script src="{% static '/keycard_shell/js/air_gapped.js' %}"></script>
+{% endblock %}
