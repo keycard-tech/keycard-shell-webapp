@@ -4,7 +4,7 @@ const mediaPrefix = document.getElementById('vh__media-prefix') as HTMLInputElem
 
 const versionHistoryContainer = document.getElementById("version-history-container") as HTMLDialogElement;
 const dbContainerClass = "keycard_shell__db-version-history";
-const dbContainerId = "v";
+const dbContainerId = "db-v-";
 
 const dbVersionContainerClass = "keycard_shell__db-version-container";
 const dbVersionId = "db-version-container-";
@@ -25,7 +25,7 @@ async function renderDBVersionHistoryUI(db: any, id: number, zipPath: string) : 
     const dbVersionContent = `<h2 class="keycard_shell__db-version-heading" id="v${db["version"]}">${db["version"]}</h2>`;
     const versionId = dbVersionId + db["version"] as string;
     const creationDateId = `release-date-${db["version"]}`;
-    const dbVHContainer = UIUtils.createElement("div", dbContainerId + id.toString(), dbContainerClass, versionHistoryContainer);
+    const dbVHContainer = UIUtils.createElement("div", dbContainerId + db["version"], dbContainerClass, versionHistoryContainer);
     const dbSourceContainerId = `source-container-${db["version"]}`;
 
     const dbCreationDate = new Date(db["creation_date"].replace(/-/g, "/"));
@@ -38,6 +38,7 @@ async function renderDBVersionHistoryUI(db: any, id: number, zipPath: string) : 
     const downloadButton = `<a href="${zipPath}" id="btn-v${db["version"]}" class="${dbDownloadBtnClass} keycard_shell__btn">Download .zip</a>`;
 
     const versionContainer = UIUtils.createElement("div", versionId, dbVersionContainerClass, dbVHContainer, dbVersionContent);
+    location.hash.substring(1) == versionId ? versionContainer.scrollIntoView({ behavior: "smooth"}) : null;
 
     UIUtils.createElement("span", creationDateId, creationDateClass, versionContainer, formattedDate);
 
@@ -51,7 +52,7 @@ async function renderDBVersionHistoryUI(db: any, id: number, zipPath: string) : 
 }
 
 async function handleDBVersionHistory() : Promise<void> {
-    const dbVersionHistory = await fetch("../dbs-context").then((r) => r.json());
+    const dbVersionHistory = await fetch("../get-dbs").then((r) => r.json());
     
     for (let i = 0; i < dbVersionHistory.length; i++) {
         const dbZip = await fetch(mediaPrefix.value + dbVersionHistory[i]["zip_path"]);

@@ -82,6 +82,7 @@ async function handleBaseUI() : Promise<void> {
             updateShell.classList.remove('keycard_shell__display-none');
             verifyDevice.classList.remove('keycard_shell__display-none');
         }
+        bc.close();
     });
 }
 

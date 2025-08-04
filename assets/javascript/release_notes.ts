@@ -16,11 +16,13 @@ const fwChangelogId = "fw-changelog-container-";
 async function renderReleaseNotesUI(fw: any, fwId: number, changelog: string) : Promise<void> {
     const fwVersionContent = `<h2 class="keycard_shell__fw-version-content" id="v${fw["version"]}">${fw["version"]}</h2>`;
     const fwCreationDate = new Date(changelog.substring(0, changelog.indexOf('\n')).replace(/-/g, "/"));
-    const containerId = fwContainerId + fwId.toString();
+    const containerId = fwContainerId + fw["version"];
     const versionContainerId = fwVersionId + fw["version"] as string;
     const changelogId = fwChangelogId + fw["version"] as string;
     
     const fwRNContainer = UIUtils.createElement("div", containerId, fwContainerClass, releaseNotesContainer);
+    location.hash.substring(1) == containerId ? fwRNContainer.scrollIntoView() : null;
+
     UIUtils.createElement("div", versionContainerId, fwVersionContainerClass, fwRNContainer, fwVersionContent);
 
     const fwVersionChangelog = UIUtils.createElement("div", changelogId, fwChangelogContainerClass, fwRNContainer);
@@ -35,7 +37,7 @@ async function renderReleaseNotesUI(fw: any, fwId: number, changelog: string) : 
 }
 
 async function handleReleaseNotes() : Promise<void> {
-    const fwReleaseNotes = await fetch("../firmware/fws-context").then((r) => r.json());
+    const fwReleaseNotes = await fetch("../firmware/get-firmwares").then((r) => r.json());
     
     for (let i = 0; i < fwReleaseNotes.length; i++) {
         let changelogPath = fwReleaseNotes[i]["changelog"];

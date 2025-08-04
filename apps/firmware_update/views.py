@@ -8,7 +8,7 @@ from .models import Firmware
 def index(request):
   return render(request, 'keycard_shell/fw_release_notes.html')
 
-def fw_context(request):
+def get_current_firmware(request):
   fw = Firmware.objects.last()
 
   fw_context = {
@@ -19,7 +19,7 @@ def fw_context(request):
 
   return HttpResponse(json.dumps(fw_context), content_type='application/json')
 
-def fws_context(request):
+def get_firmwares(request):
   fws = Firmware.objects.all().order_by('-creation_date')
   
   data = []

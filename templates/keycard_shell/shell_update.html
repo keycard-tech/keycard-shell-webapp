@@ -28,6 +28,11 @@
                 </div>
                 <div class="keycard_shell__btn-container" id="keycard_shell__update-start-button">
                     <input id="start-screen-btn" class="keycard_shell__btn keycard_shell__update-btn-inline" type="button" value="Update">
+                    <span class="keycard_shell_or">or</span>
+                    <a href="{% url 'db:air-gapped-update' %}" class="keycard_shell_air-gapped-link">
+                        <img  class="keycard_shell_air-gapped-link-img" src="{% static 'keycard_shell/img/air-gapped.svg' %}" alt="Device">
+                        <span class="keycard_shell_air-gapped-link-text">Update in air-gapped mode</span>
+                    </a>
                 </div>
             </div>
         </div>

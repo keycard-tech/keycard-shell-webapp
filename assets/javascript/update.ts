@@ -114,8 +114,8 @@ async function handleShellUpdate() : Promise<void> {
     let transport: Transport;
     let appEth: Eth;
 
-    const fwContext = await fetch("../firmware/context").then((r) => r.json());
-    const dbContext = await fetch("../context").then((r: any) => r.json());
+    const fwContext = await fetch("../firmware/get-firmware").then((r) => r.json());
+    const dbContext = await fetch("../get-db").then((r: any) => r.json());
 
     const dbData = await fetch(mediaPrefix.value + dbContext["db_path"]).then((r) => r.arrayBuffer());
     const fwData = await fetch(mediaPrefix.value + fwContext["fw_path"]).then((r) => r.arrayBuffer());

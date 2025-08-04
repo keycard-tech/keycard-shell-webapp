@@ -1,7 +1,7 @@
 {% extends './base.html' %}
 {% load static %}
 {% block content %}
-<input type="hidden" id="upate__media-prefix" name="update__media-prefix" value="{% get_media_prefix %}">
+<input type="hidden" id="update__media-prefix" name="update__media-prefix" value="{% get_media_prefix %}">
 <div class="keycard_shell__page-heading-container">
     <h1 class="keycard_shell__page-heading" id="release-notes-page-heading">Update firmware and database in air-gapped mode</h1>
 </div> 
@@ -46,7 +46,87 @@
                 <span class="keycard_shell__ag_hash" id="app-hash">7d9a1b8c72f48f8cf46dbf3cbe847fca104a6bfa3e79f72df1eaed7cc6ff5692</span>
             </div>
             <span class="keycard_shell__ag_hash_check_text">
-                Use shasum -a 256 to validate your download before using it. Read <a href="#" class="keycard_shell__page-top-help-link" target="_blank">Help article</a> for detailed instruction. Copy Shell updater app to freshly formatted USB stick. To avoid hidden malware, always format the USB drive before transferring files.
+                Use shasum -a 256 to validate your download before using it. Read <a href="#" class="keycard_shell__page-top-help-link" target="_blank">Help article</a> for detailed instruction. <br>
+                Copy Shell updater app to freshly formatted USB stick. To avoid hidden malware, always format the USB drive before transferring files.
+            </span>
+        </div>
+    </div>
+    <div class="keycard_shell__ag_update_step">
+        <div class="keycard_shell__ag_update_step-head-container">
+            <h3 class="keycard_shell__ag_update_step-heading">2.&nbsp; Download firmware package</h3>
+            </div>
+        <div class="keycard_shell__btn-container keycard_shell__btn-ag-container">
+            <a href="" class="keycard_shell__btn keycard_shell__btn-ag" id="download-fw" >
+                <img src="{% static 'keycard_shell/img/download.svg' %}" alt="Download" width="20px" height="20px">
+                <span id="download-fw-label"></span>
+            </a>
+        </div>
+        <div class="keycard_shell__btn-container keycard_shell__ag_changelog-container">
+            <a href="{% url 'firmware:release-notes' %}#"  target="_blank" class="keycard_shell__btn keycard_shell__ag_changelog" id="fw-changelog" >
+                <img src="{% static 'keycard_shell/img/changelog.svg' %}" alt="Changelog" width="20px" height="20px">
+                <span>View changelog</span>
+            </a>
+        </div>
+        <div class="keycard_shell__ag_hash_check_container">
+            <span class="keycard_shell__ag_hash_check_text"> Check the integrity using SHA256 checksum.</span>
+            <div class="keycard_shell__ag_hash_container">
+                <span class="keycard_shell__ag_hash_check_text keycard_shell__ag_hash-label">•&nbsp; SHA256:</span>
+                <span class="keycard_shell__ag_hash" id="fw-hash"></span>
+            </div>
+            <span class="keycard_shell__ag_hash_check_text">
+                Use shasum -a 256 to validate your download before using it. <br>
+                Read <a href="#" class="keycard_shell__page-top-help-link" target="_blank">Help article</a> for detailed instruction. <br>
+                Copy to the same USB drive.
+            </span>
+        </div>
+    </div>
+    <div class="keycard_shell__ag_update_step">
+        <div class="keycard_shell__ag_update_step-head-container">
+            <h3 class="keycard_shell__ag_update_step-heading">3.&nbsp; Download database package</h3>
+            </div>
+        <div class="keycard_shell__btn-container keycard_shell__btn-ag-container">
+            <a href="" class="keycard_shell__btn keycard_shell__btn-ag" id="download-db" >
+                <img src="{% static 'keycard_shell/img/download.svg' %}" alt="Download" width="20px" height="20px">
+                <span id="download-db-label"></span>
+            </a>
+        </div>
+        <div class="keycard_shell__btn-container keycard_shell__ag_changelog-container">
+            <a href="{% url 'db:db-version-history' %}#" target="_blank" class="keycard_shell__btn keycard_shell__ag_changelog" id="db-changelog" >
+                <img src="{% static 'keycard_shell/img/changelog.svg' %}" alt="Changelog" width="20px" height="20px">
+                <span>View changelog</span>
+            </a>
+        </div>
+        <div class="keycard_shell__ag_hash_check_container">
+            <span class="keycard_shell__ag_hash_check_text"> Check the integrity using SHA256 checksum.</span>
+            <div class="keycard_shell__ag_hash_container">
+                <span class="keycard_shell__ag_hash_check_text keycard_shell__ag_hash-label">•&nbsp; SHA256:</span>
+                <span class="keycard_shell__ag_hash" id="db-hash"></span>
+            </div>
+            <span class="keycard_shell__ag_hash_check_text">
+                Use shasum -a 256 to validate your download before using it. <br>
+                Read <a href="#" class="keycard_shell__page-top-help-link" target="_blank">Help article</a> for detailed instruction. <br>
+                Copy to the same USB drive.
+            </span>
+        </div>
+    </div>
+    <div class="keycard_shell__ag_update_step">
+        <div class="keycard_shell__ag_update_step-head-container">
+            <h3 class="keycard_shell__ag_update_step-heading">4.&nbsp; Prepare offline device</h3>
+            <span class="keycard_shell__ag_update_step-description">Install a clean OS on an empty hard drive or external boot disk. This could be:</span>
+            <ul class="keycard_shell__ag-list"> 
+                <li class="keycard_shell__ag_update_step-description keycard_shell__ag-list-element">Your current machine (dual-boot or temp clean install)</li>
+                <li class="keycard_shell__ag_update_step-description keycard_shell__ag-list-element">A secondary dedicated device</li>
+            </ul>
+            <span class="keycard_shell__ag_update_step-description">Ensure it’s fully offline. Disconnect all other drives and physically disable Wi-Fi/Bluetooth if possible.</span>
+        </div>
+    </div>
+    <div class="keycard_shell__ag_update_step">
+        <div class="keycard_shell__ag_update_step-head-container">
+            <h3 class="keycard_shell__ag_update_step-heading">5.&nbsp; Run standalone updater and follow instructions</h3>
+            <span class="keycard_shell__ag_update_step-description">
+                Boot your offline machine, plug in the USB, and launch the updater. <br>
+                Follow on-screen steps to update firmware and database. <br>
+                Shell now runs the latest software without ever touching an internet-connected OS.
             </span>
         </div>
     </div>
