@@ -47,4 +47,9 @@ export namespace UIUtils {
   export function shortLink(link: string, maxChars: number) : string {
     return link.length <= maxChars ? link.substring(0, maxChars) : link.substring(0, maxChars) + "...";
   }
+
+  export function parseFWVersion(version: string) : number {
+    let verArr = Array.from(version.split('.'), Number);
+    return (verArr[0] * 1000000) + (verArr[1] * 1000) + verArr[2];
+  }
 }

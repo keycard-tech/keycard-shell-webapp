@@ -139,7 +139,7 @@ async function handleShellUpdate() : Promise<void> {
                 let { erc20Version, fwVersion } = await appEth.getAppConfiguration();
 
                 isDBLatest = checkLatestVersion(erc20Version, parseInt(dbContext["version"]), dbUpdateStatus, dbUpdateCheckbox, dbUpdateCheckboxContainer);
-                isFWLatest = checkLatestVersion(parseInt(fwVersion.replaceAll(".", "")), parseInt(fwContext["version"].replaceAll(".", "")), fwUpdateStatus, fwUpdateCheckbox, fwUpdateCheckboxContainer);
+                isFWLatest = checkLatestVersion(UIUtils.parseFWVersion(fwVersion), UIUtils.parseFWVersion(fwContext["version"]), fwUpdateStatus, fwUpdateCheckbox, fwUpdateCheckboxContainer);
             
                 transport.on("disconnect", async () => {
                     const activeStep = document.getElementsByClassName(activeScreenClass)[0] as HTMLDivElement;
