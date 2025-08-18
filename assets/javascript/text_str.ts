@@ -22,6 +22,11 @@ export namespace TextStr {
     export const progressDBPrompt = "Transferring database version ";
     export const progressFWPrompt = "Transferring firmware version ";
 
+    export const dbTransferedText = "Database transferred";
+    export const fwTransferedText = "Firmware transferred";
+    export const dbInstalledText = "Database installed";
+    export const finishUpdateText = "Check Keycard Shell screen for instructions";
+
     export const startScreenHeadingDesktop = "Connect your Keycard Shell";
     export const startScreenHeadingMobile = "Connect via cable";
 

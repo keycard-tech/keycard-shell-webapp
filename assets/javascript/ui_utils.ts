@@ -2,18 +2,20 @@ import { CameraDevice } from "html5-qrcode";
 import Transport from "kprojs/lib/transport";
 
 export namespace UIUtils {
-  export function handleUpdateLoadProgress(transport: Transport, loadBar: HTMLProgressElement, progressPercent: HTMLSpanElement) : void {
+  export function handleUpdateLoadProgress(transport: Transport, loadBar: HTMLProgressElement, progressPercent: HTMLSpanElement, cbFunc: () => void) : void {
     let dataI = 0;
 
     if (dataI == 0) {
       dataI = 1;
       let pBarProgress = 0;
       transport.on("chunk-loaded", (progress: any) => {
-        if (progress >= loadBar.max) {
+        pBarProgress += progress;
+        
+        if (pBarProgress >= loadBar.max - progress) {
           transport.off("chunk-loaded", () => {});
           dataI = 0;
+          cbFunc();
         } else {
-          pBarProgress += progress;
           loadBar.value = pBarProgress;
           progressPercent.innerHTML = `${Math.round((pBarProgress / loadBar.max) * 100)} %`;
         }

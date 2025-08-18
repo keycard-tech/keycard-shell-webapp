@@ -87,12 +87,21 @@
             <div class="keycard_shell__update-progress-prompt-container">
                 <span class="keycard_shell__update-progress-prompt">Please do not disconnect device.</span>
                 <div class="keycard_shell__update-step-progress-container">
-                    <span class="keycard_shell__update-step-prompt" id="update-progress-step-prompt"></span>
+                    <span class="keycard_shell__update-step-prompt" id="update-progress-step-prompt">Transferring latest database</span>
                     <span class="keycard_shell__update-step-prompt keycard_shell__update-step-percent" id="update-progress-percent"></span>
                 </div>
                 <div id="update-progress" class="keycard_shell__load-progress-bar-container">
                     <progress id="update-progress-bar" value="0" class="keycard_shell__load-progress-bar"></progress>
                 </div>
+                <div class="keycard_shell__finish-update-instructions keycard_shell__display-none" id="finish-update-instructions">
+                    <span class="keycard_shell__finish-update-message">Check Keycard Shell screen for instructions</span>
+                </div>
+                <div class="keycard_shell__btn-container keycard_shell__next-btn-container keycard_shell__display-none" id="keycard_shell__update-next-btn-container">
+                    <input id="update-next-btn" class="keycard_shell__btn keycard_shell__update-btn-inline" type="button" value="Transfer firmware">
+                </div>
+            </div>
+            <div class="keycard_shell__paginator-container">
+                <span class="keycard_shell__paginator" id="update-paginator"></span>
             </div>
         </div>
     </div>

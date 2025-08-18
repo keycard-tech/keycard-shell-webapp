@@ -52,6 +52,11 @@ const updateProgressBar = document.getElementById("update-progress-bar") as HTML
 
 const selectUpdateText = document.getElementById("select-update-text") as HTMLSpanElement;
 
+const confirmUpdateInstructions = document.getElementById("finish-update-instructions") as HTMLDivElement;
+const continueUpdateBtnContainer = document.getElementById("keycard_shell__update-next-btn-container") as HTMLDivElement;
+const continueUpdateBtn = document.getElementById("update-next-btn") as HTMLButtonElement;
+const paginator = document.getElementById("update-paginator") as HTMLSpanElement;
+
 const mobileScreen = 959;
 
 const bc = new BroadcastChannel('process_channel');
@@ -80,15 +85,6 @@ function checkLatestVersion(deviceVersion: number, webVersion: number, updateSta
     }
 }
 
-function showStartScreen(activeScreen: HTMLDivElement) : void {
-    activeScreen.classList.add(hideScreenClass);
-
-    if(activeScreen.classList.contains(activeScreenClass)) {
-        activeScreen.classList.remove(activeScreenClass);
-    }
-    startUpdateScreen.classList.remove(hideScreenClass);
-}
-
 function showNextScreen(currentScreen: HTMLDivElement, nextScreen: HTMLDivElement) : void {
     currentScreen.classList.add(hideScreenClass);
 
@@ -108,6 +104,55 @@ function handleMobileUI() : void {
         startScreenHeading.innerHTML = TextStr.startScreenHeadingDesktop;
         startScreenPrompt.innerHTML = TextStr.startScreenPromptDesktop;
     }
+}
+
+function handleTransferStart(dataLength: number, promptText: string) : void {
+    paginator.innerHTML = "1/2";
+    updateProgressBar.classList.remove(hideScreenClass);
+    progressPercent.classList.remove(hideScreenClass);
+    updateProgressBar.max = dataLength;
+    progressPrompt.innerHTML = promptText;
+    continueUpdateBtnContainer.classList.contains(hideScreenClass) ? null : continueUpdateBtnContainer.classList.add(hideScreenClass);
+}
+
+function handleTransferCompleted (promptText: string) : void {
+    paginator.innerHTML = "2/2";
+    updateProgressBar.value = 0;
+    progressPrompt.innerHTML = promptText;
+    updateProgressBar.classList.add(hideScreenClass);
+    progressPercent.classList.add(hideScreenClass);
+    confirmUpdateInstructions.classList.remove(hideScreenClass);
+}
+
+function handleSuccessScreen() : void {
+    bc.postMessage({state: 'success', process: 'update'});
+    showNextScreen(updateInProgressScreen, updateSuccessScreen);
+    pagePrompt.innerHTML = TextStr.shellDisconnectPrompt;
+}
+
+async function transferDatabase(transport: Transport, appEth: Eth, data: ArrayBuffer, startTransferPrompt: string, updateDBPrompt: string) : Promise<boolean> {
+    handleTransferStart(data.byteLength, startTransferPrompt);
+
+    if(transport) {
+        UIUtils.handleUpdateLoadProgress(transport, updateProgressBar, progressPercent, () => handleTransferCompleted(updateDBPrompt));
+        await appEth.loadERC20DB(data);
+    }
+
+    return true;
+}
+
+async function transferFirmware(transport: Transport, appEth: Eth, data: ArrayBuffer, startTransferPrompt: string, updateFWPrompt: string) : Promise<void> {
+    handleTransferStart(data.byteLength, startTransferPrompt);
+
+    if(!transport && !appEth) {
+        transport = await TransportWebHID.create();
+        appEth = new KProJS.Eth(transport);
+    }
+
+    UIUtils.handleUpdateLoadProgress(transport, updateProgressBar, progressPercent, () => handleTransferCompleted(updateFWPrompt));
+    await appEth.loadFirmware(data); 
+
+    handleSuccessScreen();
 }
 
 async function handleShellUpdate() : Promise<void> {
@@ -186,24 +231,20 @@ async function handleShellUpdate() : Promise<void> {
 
         try {
             if(dbUpdateCheckbox.checked && !isDBLatest) {
-                updateProgressBar.max = dbData.byteLength;
-                progressPrompt.innerHTML = TextStr.progressDBPrompt + dbContext["version"];
-                UIUtils.handleUpdateLoadProgress(transport, updateProgressBar, progressPercent);
-                await appEth.loadERC20DB(dbData);
-                updateProgressBar.value = 0;
+                let dbUpdateCompleted  = await transferDatabase(transport, appEth, dbData, TextStr.progressDBPrompt + dbContext["version"], TextStr.dbTransferedText);
+                if(dbUpdateCompleted && (fwUpdateCheckbox.checked && !isFWLatest)) {
+                    confirmUpdateInstructions.classList.add(hideScreenClass);
+                    continueUpdateBtnContainer.classList.remove(hideScreenClass);
+                    continueUpdateBtn.addEventListener("click", async (e) => {
+                        await transferFirmware(null, null, fwData, TextStr.progressFWPrompt + fwContext["version"], TextStr.fwTransferedText);
+                        e.preventDefault();
+                    });
+                } else {
+                    handleSuccessScreen();
+                }
+            } else if(fwUpdateCheckbox.checked && !isFWLatest) {
+                await transferFirmware(transport, appEth, fwData, TextStr.progressFWPrompt + fwContext["version"], TextStr.fwTransferedText);
             }
-
-            if(fwUpdateCheckbox.checked && !isFWLatest) {
-                updateProgressBar.max = fwData.byteLength;
-                progressPrompt.innerHTML = TextStr.progressFWPrompt + fwContext["version"];
-                UIUtils.handleUpdateLoadProgress(transport, updateProgressBar, progressPercent);
-                await appEth.loadFirmware(fwData);
-                updateProgressBar.value = 0;
-            }
-
-            bc.postMessage({state: 'success', process: 'update'});
-            showNextScreen(updateInProgressScreen, updateSuccessScreen);
-            pagePrompt.innerHTML = TextStr.shellDisconnectPrompt;
         } catch(err) {
             pagePrompt.innerHTML = "";
             const activeStep = document.getElementsByClassName(activeScreenClass)[0] as HTMLDivElement;
