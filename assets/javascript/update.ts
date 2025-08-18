@@ -226,6 +226,11 @@ async function handleShellUpdate() : Promise<void> {
         fwUpdateCheckboxContainer.style.opacity = fwUpdateCheckbox.checked ? fieldEnabled : fieldDisabled;
     });
 
+    continueUpdateBtn.addEventListener("click", async (e) => {
+        await transferFirmware(null, null, fwData, TextStr.progressFWPrompt + fwContext["version"], TextStr.fwTransferedText);
+        e.preventDefault();
+    });
+
     transferDataBtn.addEventListener("click", async() => {
         showNextScreen(selectUpdateScreen, updateInProgressScreen);
 
@@ -235,10 +240,6 @@ async function handleShellUpdate() : Promise<void> {
                 if(dbUpdateCompleted && (fwUpdateCheckbox.checked && !isFWLatest)) {
                     confirmUpdateInstructions.classList.add(hideScreenClass);
                     continueUpdateBtnContainer.classList.remove(hideScreenClass);
-                    continueUpdateBtn.addEventListener("click", async (e) => {
-                        await transferFirmware(null, null, fwData, TextStr.progressFWPrompt + fwContext["version"], TextStr.fwTransferedText);
-                        e.preventDefault();
-                    });
                 } else {
                     handleSuccessScreen();
                 }
