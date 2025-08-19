@@ -1,9 +1,9 @@
 import ShellJS from "shelljs";
 import TransportWebHID from "shelljs-web-hid";
-import Eth from "shelljs/lib/eth";
 import Transport, { StatusCodes } from "shelljs/lib/transport";
 import { TextStr } from "./text_str";
 import { UIUtils } from "./ui_utils";
+import Commands from "shelljs/lib/commands";
 
 const mediaPrefix = document.getElementById('db_updater__media-prefix') as HTMLInputElement;
 
@@ -123,34 +123,34 @@ function handleSuccessScreen() : void {
     pagePrompt.innerHTML = TextStr.shellDisconnectPrompt;
 }
 
-async function transferDatabase(transport: Transport, appEth: Eth, data: ArrayBuffer, startTransferPrompt: string, updateDBPrompt: string) : Promise<boolean> {
+async function transferDatabase(transport: Transport, cmdSet: Commands, data: ArrayBuffer, startTransferPrompt: string, updateDBPrompt: string) : Promise<boolean> {
     handleTransferStart(data.byteLength, startTransferPrompt);
 
     if(transport) {
         UIUtils.handleUpdateLoadProgress(transport, updateProgressBar, progressPercent, () => handleTransferCompleted(updateDBPrompt));
-        await appEth.loadERC20DB(data);
+        await cmdSet.loadDatabase(data);
     }
 
     return true;
 }
 
-async function transferFirmware(transport: Transport, appEth: Eth, data: ArrayBuffer, startTransferPrompt: string, updateFWPrompt: string) : Promise<void> {
+async function transferFirmware(transport: Transport, cmdSet: Commands, data: ArrayBuffer, startTransferPrompt: string, updateFWPrompt: string) : Promise<void> {
     handleTransferStart(data.byteLength, startTransferPrompt);
 
-    if(!transport && !appEth) {
+    if(!transport && !cmdSet) {
         transport = await TransportWebHID.create();
-        appEth = new ShellJS.Eth(transport);
+        cmdSet = new Commands(transport);
     }
 
     UIUtils.handleUpdateLoadProgress(transport, updateProgressBar, progressPercent, () => handleTransferCompleted(updateFWPrompt));
-    await appEth.loadFirmware(data); 
+    await cmdSet.loadFirmware(data); 
 
     handleSuccessScreen();
 }
 
 async function handleShellUpdate() : Promise<void> {
     let transport: Transport;
-    let appEth: Eth;
+    let cmdSet: Commands;
 
     const fwContext = await fetch("../firmware/get-firmware").then((r) => r.json());
     const dbContext = await fetch("../get-db").then((r: any) => r.json());
@@ -170,16 +170,16 @@ async function handleShellUpdate() : Promise<void> {
     });
 
     startUpdateBtn.addEventListener("click", async (e) => {
-        if(!appEth) {
+        if(!cmdSet) {
             showNextScreen(startUpdateScreen, connectDeviceScreen);
 
             try {
                 transport = await TransportWebHID.create();
-                appEth = new ShellJS.Eth(transport);
+                cmdSet = new Commands(transport);
 
-                let { erc20Version, fwVersion } = await appEth.getAppConfiguration();
+                let { dbVersion, fwVersion } = await cmdSet.getAppConfiguration();
 
-                isDBLatest = checkLatestVersion(erc20Version, parseInt(dbContext["version"]), dbUpdateStatus, dbUpdateCheckbox, dbUpdateCheckboxContainer);
+                isDBLatest = checkLatestVersion(dbVersion, parseInt(dbContext["version"]), dbUpdateStatus, dbUpdateCheckbox, dbUpdateCheckboxContainer);
                 isFWLatest = checkLatestVersion(UIUtils.parseFWVersion(fwVersion), UIUtils.parseFWVersion(fwContext["version"]), fwUpdateStatus, fwUpdateCheckbox, fwUpdateCheckboxContainer);
             
                 transport.on("disconnect", async () => {
@@ -187,7 +187,7 @@ async function handleShellUpdate() : Promise<void> {
             
                     await transport.close();
                     transport = null;
-                    appEth = null;
+                    cmdSet = null;
                             
                     if(!activeStep.isEqualNode(updateSuccessScreen)) {
                         updateErrorMessage.innerHTML = "Error connecting to device";
@@ -232,7 +232,7 @@ async function handleShellUpdate() : Promise<void> {
 
         try {
             if(dbUpdateCheckbox.checked && !isDBLatest) {
-                let dbUpdateCompleted  = await transferDatabase(transport, appEth, dbData, TextStr.progressDBPrompt + dbContext["version"], TextStr.dbTransferedText);
+                let dbUpdateCompleted  = await transferDatabase(transport, cmdSet, dbData, TextStr.progressDBPrompt + dbContext["version"], TextStr.dbTransferedText);
                 if(dbUpdateCompleted && (fwUpdateCheckbox.checked && !isFWLatest)) {
                     confirmUpdateInstructions.classList.add(hideScreenClass);
                     continueUpdateBtnContainer.classList.remove(hideScreenClass);
@@ -240,7 +240,7 @@ async function handleShellUpdate() : Promise<void> {
                     handleSuccessScreen();
                 }
             } else if(fwUpdateCheckbox.checked && !isFWLatest) {
-                await transferFirmware(transport, appEth, fwData, TextStr.progressFWPrompt + fwContext["version"], TextStr.fwTransferedText);
+                await transferFirmware(transport, cmdSet, fwData, TextStr.progressFWPrompt + fwContext["version"], TextStr.fwTransferedText);
             }
         } catch(err) {
             pagePrompt.innerHTML = "";
