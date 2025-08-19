@@ -53,7 +53,9 @@ function resizeBottomMenu() : void {
 
 async function handleBaseUI() : Promise<void> {
     window.onscroll = () => menuScroll();
-    window.onresize = () => resetMenu();
+    window.addEventListener("resize", () => {
+        resetMenu();
+    });
 
     mobileMenuLink.addEventListener("click", () => {
     if(fixedMenu.classList.contains("keycard_shell__menu-fixed-opened")) {

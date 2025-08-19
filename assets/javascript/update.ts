@@ -64,13 +64,6 @@ const bc = new BroadcastChannel('process_channel');
 let isDBLatest : boolean;
 let isFWLatest: boolean;
 
-function preloadImage(imgUrl: string) : HTMLImageElement {
-    let image = new Image();
-    image.src = imgUrl;
-
-    return image;
-} 
-
 function checkLatestVersion(deviceVersion: number, webVersion: number, updateStatus: HTMLSpanElement, checkField: HTMLInputElement, container: HTMLDivElement) : boolean {
     if(webVersion <= deviceVersion) {
         updateStatus.innerHTML = TextStr.latest;
@@ -170,8 +163,11 @@ async function handleShellUpdate() : Promise<void> {
 
     transferDataBtn.disabled = !(dbUpdateCheckbox.checked || fwUpdateCheckbox.checked);
 
-    window.onresize = () => handleMobileUI();
     handleMobileUI();
+
+    window.addEventListener("resize", () => {
+        handleMobileUI();
+    });
 
     startUpdateBtn.addEventListener("click", async (e) => {
         if(!appEth) {
