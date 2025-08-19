@@ -1,7 +1,7 @@
-import KProJS from "kprojs";
-import TransportWebHID from "kprojs-web-hid";
-import Eth from "kprojs/lib/eth";
-import Transport, { StatusCodes } from "kprojs/lib/transport";
+import ShellJS from "shelljs";
+import TransportWebHID from "shelljs-web-hid";
+import Eth from "shelljs/lib/eth";
+import Transport, { StatusCodes } from "shelljs/lib/transport";
 import { TextStr } from "./text_str";
 import { UIUtils } from "./ui_utils";
 
@@ -139,7 +139,7 @@ async function transferFirmware(transport: Transport, appEth: Eth, data: ArrayBu
 
     if(!transport && !appEth) {
         transport = await TransportWebHID.create();
-        appEth = new KProJS.Eth(transport);
+        appEth = new ShellJS.Eth(transport);
     }
 
     UIUtils.handleUpdateLoadProgress(transport, updateProgressBar, progressPercent, () => handleTransferCompleted(updateFWPrompt));
@@ -175,7 +175,7 @@ async function handleShellUpdate() : Promise<void> {
 
             try {
                 transport = await TransportWebHID.create();
-                appEth = new KProJS.Eth(transport);
+                appEth = new ShellJS.Eth(transport);
 
                 let { erc20Version, fwVersion } = await appEth.getAppConfiguration();
 
@@ -245,7 +245,7 @@ async function handleShellUpdate() : Promise<void> {
         } catch(err) {
             pagePrompt.innerHTML = "";
             const activeStep = document.getElementsByClassName(activeScreenClass)[0] as HTMLDivElement;
-            if (err instanceof KProJS.KProError.TransportOpenUserCancelled) {
+            if (err instanceof ShellJS.ShellError.TransportOpenUserCancelled) {
                 updateErrorMessage.innerHTML = "Error connecting to device";
                 showNextScreen(activeStep, updateFailedScreen);
             } else {
