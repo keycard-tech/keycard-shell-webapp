@@ -40,6 +40,7 @@ export namespace TextStr {
     export const selectiveUpdate = "Update available — selective update supported";
 
     export const updateCanceled = "Update canceled by user";
-    export const updateFailed = "Update transfer failed";
+    export const updateFailed = "Transfer failed";
+    export const installationFailed = "IInstallation failed";
 
 }

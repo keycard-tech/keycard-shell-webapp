@@ -249,7 +249,12 @@ async function handleShellUpdate() : Promise<void> {
                 updateErrorMessage.innerHTML = "Error connecting to device";
                 showNextScreen(activeStep, updateFailedScreen);
             } else {
-                updateErrorMessage.innerHTML = (err.statusCode == StatusCodes.SECURITY_STATUS_NOT_SATISFIED) ? TextStr.updateCanceled:  TextStr.updateFailed;
+                updateErrorMessage.innerHTML = (err.statusCode == StatusCodes.SECURITY_STATUS_NOT_SATISFIED) ? TextStr.updateCanceled:  TextStr.installationFailed;
+
+                if(updateProgressBar.value > 0) {
+                  updateErrorMessage.innerHTML =  TextStr.updateFailed;
+                }
+              
                 showNextScreen(activeStep, updateFailedScreen);
             }
             await transport.close();

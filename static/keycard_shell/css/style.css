@@ -1852,6 +1852,15 @@ body {
     line-height: var(--header-line-height);
   }
 
+  .keycard_shell__page-text {
+    font-family: var(--text-font-inter);
+    font-size: var(--text-16);
+    line-height: var(--text-line-height);
+    font-weight: var(--text-font-weight);
+    letter-spacing: var(--text-letter-spacing);
+    color: var(--white-60);
+  }
+
   .keycard_shell__h2 {
     font-size: var(--text-28);
   }
