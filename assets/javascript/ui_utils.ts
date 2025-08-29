@@ -54,4 +54,16 @@ export namespace UIUtils {
     let verArr = Array.from(version.split('.'), Number);
     return (verArr[0] * 1000000) + (verArr[1] * 1000) + verArr[2];
   }
+
+  export function getOS() : string {
+    if(navigator.userAgent.includes('Mac')) {
+        return 'mac';
+    } else if(navigator.userAgent.includes('Windows')) {
+        return 'windows';
+    } else if(navigator.userAgent.includes('Linux')) {
+        return 'linux';
+    } else {
+        return '';
+    }
+  }
 }
