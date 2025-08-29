@@ -1,9 +1,9 @@
-import ShellJS from "shelljs";
-import TransportWebHID from "shelljs-web-hid";
-import Transport, { StatusCodes } from "shelljs/lib/transport";
+import ShellJS from "@choppu/shelljs";
+import TransportWebHID from "@choppu/shelljs-web-hid";
+import Transport, { StatusCodes } from "@choppu/shelljs/lib/transport";
 import { TextStr } from "./text_str";
 import { UIUtils } from "./ui_utils";
-import Commands from "shelljs/lib/commands";
+import Commands from "@choppu/shelljs/lib/commands";
 
 const mediaPrefix = document.getElementById('db_updater__media-prefix') as HTMLInputElement;
 

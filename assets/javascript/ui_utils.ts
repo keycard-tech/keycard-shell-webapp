@@ -1,5 +1,5 @@
 import { CameraDevice } from "html5-qrcode";
-import Transport from "shelljs/lib/transport";
+import Transport from "@choppu/shelljs/lib/transport";
 
 export namespace UIUtils {
   export function handleUpdateLoadProgress(transport: Transport, loadBar: HTMLProgressElement, progressPercent: HTMLSpanElement, cbFunc: () => void) : void {
