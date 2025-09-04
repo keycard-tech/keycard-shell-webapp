@@ -20,6 +20,7 @@ from django.shortcuts import redirect
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from django.views.generic import TemplateView
 
 admin.site.site_header = "Keycard ShellAdmin"
 admin.site.site_title = "Keycard Shell Admin"
@@ -28,7 +29,7 @@ admin.site.index_title = 'Keycard Shell Admin'
 urlpatterns = [
   path('admin/', lambda r: redirect(f"/admin/db_update/db/")),
   path('admin/', admin.site.urls),
-  path('', include("apps.db_update.urls", namespace='default')),
+  path('', TemplateView.as_view(template_name="./keycard_shell/landing.html")),
   path('update/', include("apps.db_update.urls")),
   path('verify/', include("apps.device_verify.urls")),
   path('firmware/', include("apps.firmware_update.urls")),

@@ -11,6 +11,7 @@ const bottomContainer = document.getElementById("bottom-content-container") as H
 const bottomHeading = document.getElementById("bottom-heading") as HTMLDivElement;
 const updateShell = document.getElementById("update") as HTMLDivElement;  
 const verifyDevice = document.getElementById("verify") as HTMLDivElement;
+const contactContainer = document.getElementById("contact") as HTMLDivElement;
 
 const menuScrollBgColor = "#FFFFFF0A";
 const btnScrollBgColor = "#FF6400";
@@ -76,6 +77,10 @@ async function handleBaseUI() : Promise<void> {
         buyBtn.style.display = "none";
     }
    }); 
+
+   if(location.pathname == '/') {
+        contactContainer.classList.add('keycard_shell__display-none');
+   }
 
     bc.onmessage = ((e) => {
         let data = e.data;
