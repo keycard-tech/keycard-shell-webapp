@@ -18,8 +18,8 @@ const dbHash = document.getElementById("db-hash") as HTMLSpanElement;
 const dbBtnLabel = document.getElementById("download-db-label") as HTMLSpanElement;
 
 async function handleAirGappedUpdate() : Promise<void> {
-    const fwContext = await fetch("../firmware/get-firmware").then((r) => r.json());
-    const dbContext = await fetch("../get-db").then((r: any) => r.json());
+    const fwContext = await fetch("/firmware/get-firmware").then((r) => r.json());
+    const dbContext = await fetch("/update/get-db").then((r: any) => r.json());
     const fwFilePath = await fetch(mediaPrefix.value + fwContext["fw_path"]) as any;
     const dbFilePath = await fetch(mediaPrefix.value + dbContext["db_path"]) as any;
 

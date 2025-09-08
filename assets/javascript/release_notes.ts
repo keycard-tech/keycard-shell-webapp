@@ -37,7 +37,7 @@ async function renderReleaseNotesUI(fw: any, fwId: number, changelog: string) : 
 }
 
 async function handleReleaseNotes() : Promise<void> {
-    const fwReleaseNotes = await fetch("../firmware/get-firmwares").then((r) => r.json());
+    const fwReleaseNotes = await fetch("/firmware/get-firmwares").then((r) => r.json());
     
     for (let i = 0; i < fwReleaseNotes.length; i++) {
         let changelogPath = fwReleaseNotes[i]["changelog"];
