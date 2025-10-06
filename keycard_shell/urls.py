@@ -29,7 +29,7 @@ admin.site.index_title = 'Keycard Shell Admin'
 urlpatterns = [
   path('admin/', lambda r: redirect(f"/admin/db_update/db/")),
   path('admin/', admin.site.urls),
-  path('', TemplateView.as_view(template_name="./keycard_shell/landing.html")),
+  path('', TemplateView.as_view(template_name="./keycard_shell/landing.html"), name= "landing"),
   path('update/', include("apps.db_update.urls")),
   path('verify/', include("apps.device_verify.urls")),
   path('firmware/', include("apps.firmware_update.urls")),

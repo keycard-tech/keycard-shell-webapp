@@ -11,7 +11,7 @@ export namespace TextStr {
     export const btnTryAgain = "Try again";
     export const btnLearnMore = "Learn more";
 
-    export const stepPrompt = `Go to Settings / Device / Verification on your Shell and scan this QR to initiate the device verification.<br>`;
+    export const stepPrompt = `Go to Go to Settings/Shell/Verify on your Shell and scan this QR to initiate the device verification.<br>`;
 
     /* Update ERC20 Consts */
 

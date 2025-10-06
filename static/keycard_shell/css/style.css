@@ -472,13 +472,14 @@ body {
     flex-direction: row;
     flex-wrap: wrap;
     padding: 0 24px;
-    height: 174px;
+    box-sizing: border-box;
+    height: 100%;
 }
 
 .keycard_shell__footer-logo-container {
-    width: 35%;
+    width: 20%;
     box-sizing: border-box;
-    flex: 1 1 35%;
+    flex: 1 1 20%;
     height: 40px;
     display: flex;
     align-items: center;
@@ -486,22 +487,22 @@ body {
 }
 
 .keycard_shell__footer-menu-containers {
-    width: 65%;
+    width: 80%;
     box-sizing: border-box;
-    flex: 1 1 65%;
+    flex: 1 1 80%;
     flex-direction: row;
     display: flex;
     flex-wrap: wrap;
 }
 
 .keycard_shell__footer-menu {
-    width: 25%;
+    width: 20%;
     box-sizing: border-box;
-    flex: 1 1 25%;
+    flex: 1 1 20%;
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
-    padding: 0 24px;
+    padding: 0 24px 24px 24px;
     border-left: dashed 1px var(--white-20);
     gap: 1.5em;
 }
@@ -655,6 +656,9 @@ body {
 
 .keycard_shell__start-update-img {
     width: 78%;
+    mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0, rgba(0,0,0,.5) 45%, rgba(0,0,0,0) 90%), radial-gradient(circle, rgba(0,0,0,1) 0, rgba(0,0,0,0) 40%);
+    -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0, rgba(0,0,0,.5) 45%, rgba(0,0,0,0) 90%), radial-gradient(circle, rgba(0,0,0,1) 0, rgba(0,0,0,0) 40%);
+    opacity: .8;
 }
 
 .keycard_shell__start-update-text-container {
@@ -666,6 +670,7 @@ body {
     width: 434px;
     margin-top: -130px;
     flex-wrap: wrap;
+    z-index: 333;
 }
 
 .keycard_shell__update-heading {
@@ -1059,12 +1064,16 @@ body {
 .keycard_shell__landing-img-container {
     width: 44%;
     max-width: 791px;
-    margin: -20px auto 0 auto;
-    opacity: .6;
+    margin: -15px auto 0 auto;
+    opacity: .95;
 }
 
 .keycard_shell__landing-img {
-    width: 100%;
+    width: 80%;
+    margin: 0 auto;
+    display: block;
+    mask-image: linear-gradient(-10deg, rgba(0,0,0,1) 10%, rgba(0,0,0,.8) 30%, rgba(0,0,0,.6) 75%, rgba(0,0,0,0) 95%);
+    -webkit-mask-image: linear-gradient(-10deg, rgba(0,0,0,1) 10%, rgba(0,0,0,.8) 30%, rgba(0,0,0,.6) 75%, rgba(0,0,0,0) 95%);
 }
 
 .keycard_shell__landing-links-container {
@@ -2074,6 +2083,10 @@ body {
     border-top: dashed 1px var(--white-20);
     padding: 24px;
     box-sizing: border-box;
+  }
+
+  .keycard_shell__foter-menu-last {
+    border-left: none;
   }
 
   .keycard_shell__footer-menu:nth-child(1), .keycard_shell__footer-menu:nth-child(3) {

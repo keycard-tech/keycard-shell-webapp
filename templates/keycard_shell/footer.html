@@ -8,24 +8,43 @@
         </div>
         <div class="keycard_shell__footer-menu-containers">
             <div class="keycard_shell__footer-menu">
-                <h2 class="keycard_shell__footer-header">Products</h2>
+                <h2 class="keycard_shell__footer-header">Keycard</h2>
                 <ul class="keycard_shell__footer-menu-list">
-                    <li class="keycard_shell__footer-menu-list-element"><a href="https://keycard.tech/keycard" class="keycard_shell__footer-menu-link">Keycard</a></li>
-                    <li class="keycard_shell__footer-menu-list-element"><a href="https://keycard.tech/keycard-shell" class="keycard_shell__footer-menu-link">Keycard Shell</a></li>
+                    <li class="keycard_shell__footer-menu-list-element"><a href="https://keycard.tech/keycard" class="keycard_shell__footer-menu-link">About Keycard</a></li>
+                    <li class="keycard_shell__footer-menu-list-element"><a href="https://get.keycard.tech/pages/keycard" class="keycard_shell__footer-menu-link">Buy Keycard</a></li>
+                    <li class="keycard_shell__footer-menu-list-element"><a href="https://keycard.tech/start" class="keycard_shell__footer-menu-link">Get Started</a></li>
+                </ul>
+            </div>
+            <div class="keycard_shell__footer-menu">
+                <h2 class="keycard_shell__footer-header">Shell</h2>
+                <ul class="keycard_shell__footer-menu-list">
+                    <li class="keycard_shell__footer-menu-list-element"><a href="https://get.keycard.tech/pages/keycard-shell" class="keycard_shell__footer-menu-link">About Shell</a></li>
+                    <li class="keycard_shell__footer-menu-list-element"><a href="https://get.keycard.tech/pages/keycard-shell" class="keycard_shell__footer-menu-link">Buy Shell</a></li>
+                    <li class="keycard_shell__footer-menu-list-element"><a href="{% url 'landing' %}" class="keycard_shell__footer-menu-link">Owner's hub</a></li>
+                    <li class="keycard_shell__footer-menu-list-element"><a href="https://keycard.tech/start/shell" class="keycard_shell__footer-menu-link">Quick Start Guide</a></li>
+                    <li class="keycard_shell__footer-menu-list-element"><a href="{% url 'db:update-index' %}" class="keycard_shell__footer-menu-link">Update Shell</a></li>
+                    <li class="keycard_shell__footer-menu-list-element"><a href="{% url 'device:verify-index' %}" class="keycard_shell__footer-menu-link">Verify Shell</a></li>
                 </ul>
             </div>
             <div class="keycard_shell__footer-menu">
                 <h2 class="keycard_shell__footer-header">Info</h2>
                 <ul class="keycard_shell__footer-menu-list">
-                    <li class="keycard_shell__footer-menu-list-element"><a href="https://keycard.tech/start" class="keycard_shell__footer-menu-link">Get started</a></li>
-                    <li class="keycard_shell__footer-menu-list-element"><a href="https://keycard.tech/docs/overview" class="keycard_shell__footer-menu-link">Documentation</a></li>
+                    <li class="keycard_shell__footer-menu-list-element"><a href="https://keycard.tech/about" class="keycard_shell__footer-menu-link">About</a></li>
                     <li class="keycard_shell__footer-menu-list-element"><a href="https://keycard.tech/blog" class="keycard_shell__footer-menu-link">Blog</a></li>
+                    <li class="keycard_shell__footer-menu-list-element"><a href="https://keycard.tech/help" class="keycard_shell__footer-menu-link">Help</a></li>
+                    <li class="keycard_shell__footer-menu-list-element"><a href="https://keycard.tech/developers" class="keycard_shell__footer-menu-link">Developers</a></li>
+                    <li class="keycard_shell__footer-menu-list-element">
+                        <a href="https://affiliates.keycard.tech/" class="keycard_shell__footer-menu-link">
+                            <span>Affiliates</span>
+                            <img src="{% static 'keycard_shell/img/external.svg' %}" class="keycard_shell__footer-menu-link-ext-ic" alt="External Link">
+                        </a> 
+                    </li>
                 </ul>
             </div>
             <div class="keycard_shell__footer-menu">
                 <h2 class="keycard_shell__footer-header">Contacts</h2>
                 <ul class="keycard_shell__footer-menu-list">
-                    <li class="keycard_shell__footer-menu-list-element"><a href="mailto:support@keycard.tech" class="keycard_shell__footer-menu-link">Get in touch</a></li>
+                    <li class="keycard_shell__footer-menu-list-element"><a href="https://keycard.tech/contact" class="keycard_shell__footer-menu-link">Contact us</a></li>
                     <li class="keycard_shell__footer-menu-list-element">
                         <a href="https://discord.com/invite/uJAXk7jFhZ" class="keycard_shell__footer-menu-link">
                             <span>Discord</span>
@@ -40,7 +59,7 @@
                     </li>
                 </ul>
             </div>
-            <div class="keycard_shell__footer-menu">
+            <div class="keycard_shell__footer-menu keycard_shell__foter-menu-last">
                 <h2 class="keycard_shell__footer-header">Legal</h2>
                 <ul class="keycard_shell__footer-menu-list">
                     <li class="keycard_shell__footer-menu-list-element"><a href="https://keycard.tech/legal/privacy-policy" class="keycard_shell__footer-menu-link">Privacy policy</a></li>
