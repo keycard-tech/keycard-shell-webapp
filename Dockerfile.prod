@@ -4,6 +4,10 @@
 # pull official base image
 FROM python:3.13.2-alpine as builder
 
+# Build args for UID/GID
+ARG UID=1000
+ARG GID=1000
+
 # set work directory
 WORKDIR /usr/src/keycard_shell
 # set environment variables
@@ -30,11 +34,15 @@ RUN pip wheel --no-cache-dir --no-deps --wheel-dir /usr/src/keycard_shell/wheels
 # pull official base image
 FROM python:3.13.2-alpine
 
+# Build args for UID/GID
+ARG UID=1000
+ARG GID=1000
+
 # create directory for the app user
 RUN mkdir -p /home/keycard_shell
 
 # create the app user
-RUN addgroup -S keycard_shell && adduser -S keycard_shell -G keycard_shell
+RUN addgroup -g ${GID} -S keycard_shell && adduser -u ${UID} -S keycard_shell -G keycard_shell
 
 # create the appropriate directories
 ENV HOME=/home/keycard_shell
@@ -61,15 +69,15 @@ COPY . $APP_HOME
 RUN sed -i 's/\r//g' $APP_HOME/entrypoint.prod.sh
 RUN chmod +x $APP_HOME/entrypoint.prod.sh
 
-# chown all the files to the app user
-RUN chown -R keycard_shell:keycard_shell $APP_HOME
-RUN mkdir -p /var/lib/keycard_shell/data
-RUN chown -R keycard_shell:keycard_shell /var/lib/keycard_shell/data
-
 # build JS, CSS
 RUN npm install
 RUN npm run build
 RUN npm cache clean --force
+
+# chown all the files to the app user
+RUN chown -R ${UID}:${GID} $APP_HOME
+RUN mkdir -p /var/lib/keycard_shell/data
+RUN chown -R ${UID}:${GID} /var/lib/keycard_shell/data
 
 # change to the app user
 USER keycard_shell
