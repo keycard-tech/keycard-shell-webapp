@@ -49,6 +49,7 @@ INSTALLED_APPS = [
   'apps.two_factor_auth',
   'apps.db_update',
   'apps.device_verify',
+  'apps.redeem_codes',
   'apps.firmware_update',
   'apps.users',
   "django_extensions"
