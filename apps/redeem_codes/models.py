@@ -1,8 +1,20 @@
 from django.db import models
+from django.core.exceptions import ValidationError
+import re
 
+def validate_campaign_name(str):
+  if re.match(r'^[a-zA-Z0-9_-]+$', str) is not None:
+    return str
+  else:
+    raise ValidationError("Campaign name must be url safe")
+  
 class Redeem(models.Model):
-  campaign_name = models.CharField(max_length=200, unique=False, verbose_name='Campaign name')
-  redeem_code = models.CharField(max_length=32, blank=True, unique=True, verbose_name='Redeem code')
+  class Meta:
+    verbose_name = "Redeem Campaign"
+    verbose_name_plural = "Redeem Campaigns"
+    
+  campaign_name = models.CharField(max_length=200, unique=False, verbose_name='Campaign name', validators=[validate_campaign_name])
+  redeem_code = models.CharField(max_length=48, blank=True, unique=True, verbose_name='Redeem code')
   redemption_address_type = models.IntegerField(verbose_name='Redemption address type')
   redemption_state = models.BooleanField(default=False, verbose_name='Redeemed')
   redemption_date = models.DateTimeField(null=True, blank=True, default=None, verbose_name='Redemption date')

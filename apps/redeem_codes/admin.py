@@ -1,18 +1,43 @@
 from django.contrib import admin
-from django.db import IntegrityError, transaction
+from django.db import IntegrityError
 from django.contrib import messages
+from django.http import HttpResponse
 
 from apps.redeem_codes.forms import RedeemForm, RedeemChangeForm
-from common.consts import REDEEM_ADDRESSES
+from common.consts import REDEEM_ADDRESSES, REDEMPTION_LINK
 from common.errors import get_error_message
 
 from .models import Redeem
 
 import secrets
 import base64
+import csv
 
-class RedeemAdmin(admin.ModelAdmin):
+class ExportCsvMixin:
+    def export_campaign_as_csv(self, request, queryset):
+
+        meta = self.model._meta
+        field_names = [field.name for field in meta.fields]
+        field_names.append('redemption_link')
+
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename={}.csv'.format(queryset.first().campaign_name)
+        writer = csv.writer(response)
+        writer.writerow(field_names)
+        
+        for obj in queryset:
+          redemption_link = '{}/{}/{}'.format(REDEMPTION_LINK, obj.campaign_name, obj.redeem_code)
+          obj.redemption_address_type = REDEEM_ADDRESSES[obj.redemption_address_type]
+          writer.writerow([getattr(obj, field) if field != 'redemption_link' else redemption_link  for field in field_names])
+
+        return response
+
+    export_campaign_as_csv.short_description = "Export Selected Campaign"
+
+class RedeemAdmin(admin.ModelAdmin, ExportCsvMixin):
+    list_filter = ["campaign_name"]
     list_display = ('campaign_name', 'redeem_code', 'redemption_address_type_display', 'redemption_state', 'redemption_date')
+    actions = ["export_campaign_as_csv"]
     
     @admin.display(description='Address type')
     def redemption_address_type_display(self, obj):
@@ -52,13 +77,22 @@ class RedeemAdmin(admin.ModelAdmin):
     
     def save_model(self, request, obj, form, change):
         try:
-            redeem_form_data = form.cleaned_data
+          redeem_form_data = form.cleaned_data
+          codesCount = redeem_form_data.get('quantity')
+          data = []
+          for i in range(codesCount):
             code = base64.b32encode(secrets.token_bytes(16)).replace(b'=', b'').decode("ascii")
-            obj.redeem_code = redeem_form_data.get('code_prefix') + code
-
-            with transaction.atomic():
-                if(obj.redeem_code):
-                    super().save_model(request, obj, form, change)
+            r_code = redeem_form_data.get('code_prefix').upper() + code
+            if(r_code):
+              redeem_code = Redeem(
+                campaign_name=redeem_form_data.get('campaign_name'),
+                redeem_code=r_code,
+                redemption_address_type=redeem_form_data.get('redemption_address_type'),
+              )
+              data.append(redeem_code)
+          if data:  
+            Redeem.objects.bulk_create(data)   
+            self.message_user(request, "Redeem codes created successfully") 
         except IntegrityError as err:
             messages.set_level(request, messages.ERROR)
             messages.add_message(request, messages.ERROR, "Redeem code already exists")          

@@ -12,3 +12,5 @@ REDEEM_ADDRESSES = {
   0: "Ethereum",
   1: "Bitcoin" 
 }
+
+REDEMPTION_LINK = 'https://shell.keycard.tech/redeem'
