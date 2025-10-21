@@ -1,14 +1,14 @@
 from django import forms
 
-from apps.redeem_codes.models import Redeem
+from apps.redeem_codes.models import Address, Campaign
 from common.consts import REDEEM_ADDRESSES
 
-class RedeemForm(forms.ModelForm):
+class CampaignAddForm(forms.ModelForm):
   code_prefix = forms.CharField(max_length=10, required=False)
   quantity = forms.IntegerField(required=True, min_value=1, initial=1)
   
   class Meta:
-    model = Redeem
+    model = Campaign
     fields = [
       'campaign_name',
       'redeem_code',
@@ -26,9 +26,9 @@ class RedeemForm(forms.ModelForm):
       'redemption_date': forms.HiddenInput(),
     }
   
-class RedeemChangeForm(forms.ModelForm):
+class CampaignChangeForm(forms.ModelForm):
   class Meta:
-    model = Redeem
+    model = Campaign
     fields = [
       'campaign_name',
       'redeem_code',
@@ -36,4 +36,27 @@ class RedeemChangeForm(forms.ModelForm):
       'redemption_state',
       'redemption_date'
     ]
+    
+class AddressAddForm(forms.ModelForm):
+  redemption_address_type = forms.ChoiceField(required=True, choices=REDEEM_ADDRESSES)
+  
+  class Meta:
+    model = Address
+    fields = [
+        'campaign_name',
+        'redemption_address'
+    ]
+    widgets = {
+        'campaign_name': forms.TextInput(),
+        'redemption_address_type': forms.Select(),
+        'redemption_address': forms.TextInput()
+    }  
+    
+class AddressChangeForm(forms.ModelForm):
+  class Meta:
+    model = Address
+    fields = [
+      'campaign_name',
+      'redemption_address'
+    ]  
     

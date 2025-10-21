@@ -8,7 +8,7 @@ def validate_campaign_name(str):
   else:
     raise ValidationError("Campaign name must be url safe")
   
-class Redeem(models.Model):
+class Campaign(models.Model):
   class Meta:
     verbose_name = "Redeem Campaign"
     verbose_name_plural = "Redeem Campaigns"
@@ -21,3 +21,14 @@ class Redeem(models.Model):
 
   def __str__(self):
     return f"{self.redeem_code}"
+  
+class Address(models.Model):
+  class Meta:
+    verbose_name = "Redeem Address"
+    verbose_name_plural = "Redeem Addresses"
+    
+  campaign_name = models.CharField(max_length=200, unique=False, verbose_name='Campaign name', validators=[validate_campaign_name])
+  redemption_address = models.CharField(max_length=42, unique=False, verbose_name='Redemption address')
+  
+  def __str__(self):
+    return f"{self.redemption_address}"
