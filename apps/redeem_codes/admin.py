@@ -1,3 +1,4 @@
+from django.urls import path
 from django.contrib import admin
 from django.db import IntegrityError
 from django.contrib import messages
@@ -13,31 +14,11 @@ import secrets
 import base64
 import csv
 
-class ExportCsvMixin:
-    def export_campaign_as_csv(self, request, queryset):
-
-        meta = self.model._meta
-        field_names = [field.name for field in meta.fields]
-        field_names.append('redemption_link')
-
-        response = HttpResponse(content_type='text/csv')
-        response['Content-Disposition'] = 'attachment; filename={}.csv'.format(queryset.first().campaign_name)
-        writer = csv.writer(response)
-        writer.writerow(field_names)
-        
-        for obj in queryset:
-          redemption_link = '{}/{}/{}'.format(REDEMPTION_LINK, obj.campaign_name, obj.redeem_code)
-          obj.redemption_address_type = REDEEM_ADDRESSES[obj.redemption_address_type]
-          writer.writerow([getattr(obj, field) if field != 'redemption_link' else redemption_link  for field in field_names])
-
-        return response
-
-    export_campaign_as_csv.short_description = "Export Selected Campaign"
-
-class RedeemAdmin(admin.ModelAdmin, ExportCsvMixin):
+class RedeemAdmin(admin.ModelAdmin):
     list_filter = ["campaign_name"]
     list_display = ('campaign_name', 'redeem_code', 'redemption_address_type_display', 'redemption_state', 'redemption_date')
-    actions = ["export_campaign_as_csv"]
+    
+    change_list_template = "admin/redeem_changelist.html"
     
     @admin.display(description='Address type')
     def redemption_address_type_display(self, obj):
@@ -46,12 +27,35 @@ class RedeemAdmin(admin.ModelAdmin, ExportCsvMixin):
     form = RedeemChangeForm
     add_form = RedeemForm
     
+    def get_urls(self):
+      urls = super().get_urls()
+      custom_urls = [path('export-campaign/', self.export_campaign_as_csv)]
+      return custom_urls + urls
+    
     def get_form(self, request, obj=None, **kwargs):
       defaults = {}
       if obj is None:
           defaults['form'] = self.add_form
       defaults.update(kwargs)
       return super().get_form(request, obj, **defaults)
+    
+    def export_campaign_as_csv(self, request):
+      c_name = request.GET.get('campaign_name')
+      campaign = Redeem.objects.all().filter(campaign_name=request.GET.get('campaign_name'))
+      meta = self.model._meta
+      field_names = [field.name for field in meta.fields]
+      field_names.append('redemption_link')
+      response = HttpResponse(content_type='text/csv')
+      response['Content-Disposition'] = 'attachment; filename={}.csv'.format(c_name)
+      writer = csv.writer(response)
+      writer.writerow(field_names)
+        
+      for obj in campaign:
+        redemption_link = '{}/{}/{}'.format(REDEMPTION_LINK, obj.campaign_name, obj.redeem_code)
+        obj.redemption_address_type = REDEEM_ADDRESSES[obj.redemption_address_type]
+        writer.writerow([getattr(obj, field) if field != 'redemption_link' else redemption_link  for field in field_names])
+
+      return response
 
     def has_change_permission(self, request, obj=None):
       return False
