@@ -117,7 +117,7 @@ def verify(device_data, redeem_data=None):
         else:  
           r_code.redemption_state = True
           r_code.redemption_date = datetime.datetime.utcnow()
-          ra_obj = Address(campaign_name=redeem_data.campaign_name, redemption_address=redeem_data["redemption_address"])
+          ra_obj = Address(campaign_name=redeem_data["campaign_name"], redemption_address=redeem_data["redemption_address"])
         
           try:
             with transaction.atomic():

@@ -68,7 +68,7 @@ class RedeemCampaignAdmin(admin.ModelAdmin):
       writer.writerow(field_names)
         
       for obj in campaign:
-        redemption_link = '{}/{}/{}/{}'.format(REDEMPTION_LINK, obj.campaign_name, obj.redeem_code, obj.redemption_address_type)
+        redemption_link = '{}/{}/{}'.format(REDEMPTION_LINK, obj.campaign_name, obj.redeem_code)
         obj.redemption_address_type = REDEEM_ADDRESSES[obj.redemption_address_type]
         writer.writerow([getattr(obj, field) if field != 'redemption_link' else redemption_link  for field in field_names])
 
@@ -104,7 +104,7 @@ class RedeemCampaignAdmin(admin.ModelAdmin):
           for i in range(codesCount):
             code = base64.b32encode(secrets.token_bytes(16)).replace(b'=', b'').decode("ascii")
             r_code = redeem_form_data.get('code_prefix').upper() + code
-            if(r_code):
+            if r_code:
               redeem_code = Campaign(
                 campaign_name=redeem_form_data.get('campaign_name'),
                 redeem_code=r_code,
@@ -117,7 +117,7 @@ class RedeemCampaignAdmin(admin.ModelAdmin):
         except IntegrityError as err:
             messages.set_level(request, messages.ERROR)
             messages.add_message(request, messages.ERROR, "Redeem code already exists")          
-        except (Exception) as err:
+        except Exception as err:
             msg = get_error_message(err)
             messages.set_level(request, messages.ERROR)
             messages.add_message(request, messages.ERROR, msg)  

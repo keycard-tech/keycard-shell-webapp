@@ -1,0 +1,8 @@
+{% extends './base.html' %}
+{% load static %}
+{% block title %}Redeem {{redeem_code}}{% endblock title %}
+{% block content %}
+    <input type="hidden" id="device_verify__csfr" name="csfr" value="{{ csrf_token }}">
+    {{redeem_code}}
+    <script src="{% static '/keycard_shell/js/redeem.js' %}"></script>
+{% endblock %}
