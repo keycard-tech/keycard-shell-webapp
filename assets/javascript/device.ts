@@ -2,25 +2,11 @@ import { QRUtils } from "./qr_utils";
 import { TextStr } from "./text_str";
 import {UR, UREncoder, URDecoder} from '@ngraveio/bc-ur'
 import {Html5Qrcode} from "html5-qrcode";
-import { UIUtils } from "./ui_utils";
+import { VerifyUtils } from "./verify_utils";
 
 const QRious = require('qrious');
 const postReqURL = './verify';
-const verState = {
-  1: "dev_auth_init",
-  2: "dev_auth_device",
-  3: "dev_auth_server"
-};
-const keys = {
-  1: "dev_auth_device",
-  2: "device_id",
-  3: "first_auth",
-  4: "auth_time",
-  5: "auth_count",
-  6: "challenge",
-  7: "signature",
-  8: "initial_challenge"
-};
+
 const maxFragmentLength = 500;
 
 const step1Container = document.getElementById("kpro_web__verify-step1");
@@ -36,42 +22,6 @@ const scanFinishedButton = document.getElementById("device_verify__scan-finished
 const scanVerificationCountWarning = document.getElementById("device-verification-count-warning") as HTMLDivElement;
 
 const bc = new BroadcastChannel('process_channel');
-
-async function verify(data: FormData, csrftoken: string, url: string) : Promise<any|void> {
-  try {
-    return await fetch(url, {
-      method: 'POST',
-      headers: {'X-CSRFToken': csrftoken},
-      body: data,
-      mode: 'same-origin'
-    }).then(async (data) => {
-      return await data.json();
-    });
-  } catch(err) {
-    console.log(err);
-  }
-}
-
-async function stopScanning(html5QrCode:Html5Qrcode) : Promise<void> {
-  if (html5QrCode.isScanning) {
-    await html5QrCode.stop();
-    html5QrCode.clear();
-  }
-}
-
-function handleDeviceResponse(resp: Buffer, challenge: Uint8Array) : FormData {
-  const reqData = new FormData();
-  const deviceId = (resp[2] as any).toString("hex");
-  const deviceChallenge = (resp[6] as any).toString("hex");
-  const signature = (resp[7] as any).toString("hex");
-
-  reqData.append(keys[2], deviceId);
-  reqData.append(keys[6], deviceChallenge);
-  reqData.append(keys[7], signature);
-  reqData.append(keys[8], Buffer.from(challenge).toString("hex"));
-
-  return reqData;
-}
 
 function handleVerificationComplete(r: any) : void { 
   bc.postMessage({state: 'success', process: 'verify'});
@@ -115,58 +65,9 @@ function handleQRErrorUI(qrError?: boolean) : void {
     
 }
 
-async function onScanSuccess(decodedText: any, challenge: Uint8Array, decoder: URDecoder, csrftoken: string, html5QrCode: Html5Qrcode) : Promise<void> {
-    await stopScanning(html5QrCode);
-
-    try {
-        const data = QRUtils.decodeQR(decoder, decodedText);
-        const status = data[1];
-    
-        if (verState[status as keyof typeof verState] == "dev_auth_device") {
-            const reqData = handleDeviceResponse(data, challenge);
-            const r = await verify(reqData, csrftoken, postReqURL) as any;
-            handleVerificationComplete(r);
-        } else {
-            handleQRErrorUI();
-        }
-    } catch(e) {
-        handleQRErrorUI(true);
-    }
-}
-
-function onScanFailure(error: any) : void {
-  return error;
-}
-
-async function videoPermissionsGranted() : Promise<boolean> {
-    return (await navigator.permissions.query({name: 'camera'})).state == "granted";
-}
-
-async function handleCamerasSelector(cameraSelector: HTMLSelectElement) : Promise<string> {
-    return await Html5Qrcode.getCameras().then((devices) => {
-        UIUtils.addCameraSelectOption(cameraSelector, devices);
-        return cameraSelector.value;
-    });
-}
-
-async function startScanning(challenge: Uint8Array, decoder: URDecoder, csrftoken: string, html5QrCode: Html5Qrcode, cameraId: string) : Promise<void> {
+async function handleStartScanning(challenge: Uint8Array, decoder: URDecoder, csrftoken: string, html5QrCode: Html5Qrcode, cameraId: string) : Promise<void> {
     step3Container.classList.remove('keycard_shell__display-none');
-
-    const config = {fps: 10, qrbox: 600, aspectRatio: 1};
-
-    html5QrCode.start(
-      { facingMode: { exact: "environment"} },
-      config,
-      async (decodedText) => await onScanSuccess(decodedText, challenge, decoder, csrftoken, html5QrCode),
-      (errorMessage) => onScanFailure(errorMessage)
-    )
-    .catch((err) => {
-      html5QrCode.start(
-      cameraId,
-      config,
-      async (decodedText) => await onScanSuccess(decodedText, challenge, decoder, csrftoken, html5QrCode),
-      (errorMessage) => onScanFailure(errorMessage)
-    )});
+    return await VerifyUtils.startScanning(challenge, decoder, csrftoken, html5QrCode, cameraId, postReqURL, handleVerificationComplete, handleQRErrorUI);  
 }
 
 async function handleVerifyDevice() : Promise<void> {
@@ -190,16 +91,16 @@ async function handleVerifyDevice() : Promise<void> {
 
   cameraSelector.addEventListener("change", async () => {
     cameraId = cameraSelector.value;
-    await stopScanning(html5QrCode);
-    startScanning(challenge, decoder, csrftoken.value, html5QrCode, cameraId);
+    await VerifyUtils.stopScanning(html5QrCode);
+    handleStartScanning(challenge, decoder, csrftoken.value, html5QrCode, cameraId);
   });
 
   next_btn.addEventListener("click", async () => {
     if (step2Container.classList.contains('keycard_shell__display-none')) {
-        if(await videoPermissionsGranted()) {
-            cameraId = await handleCamerasSelector(cameraSelector);
+        if(await VerifyUtils.videoPermissionsGranted()) {
+            cameraId = await VerifyUtils.handleCamerasSelector(cameraSelector);
             step1Container.classList.add('keycard_shell__display-none');
-            startScanning(challenge, decoder, csrftoken.value, html5QrCode, cameraId);
+            handleStartScanning(challenge, decoder, csrftoken.value, html5QrCode, cameraId);
         } else {
             step1Container.classList.add('keycard_shell__display-none');
             step2Container.classList.remove('keycard_shell__display-none');
@@ -209,9 +110,9 @@ async function handleVerifyDevice() : Promise<void> {
   });
 
   scan_btn.addEventListener("click", async () => {
-    cameraId = await handleCamerasSelector(cameraSelector);
+    cameraId = await VerifyUtils.handleCamerasSelector(cameraSelector);
     step2Container.classList.add('keycard_shell__display-none');
-    startScanning(challenge, decoder, csrftoken.value, html5QrCode, cameraId);
+    handleStartScanning(challenge, decoder, csrftoken.value, html5QrCode, cameraId);
   });
 }
 
