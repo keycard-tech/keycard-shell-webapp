@@ -90,6 +90,7 @@ def verify(device_data, redeem_data=None):
   initial_challenge = device_data["initial_challenge"]
   
   device = None
+  resp = None
     
   try:
     device = Device.objects.get(uid=device_id)
@@ -112,7 +113,7 @@ def verify(device_data, redeem_data=None):
         r_code = Campaign.objects.get(redeem_code=redeem_code)
         if r_code is None:
           resp = {'status': 'error', 'message': 'Error: Invalid redeem code.'}
-        elif r_code.redeem_code:  
+        elif r_code.redemption_state:  
           resp = {'status': 'error', 'message': 'Error: Code already redeemed.'}
         else:  
           r_code.redemption_state = True
@@ -128,7 +129,7 @@ def verify(device_data, redeem_data=None):
             
           mess = 'Success: Code redeemed successfully.'    
             
-      resp = _success(device, challenge, mess, redeem_code)
+      resp = resp or _success(device, challenge, mess, redeem_code)
     else:
       resp = {'status': 'error', 'message': 'Error: Invalid signature.'}
 

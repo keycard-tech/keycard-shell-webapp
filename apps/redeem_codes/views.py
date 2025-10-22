@@ -33,7 +33,6 @@ def redeem(request):
     redeem_data["redeem_code"] = request.POST.get('redeem_code')
     redeem_data["redemption_address"] = request.POST.get('redemption_address')
     
-    
     resp = verify(device_data, redeem_data)
 
     return HttpResponse(json.dumps(resp), content_type='application/json')

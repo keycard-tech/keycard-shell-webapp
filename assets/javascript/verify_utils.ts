@@ -57,7 +57,7 @@ export namespace VerifyUtils {
         }
     }
 
-    export async function onScanSuccess(decodedText: any, challenge: Uint8Array, decoder: URDecoder, csrftoken: string, html5QrCode: Html5Qrcode, postReqURL: string, onSuccessFunc: (r: any) => void, onErrorFunc: (err?: boolean) => void) : Promise<void> {
+    export async function onScanSuccess(decodedText: any, challenge: Uint8Array, decoder: URDecoder, csrftoken: string, html5QrCode: Html5Qrcode, postReqURL: string, onSuccessFunc: (r: any) => void, onErrorFunc: (err?: boolean) => void, redeemCampaign?: string, redeemCode?: string, rAddress?: string) : Promise<void> {
         await stopScanning(html5QrCode);
 
     try {
@@ -66,6 +66,10 @@ export namespace VerifyUtils {
     
         if (verState[status as keyof typeof verState] == "dev_auth_device") {
             const reqData = handleDeviceResponse(data, challenge);
+            reqData.append("campaign_name", redeemCampaign);
+            reqData.append("redeem_code", redeemCode);
+            reqData.append("redemption_address", rAddress);
+    
             const r = await verify(reqData, csrftoken, postReqURL) as any;
             onSuccessFunc(r);
         } else {
@@ -80,20 +84,20 @@ export namespace VerifyUtils {
         return error;
     }
 
-    export async function startScanning(challenge: Uint8Array, decoder: URDecoder, csrftoken: string, html5QrCode: Html5Qrcode, cameraId: string, postReqURL: string, onSuccessFunc: (r: any) => void, onErrorFunc: (err: boolean) => void) : Promise<void> {
+    export async function startScanning(challenge: Uint8Array, decoder: URDecoder, csrftoken: string, html5QrCode: Html5Qrcode, cameraId: string, postReqURL: string, onSuccessFunc: (r: any) => void, onErrorFunc: (err: boolean) => void, redeemCampaign?: string, redeemCode?: string, rAddress?: string) : Promise<void> {
         const config = {fps: 10, qrbox: 600, aspectRatio: 1};
     
         html5QrCode.start(
           { facingMode: { exact: "environment"} },
           config,
-          async (decodedText) => await onScanSuccess(decodedText, challenge, decoder, csrftoken, html5QrCode, postReqURL, onSuccessFunc, onErrorFunc),
+          async (decodedText) => await onScanSuccess(decodedText, challenge, decoder, csrftoken, html5QrCode, postReqURL, onSuccessFunc, onErrorFunc, redeemCampaign, redeemCode, rAddress),
           (errorMessage) => onScanFailure(errorMessage)
         )
         .catch((err) => {
           html5QrCode.start(
           cameraId,
           config,
-          async (decodedText) => await onScanSuccess(decodedText, challenge, decoder, csrftoken, html5QrCode, postReqURL, onSuccessFunc, onErrorFunc),
+          async (decodedText) => await onScanSuccess(decodedText, challenge, decoder, csrftoken, html5QrCode, postReqURL, onSuccessFunc, onErrorFunc, redeemCampaign, redeemCode, rAddress),
           (errorMessage) => onScanFailure(errorMessage)
         )});
     }

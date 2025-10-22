@@ -2,7 +2,11 @@
 {% load static %}
 {% block title %}Redeem {{redeem_code}}{% endblock title %}
 {% block content %}
-    <input type="hidden" id="device_verify__csfr" name="csfr" value="{{ csrf_token }}">
-    {{redeem_code}}
+    <input type="hidden" id="redeem-code" name="code" value="{{ redeem_code }}">
+    <input type="hidden" id="redeem-campaign" name="campaign" value="{{ campaign_name }}">
+    <input type="hidden" id="address-type" name="address-type" value="{{ redemption_address_type }}">
+    {% block verify_core %}
+        {% include './verify_core.html' %}
+    {% endblock %}
     <script src="{% static '/keycard_shell/js/redeem.js' %}"></script>
 {% endblock %}
