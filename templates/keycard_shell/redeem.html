@@ -2,11 +2,35 @@
 {% load static %}
 {% block title %}Redeem {{redeem_code}}{% endblock title %}
 {% block content %}
-    <input type="hidden" id="redeem-code" name="code" value="{{ redeem_code }}">
     <input type="hidden" id="redeem-campaign" name="campaign" value="{{ campaign_name }}">
-    <input type="hidden" id="address-type" name="address-type" value="{{ redemption_address_type }}">
-    {% block verify_core %}
-        {% include './verify_core.html' %}
-    {% endblock %}
+    <input type="hidden" id="address-type" name="address-type" value="{{ address_type }}">
+    <div class="keycard_shell__page-heading-container">
+        <h1 class="keycard_shell__page-heading">Redeem your code</h1>
+    </div>
+    <div class="keycard_shell__page-top-container">
+        <div class="keycard_shell__page-top-text-container">
+            <span class="keycard_shell__page-top-text" id="page-top-text">Input a valid {{address_type}} address and verify your Shell to redeem.</span>
+        </div>
+    </div>
+    <div class="keycard_shell__redeem-container" id="start-redeem-container">
+        <div class="keycard_shell__start-redeem-container">
+            <div class="keycard_shell__input-field-container" id="redeem-code-container">
+                <label for="redeem-code" class="keycard_shell__input-label">Redeem code</label>
+                <input type="text" id="redeem-code" name="redeem-code" class="keycard_shell__input-field" value="{{ redeem_code }}" readonly>
+            </div>
+            <div class="keycard_shell__input-field-container" id="redeem-address-container">
+                <label for="redeem-address" class="keycard_shell__input-label">Redemption address</label>
+                <input type="text" id="redeem-address" name="redeem-address" class="keycard_shell__input-field" placeholder="Insert a valid {{ address_type}} address">
+            </div>
+            <div class="keycard_shell__btn-container">
+                <input id="start-redeem-button" class="keycard_shell__btn" type="button" value="Next" disabled>
+            </div>
+        </div>
+    </div>
+    <div class="keycard_shell__display-none" id="shell-verification">
+        {% block verify_core %}
+            {% include './verify_core.html' %}
+        {% endblock %}
+    </div>
     <script src="{% static '/keycard_shell/js/redeem.js' %}"></script>
 {% endblock %}
