@@ -29,7 +29,7 @@ function handleVerificationComplete(r: any) : void {
   step3Container.classList.add('keycard_shell__display-none');
   step4Container.classList.remove('keycard_shell__display-none');
 
-  if(r['status'] == 'success') {
+  if(r['status'] == 'redeem-success') {
     const successQR = new QRious({element: document.getElementById('device_success__qr')}) as any;
     const ur = new UR(Buffer.from(r.payload, "hex"), "dev-auth");
     const encoder = {enc: new UREncoder(ur, maxFragmentLength)};
@@ -37,24 +37,30 @@ function handleVerificationComplete(r: any) : void {
     QRUtils.generateQRPart(encoder, successQR, false, 400);
     deviceSuccessQRContainer.classList.remove('keycard_shell__display-none');
 
-    verifyResultHeading.innerText = TextStr.verifyAuthenticHeading;
-    verifyResultPrompt.innerHTML = TextStr.verifySuccessPrompt;
+    verifyResultHeading.innerText = TextStr.redeemSuccessHeading;
+    verifyResultPrompt.innerHTML = TextStr.redeemSuccessPrompt;
     scanFinishedButtonLink.href = "https://keycard.tech/keycard";
-
-    if(r['counter'] > 1) {
-        scanVerificationCountWarning.classList.remove('keycard_shell__display-none');
-    } 
+  } else if(r['status'] == 'redeem-error') {
+    handleQRErrorUI(false, true, r['message']);
   } else {
     handleQRErrorUI();
   }
 }
 
-function handleQRErrorUI(qrError?: boolean) : void {
+function handleQRErrorUI(qrError?: boolean, redeemError?: boolean, redeemMessage?: string) : void {
     step3Container.classList.add('keycard_shell__display-none');
     step4Container.classList.remove('keycard_shell__display-none');
-    verifyResultHeading.innerText = qrError ? TextStr.verifyErrorHeading : TextStr.verifyNotAuthenticHeading;
-    verifyResultPrompt.innerHTML = qrError ? TextStr.verifyErrorPrompt: TextStr.verifyFailPrompt;
-    scanFinishedButton.value = qrError ? TextStr.btnTryAgain : TextStr.btnLearnMore;
+    
+    if(redeemError) {
+       verifyResultHeading.innerText = TextStr.redeemErrorHeading;
+       verifyResultPrompt.innerHTML = redeemMessage;
+       scanFinishedButton.value = TextStr.btnLearnMore; 
+    } else {
+        verifyResultHeading.innerText = qrError ? TextStr.verifyErrorHeading : TextStr.verifyNotAuthenticHeading;
+        verifyResultPrompt.innerHTML = qrError ? TextStr.verifyErrorPrompt: TextStr.verifyFailPrompt;
+        scanFinishedButton.value = qrError ? TextStr.btnTryAgain : TextStr.btnLearnMore;
+    }
+    
     if(qrError) {
         scanFinishedButtonLink.addEventListener("click", (e) => {
             location.reload();
@@ -63,7 +69,6 @@ function handleQRErrorUI(qrError?: boolean) : void {
     } else {
         scanFinishedButtonLink.href = "https://keycard.tech/docs/overview";
     }
-    
 }
 
 async function handleStartScanning(challenge: Uint8Array, decoder: URDecoder, csrftoken: string, html5QrCode: Html5Qrcode, cameraId: string, redeemCampaign: string, redeemCode: string, rAddress: string) : Promise<void> {

@@ -44,7 +44,7 @@ def _verify_signature(uid, challenge, signature, public_key):
 
   return public_key.ecdsa_verify(h, sig, raw=True)
 
-def _success(device, challenge, mess, redeem_code=None):
+def _success(device, challenge, mess, status='success'):
   m = hashlib.sha256()
 
   verification_date = time.mktime(datetime.datetime.utcnow().timetuple())
@@ -76,10 +76,7 @@ def _success(device, challenge, mess, redeem_code=None):
 
   payload = dumps(cbor_data).hex()
   
-  resp = {'status': 'success', 'message': mess, 'uid': device.uid, 'first_auth': first_verification, 'last_auth': verification_date, 'counter': device.success_counter, 'signature': m_signature.hex(), 'payload': payload}
-
-  if redeem_code is not None:
-    resp['redeem_code'] = redeem_code
+  resp = {'status': status, 'message': mess, 'uid': device.uid, 'first_auth': first_verification, 'last_auth': verification_date, 'counter': device.success_counter, 'signature': m_signature.hex(), 'payload': payload}
     
   return resp
 
@@ -100,6 +97,7 @@ def verify(device_data, redeem_data=None):
   if device != None:
     if _verify_signature(device_id, initial_challenge, signature, device.public_key):
       mess = 'Success: Your device is genuine. This is not the first time the device was verified.'
+      status = 'success'
 
       if device.verification_start_date == None:
         device.verification_start_date = datetime.datetime.utcnow()
@@ -110,11 +108,16 @@ def verify(device_data, redeem_data=None):
       
       if redeem_data is not None:
         redeem_code = redeem_data["redeem_code"]
-        r_code = Campaign.objects.get(redeem_code=redeem_code)
+        
+        try:
+          r_code = Campaign.objects.get(redeem_code=redeem_code)
+        except:
+          r_code = None
+        
         if r_code is None:
-          resp = {'status': 'error', 'message': 'Error: Invalid redeem code.'}
+          resp = {'status': 'redeem-error', 'message': 'Invalid redeem code.'}
         elif r_code.redemption_state:  
-          resp = {'status': 'error', 'message': 'Error: Code already redeemed.'}
+          resp = {'status': 'redeem-error', 'message': 'Code already redeemed.'}
         else:  
           r_code.redemption_state = True
           r_code.redemption_date = datetime.datetime.utcnow()
@@ -125,11 +128,12 @@ def verify(device_data, redeem_data=None):
               ra_obj.save()
               r_code.save()
           except IntegrityError:
-              resp = {'status': 'error', 'message': 'Error: Redemption failed.'}
+              resp = {'status': 'redeem-error', 'message': 'Error redeeming code.' }
             
-          mess = 'Success: Code redeemed successfully.'    
+          mess = 'Success: Code redeemed successfully.'  
+          status = 'redeem-success'  
             
-      resp = resp or _success(device, challenge, mess, redeem_code)
+      resp = resp or _success(device, challenge, mess, status)
     else:
       resp = {'status': 'error', 'message': 'Error: Invalid signature.'}
 
