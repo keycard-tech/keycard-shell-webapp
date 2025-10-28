@@ -14,8 +14,8 @@
     "webpack-merge": "^6.0.1"
   },
   "dependencies": {
-    "@choppu/shelljs": "^1.0.0",
-    "@choppu/shelljs-web-hid": "^1.0.0",
+    "@choppu/shelljs": "^1.0.1",
+    "@choppu/shelljs-web-hid": "^1.0.1",
     "@ngraveio/bc-ur": "^1.1.13",
     "glob": "^11.0.1",
     "html5-qrcode": "^2.3.8",
