@@ -16,7 +16,7 @@ def validate_redemption_address(address, address_type):
   if val.valid:
     return address
   else:
-    raise ValidationError("Invalid {} address".format(addr_type) )
+    raise ValidationError("Invalid {} address".format(address_type) )
   
 class Campaign(models.Model):
   class Meta:
