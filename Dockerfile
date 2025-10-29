@@ -9,7 +9,7 @@ ENV PYTHONUNBUFFERED 1
 
 # Install system dependencies
 RUN apk update && apk add --no-cache ca-certificates tzdata netcat-openbsd autoconf libtool automake make pkgconf
-RUN apk add gcc libc-dev libffi-dev postgresql-dev postgresql-libs zlib-dev jpeg-dev musl-dev
+RUN apk add gcc libc-dev libffi-dev postgresql-dev postgresql-libs zlib-dev jpeg-dev musl-dev git
 RUN apk add --update nodejs npm
 RUN apk add --no-cache git
 
