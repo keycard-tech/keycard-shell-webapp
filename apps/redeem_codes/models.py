@@ -1,12 +1,22 @@
 from django.db import models
 from django.core.exceptions import ValidationError
+from common.consts import REDEEM_ADDRESSES
+
 import re
+import coinaddrvalidator  
 
 def validate_campaign_name(str):
   if re.match(r'^[a-zA-Z0-9_-]+$', str) is not None:
     return str
   else:
     raise ValidationError("Campaign name must be url safe")
+  
+def validate_redemption_address(address, address_type):
+  val = coinaddrvalidator.validate(address_type, address.encode('utf-8'))
+  if val.valid:
+    return address
+  else:
+    raise ValidationError("Invalid {} address".format(addr_type) )
   
 class Campaign(models.Model):
   class Meta:

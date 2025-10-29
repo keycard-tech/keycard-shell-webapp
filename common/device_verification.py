@@ -5,12 +5,13 @@ import os
 import time
 
 from cbor2 import dumps
+from common.consts import REDEEM_ADDRESSES
 from secp256k1Crypto import PublicKey, PrivateKey
 from django.http import HttpResponse
 from django.db import IntegrityError, transaction
 
 from apps.device_verify.models import Device
-from apps.redeem_codes.models import Address, Campaign
+from apps.redeem_codes.models import Address, Campaign, validate_redemption_address
 
 
  
@@ -121,7 +122,7 @@ def verify(device_data, redeem_data=None):
         else:  
           r_code.redemption_state = True
           r_code.redemption_date = datetime.datetime.utcnow()
-          ra_obj = Address(campaign_name=redeem_data["campaign_name"], redemption_address=redeem_data["redemption_address"])
+          ra_obj = Address(campaign_name=redeem_data["campaign_name"], redemption_address=validate_redemption_address(redeem_data["redemption_address"], REDEEM_ADDRESSES[r_code.redemption_address_type]))
         
           try:
             with transaction.atomic():

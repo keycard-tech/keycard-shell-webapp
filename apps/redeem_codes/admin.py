@@ -1,6 +1,6 @@
 from django.urls import path
 from django.contrib import admin
-from django.db import IntegrityError
+from django.db import IntegrityError, transaction
 from django.contrib import messages
 from django.http import HttpResponse
 
@@ -8,7 +8,7 @@ from apps.redeem_codes.forms import AddressAddForm, AddressChangeForm, CampaignA
 from common.consts import REDEEM_ADDRESSES, REDEMPTION_LINK
 from common.errors import get_error_message
 
-from .models import Campaign, Address
+from .models import Campaign, Address, validate_redemption_address
 
 from django import forms
 
@@ -18,8 +18,16 @@ import csv
 
 class RedeemAddressAdmin(admin.ModelAdmin):
   list_display = ('campaign_name', 'redemption_address')
+  list_filter = ["campaign_name"]
   form = AddressChangeForm
   add_form = AddressAddForm 
+  
+  change_list_template = "admin/redeem_changelist.html"
+  
+  def get_urls(self):
+      urls = super().get_urls()
+      custom_urls = [path('export-campaign/', self.export_addresses_as_csv)]
+      return custom_urls + urls
   
   def get_form(self, request, obj=None, **kwargs):
     defaults = {}
@@ -27,6 +35,34 @@ class RedeemAddressAdmin(admin.ModelAdmin):
       defaults['form'] = self.add_form
     defaults.update(kwargs)
     return super().get_form(request, obj, **defaults)
+  
+  def export_addresses_as_csv(self, request):
+      c_name = request.GET.get('campaign_name')
+      campaign = Address.objects.all().filter(campaign_name=c_name)
+      meta = self.model._meta
+      field_names = [field.name for field in meta.fields]
+      response = HttpResponse(content_type='text/csv')
+      response['Content-Disposition'] = 'attachment; filename={}.csv'.format(c_name)
+      writer = csv.writer(response)
+      writer.writerow(field_names)
+        
+      for obj in campaign:
+        writer.writerow([getattr(obj, field) for field in field_names])
+
+      return response
+  
+  def save_model(self, request, obj, form, change):
+    try:
+      redeem_form_data = form.cleaned_data
+      obj = Address(campaign_name=redeem_form_data.get('campaign_name'), redemption_address=validate_redemption_address(redeem_form_data.get("redemption_address"), REDEEM_ADDRESSES[int(redeem_form_data.get("redemption_address_type"))]))
+      with transaction.atomic():
+        super().save_model(request, obj, form, change)
+    except IntegrityError as err:
+      messages.set_level(request, messages.ERROR)
+      messages.add_message(request, messages.ERROR, "Redeem address already exists")          
+    except Exception as err:
+      messages.set_level(request, messages.ERROR)
+      messages.add_message(request, messages.ERROR, err)  
   
   def has_change_permission(self, request, obj=None):
     return False
@@ -118,9 +154,8 @@ class RedeemCampaignAdmin(admin.ModelAdmin):
             messages.set_level(request, messages.ERROR)
             messages.add_message(request, messages.ERROR, "Redeem code already exists")          
         except Exception as err:
-            msg = get_error_message(err)
             messages.set_level(request, messages.ERROR)
-            messages.add_message(request, messages.ERROR, msg)  
+            messages.add_message(request, messages.ERROR, err)  
 
 admin.site.register(Campaign, RedeemCampaignAdmin)
 admin.site.register(Address, RedeemAddressAdmin)
