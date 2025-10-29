@@ -5,7 +5,8 @@ import {Html5Qrcode} from "html5-qrcode";
 import { VerifyUtils } from "./verify_utils";
 
 const QRious = require('qrious');
-const postReqURL = './verify';
+const postReqURL = '/redeem/verify-redeem';
+const addressValidator = require('multicoin-address-validator');
 
 const maxFragmentLength = 500;
 
@@ -28,7 +29,7 @@ function handleVerificationComplete(r: any) : void {
   step3Container.classList.add('keycard_shell__display-none');
   step4Container.classList.remove('keycard_shell__display-none');
 
-  if(r['status'] == 'success') {
+  if(r['status'] == 'redeem-success') {
     const successQR = new QRious({element: document.getElementById('device_success__qr')}) as any;
     const ur = new UR(Buffer.from(r.payload, "hex"), "dev-auth");
     const encoder = {enc: new UREncoder(ur, maxFragmentLength)};
@@ -36,24 +37,30 @@ function handleVerificationComplete(r: any) : void {
     QRUtils.generateQRPart(encoder, successQR, false, 400);
     deviceSuccessQRContainer.classList.remove('keycard_shell__display-none');
 
-    verifyResultHeading.innerText = TextStr.verifyAuthenticHeading;
-    verifyResultPrompt.innerHTML = TextStr.verifySuccessPrompt;
+    verifyResultHeading.innerText = TextStr.redeemSuccessHeading;
+    verifyResultPrompt.innerHTML = TextStr.redeemSuccessPrompt;
     scanFinishedButtonLink.href = "https://keycard.tech/keycard";
-
-    if(r['counter'] > 1) {
-        scanVerificationCountWarning.classList.remove('keycard_shell__display-none');
-    } 
+  } else if(r['status'] == 'redeem-error') {
+    handleQRErrorUI(false, true, r['message']);
   } else {
     handleQRErrorUI();
   }
 }
 
-function handleQRErrorUI(qrError?: boolean) : void {
+function handleQRErrorUI(qrError?: boolean, redeemError?: boolean, redeemMessage?: string) : void {
     step3Container.classList.add('keycard_shell__display-none');
     step4Container.classList.remove('keycard_shell__display-none');
-    verifyResultHeading.innerText = qrError ? TextStr.verifyErrorHeading : TextStr.verifyNotAuthenticHeading;
-    verifyResultPrompt.innerHTML = qrError ? TextStr.verifyErrorPrompt: TextStr.verifyFailPrompt;
-    scanFinishedButton.value = qrError ? TextStr.btnTryAgain : TextStr.btnLearnMore;
+    
+    if(redeemError) {
+       verifyResultHeading.innerText = TextStr.redeemErrorHeading;
+       verifyResultPrompt.innerHTML = redeemMessage;
+       scanFinishedButton.value = TextStr.btnLearnMore; 
+    } else {
+        verifyResultHeading.innerText = qrError ? TextStr.verifyErrorHeading : TextStr.verifyNotAuthenticHeading;
+        verifyResultPrompt.innerHTML = qrError ? TextStr.verifyErrorPrompt: TextStr.verifyFailPrompt;
+        scanFinishedButton.value = qrError ? TextStr.btnTryAgain : TextStr.btnLearnMore;
+    }
+    
     if(qrError) {
         scanFinishedButtonLink.addEventListener("click", (e) => {
             location.reload();
@@ -62,16 +69,22 @@ function handleQRErrorUI(qrError?: boolean) : void {
     } else {
         scanFinishedButtonLink.href = "https://keycard.tech/docs/overview";
     }
-    
 }
 
-async function handleStartScanning(challenge: Uint8Array, decoder: URDecoder, csrftoken: string, html5QrCode: Html5Qrcode, cameraId: string) : Promise<void> {
+async function handleStartScanning(challenge: Uint8Array, decoder: URDecoder, csrftoken: string, html5QrCode: Html5Qrcode, cameraId: string, redeemCampaign: string, redeemCode: string, rAddress: string) : Promise<void> {
     step3Container.classList.remove('keycard_shell__display-none');
-    return await VerifyUtils.startScanning(challenge, decoder, csrftoken, html5QrCode, cameraId, postReqURL, handleVerificationComplete, handleQRErrorUI);  
+    return await VerifyUtils.startScanning(challenge, decoder, csrftoken, html5QrCode, cameraId, postReqURL, handleVerificationComplete, handleQRErrorUI, redeemCampaign, redeemCode, rAddress);  
 }
 
-async function handleVerifyDevice() : Promise<void> {
+async function handleRedeem() : Promise<void> {
   const csrftoken = document.getElementById('device_verify__csfr') as HTMLInputElement;
+  const redeemCode = document.getElementById('redeem-code') as HTMLInputElement;
+  const redeemCampaign = document.getElementById('redeem-campaign') as HTMLInputElement;
+  const addressType = document.getElementById('address-type') as HTMLInputElement;
+  const redeemAddress = document.getElementById('redeem-address') as HTMLInputElement;
+  const startRedeem = document.getElementById('start-redeem-container') as HTMLDivElement;
+  const startVerificaion = document.getElementById('shell-verification') as HTMLDivElement;
+  const startVerificationBtn = document.getElementById('start-redeem-button') as HTMLButtonElement;
   const next_btn = document.getElementById("device_verify__next-button");
   const scan_btn = document.getElementById("device_verify__scan-button");
   const verifyQR = new QRious({element: document.getElementById('device_verify__qr')}) as any;
@@ -89,10 +102,19 @@ async function handleVerifyDevice() : Promise<void> {
   const decoder = new URDecoder();
   QRUtils.generateQRPart(encoder, verifyQR, false, 400);
 
+  redeemAddress.addEventListener('input', (e) => {
+    startVerificationBtn.disabled = !addressValidator.validate(redeemAddress.value, addressType.value);
+  });
+
+  startVerificationBtn.addEventListener("click", () => {
+    startRedeem.classList.add('keycard_shell__display-none');
+    startVerificaion.classList.remove('keycard_shell__display-none');
+  })
+
   cameraSelector.addEventListener("change", async () => {
     cameraId = cameraSelector.value;
     await VerifyUtils.stopScanning(html5QrCode);
-    handleStartScanning(challenge, decoder, csrftoken.value, html5QrCode, cameraId);
+    handleStartScanning(challenge, decoder, csrftoken.value, html5QrCode, cameraId, redeemCampaign.value, redeemCode.value, redeemAddress.value);
   });
 
   next_btn.addEventListener("click", async () => {
@@ -100,7 +122,7 @@ async function handleVerifyDevice() : Promise<void> {
         if(await VerifyUtils.videoPermissionsGranted()) {
             cameraId = await VerifyUtils.handleCamerasSelector(cameraSelector);
             step1Container.classList.add('keycard_shell__display-none');
-            handleStartScanning(challenge, decoder, csrftoken.value, html5QrCode, cameraId);
+            handleStartScanning(challenge, decoder, csrftoken.value, html5QrCode, cameraId, redeemCampaign.value, redeemCode.value, redeemAddress.value);
         } else {
             step1Container.classList.add('keycard_shell__display-none');
             step2Container.classList.remove('keycard_shell__display-none');
@@ -112,8 +134,8 @@ async function handleVerifyDevice() : Promise<void> {
   scan_btn.addEventListener("click", async () => {
     cameraId = await VerifyUtils.handleCamerasSelector(cameraSelector);
     step2Container.classList.add('keycard_shell__display-none');
-    handleStartScanning(challenge, decoder, csrftoken.value, html5QrCode, cameraId);
+    handleStartScanning(challenge, decoder, csrftoken.value, html5QrCode, cameraId, redeemCampaign.value, redeemCode.value, redeemAddress.value);
   });
 }
 
-handleVerifyDevice();
+handleRedeem();

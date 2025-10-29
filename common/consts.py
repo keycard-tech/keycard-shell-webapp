@@ -7,3 +7,10 @@ PAGE_SIZE = 8192
 WORD_SIZE = 16
 
 FW_VERSION_POS = 652
+
+REDEEM_ADDRESSES = {
+  0: "Ethereum",
+  1: "Bitcoin" 
+}
+
+REDEMPTION_LINK = 'https://shell.keycard.tech/redeem'

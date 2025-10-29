@@ -1,0 +1,11 @@
+{% extends 'admin/change_list.html' %}
+{% block object-tools %}
+<div class="admin__object-tools">
+    <div class="csv-container">
+        <div class="csv-container-form-field">
+            <a href="export-campaign/?{{ request.GET.urlencode }}" class="csv-button">Export campaign</a>
+        </div>
+    </div>
+    {{ block.super }}   
+</div>
+{% endblock %}

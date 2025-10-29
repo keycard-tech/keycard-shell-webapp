@@ -32,6 +32,7 @@ urlpatterns = [
   path('', TemplateView.as_view(template_name="./keycard_shell/landing.html"), name= "landing"),
   path('update/', include("apps.db_update.urls")),
   path('verify/', include("apps.device_verify.urls")),
+  path('redeem/', include("apps.redeem_codes.urls")),
   path('firmware/', include("apps.firmware_update.urls")),
   path('', include('pagedown.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -3,10 +3,13 @@ export namespace TextStr {
     export const verifyAuthenticHeading = "Your Shell is authentic";
     export const verifyNotAuthenticHeading = "Your Shell is not authentic";
     export const verifyErrorHeading = "Shell was not verified";
+    export const redeemSuccessHeading = "Redeem success";
+    export const redeemErrorHeading = "Redeem failed";
 
     export const verifySuccessPrompt = "Scan the QR code with your Shell to verify the site hasn't been compromised by malicious extensions or viruses.";
     export const verifyFailPrompt = "Check Keycard Shell documentation for more details or contact us.";
     export const verifyErrorPrompt = "Something went wrong. Go to Settings/Device/ Verification on your Shell and try again.";
+    export const redeemSuccessPrompt = `Thank you for redeeming your code.<br>Scan the QR code with your Shell to verify the site hasn't been compromised by malicious extensions or viruses.`;
 
     export const btnTryAgain = "Try again";
     export const btnLearnMore = "Learn more";
@@ -41,6 +44,6 @@ export namespace TextStr {
 
     export const updateCanceled = "Update canceled by user";
     export const updateFailed = "Transfer failed";
-    export const installationFailed = "IInstallation failed";
+    export const installationFailed = "Installation failed";
 
 }
