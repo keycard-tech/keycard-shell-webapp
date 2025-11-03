@@ -88,17 +88,10 @@ export namespace VerifyUtils {
         const config = {fps: 10, qrbox: 600, aspectRatio: 1};
     
         html5QrCode.start(
-          { facingMode: { exact: "environment"} },
+          { deviceId: { exact: cameraId} },
           config,
           async (decodedText) => await onScanSuccess(decodedText, challenge, decoder, csrftoken, html5QrCode, postReqURL, onSuccessFunc, onErrorFunc, redeemCampaign, redeemCode, rAddress),
           (errorMessage) => onScanFailure(errorMessage)
-        )
-        .catch((err) => {
-          html5QrCode.start(
-          cameraId,
-          config,
-          async (decodedText) => await onScanSuccess(decodedText, challenge, decoder, csrftoken, html5QrCode, postReqURL, onSuccessFunc, onErrorFunc, redeemCampaign, redeemCode, rAddress),
-          (errorMessage) => onScanFailure(errorMessage)
-        )});
+        );
     }
 }
