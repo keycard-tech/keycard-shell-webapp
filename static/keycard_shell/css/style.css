@@ -2200,7 +2200,16 @@ body {
    }
 
    .keycard_shell__camera-selector-container {
-        display: none;
+        width: 285px;
+        background-image: url(../img/down_ios.svg);
+        background-size: 17px;
+        background-position: right 3px center;
+   }
+
+   .keycard_shell__select-field {
+        background-image: url(../img/down_ios.svg);
+        background-size: 17px;
+        background-position: right 5px center;
    }
 
    .keycard_shell__logo-container {
