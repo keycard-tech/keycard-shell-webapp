@@ -50,7 +50,38 @@ export namespace VerifyUtils {
         });
     }
 
-    export async function stopScanning(html5QrCode:Html5Qrcode) : Promise<void> {
+    async function zoom(html5QrCode: Html5Qrcode, zoomVal: number) : Promise<void> {
+        if(html5QrCode.isScanning) {
+            html5QrCode.applyVideoConstraints({
+                focusMode: "continuous",
+                advanced: [{ zoom: zoomVal }],
+            });  
+        }
+    }
+
+    function handleCameraZoom(html5QrCode: Html5Qrcode, container: HTMLDivElement) : void {
+        const cameraZoom = html5QrCode.getRunningTrackCameraCapabilities().zoomFeature();
+
+        if(cameraZoom.isSupported()) {
+            container.innerHTML = "";
+            const zoomSlider = document.createElement("input");
+            zoomSlider.type = "range";
+
+            // Step unsupported on iOS, adding fallbacks for all properties
+            zoomSlider.step = (cameraZoom.step() || 0.5).toString(); 
+            zoomSlider.value = (cameraZoom.value() || 1.0).toString();
+            zoomSlider.min = (cameraZoom.min() || 1.0).toString();
+            zoomSlider.max = (cameraZoom.max() || 3.0).toString();
+
+            container.appendChild(zoomSlider);
+
+            zoomSlider.addEventListener("change", () => {
+                zoom(html5QrCode, parseInt(zoomSlider.value))
+            })
+        }
+    }
+
+    export async function stopScanning(html5QrCode: Html5Qrcode) : Promise<void> {
         if (html5QrCode.isScanning) {
             await html5QrCode.stop();
             html5QrCode.clear();
@@ -60,31 +91,31 @@ export namespace VerifyUtils {
     export async function onScanSuccess(decodedText: any, challenge: Uint8Array, decoder: URDecoder, csrftoken: string, html5QrCode: Html5Qrcode, postReqURL: string, onSuccessFunc: (r: any) => void, onErrorFunc: (err?: boolean) => void, redeemCampaign?: string, redeemCode?: string, rAddress?: string) : Promise<void> {
         await stopScanning(html5QrCode);
 
-    try {
-        const data = QRUtils.decodeQR(decoder, decodedText);
-        const status = data[1];
+        try {
+            const data = QRUtils.decodeQR(decoder, decodedText);
+            const status = data[1];
     
-        if (verState[status as keyof typeof verState] == "dev_auth_device") {
-            const reqData = handleDeviceResponse(data, challenge);
-            reqData.append("campaign_name", redeemCampaign);
-            reqData.append("redeem_code", redeemCode);
-            reqData.append("redemption_address", rAddress);
+            if (verState[status as keyof typeof verState] == "dev_auth_device") {
+                const reqData = handleDeviceResponse(data, challenge);
+                reqData.append("campaign_name", redeemCampaign);
+                reqData.append("redeem_code", redeemCode);
+                reqData.append("redemption_address", rAddress);
     
-            const r = await verify(reqData, csrftoken, postReqURL) as any;
-            onSuccessFunc(r);
-        } else {
-            onErrorFunc();
+                const r = await verify(reqData, csrftoken, postReqURL) as any;
+                onSuccessFunc(r);
+            } else {
+                onErrorFunc();
+            }
+        } catch(e) {
+            onErrorFunc(true);
         }
-    } catch(e) {
-        onErrorFunc(true);
-    }
 }
 
     export function onScanFailure(error: any) : void {
         return error;
     }
 
-    export async function startScanning(challenge: Uint8Array, decoder: URDecoder, csrftoken: string, html5QrCode: Html5Qrcode, cameraId: string, postReqURL: string, onSuccessFunc: (r: any) => void, onErrorFunc: (err: boolean) => void, redeemCampaign?: string, redeemCode?: string, rAddress?: string) : Promise<void> {
+    export async function startScanning(challenge: Uint8Array, decoder: URDecoder, csrftoken: string, html5QrCode: Html5Qrcode, cameraId: string, postReqURL: string, onSuccessFunc: (r: any) => void, onErrorFunc: (err: boolean) => void, zoomContainer: HTMLDivElement, redeemCampaign?: string, redeemCode?: string, rAddress?: string) : Promise<void> {
         const config = {fps: 10, qrbox: 600, aspectRatio: 1};
     
         html5QrCode.start(
@@ -92,6 +123,6 @@ export namespace VerifyUtils {
           config,
           async (decodedText) => await onScanSuccess(decodedText, challenge, decoder, csrftoken, html5QrCode, postReqURL, onSuccessFunc, onErrorFunc, redeemCampaign, redeemCode, rAddress),
           (errorMessage) => onScanFailure(errorMessage)
-        );
+        ).then(() => handleCameraZoom(html5QrCode, zoomContainer));
     }
 }

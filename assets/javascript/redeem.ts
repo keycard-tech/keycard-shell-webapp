@@ -71,9 +71,9 @@ function handleQRErrorUI(qrError?: boolean, redeemError?: boolean, redeemMessage
     }
 }
 
-async function handleStartScanning(challenge: Uint8Array, decoder: URDecoder, csrftoken: string, html5QrCode: Html5Qrcode, cameraId: string, redeemCampaign: string, redeemCode: string, rAddress: string) : Promise<void> {
+async function handleStartScanning(challenge: Uint8Array, decoder: URDecoder, csrftoken: string, html5QrCode: Html5Qrcode, cameraId: string, zoomContainer: HTMLDivElement, redeemCampaign: string, redeemCode: string, rAddress: string) : Promise<void> {
     step3Container.classList.remove('keycard_shell__display-none');
-    return await VerifyUtils.startScanning(challenge, decoder, csrftoken, html5QrCode, cameraId, postReqURL, handleVerificationComplete, handleQRErrorUI, redeemCampaign, redeemCode, rAddress);  
+    return await VerifyUtils.startScanning(challenge, decoder, csrftoken, html5QrCode, cameraId, postReqURL, handleVerificationComplete, handleQRErrorUI, zoomContainer, redeemCampaign, redeemCode, rAddress);  
 }
 
 async function handleRedeem() : Promise<void> {
@@ -93,6 +93,7 @@ async function handleRedeem() : Promise<void> {
   let cameraId: string;
 
   const cameraSelector = document.getElementById("camera-selector") as HTMLSelectElement;
+  const cameraZoomContainer = document.getElementById("camera-zoom-container") as HTMLDivElement;
 
   const challenge = crypto.getRandomValues(new Uint8Array(32));
 
@@ -114,7 +115,7 @@ async function handleRedeem() : Promise<void> {
   cameraSelector.addEventListener("change", async () => {
     cameraId = cameraSelector.value;
     await VerifyUtils.stopScanning(html5QrCode);
-    handleStartScanning(challenge, decoder, csrftoken.value, html5QrCode, cameraId, redeemCampaign.value, redeemCode.value, redeemAddress.value);
+    handleStartScanning(challenge, decoder, csrftoken.value, html5QrCode, cameraId, cameraZoomContainer, redeemCampaign.value, redeemCode.value, redeemAddress.value);
   });
 
   next_btn.addEventListener("click", async () => {
@@ -122,7 +123,7 @@ async function handleRedeem() : Promise<void> {
         if(await VerifyUtils.videoPermissionsGranted()) {
             cameraId = await VerifyUtils.handleCamerasSelector(cameraSelector);
             step1Container.classList.add('keycard_shell__display-none');
-            handleStartScanning(challenge, decoder, csrftoken.value, html5QrCode, cameraId, redeemCampaign.value, redeemCode.value, redeemAddress.value);
+            handleStartScanning(challenge, decoder, csrftoken.value, html5QrCode, cameraId, cameraZoomContainer, redeemCampaign.value, redeemCode.value, redeemAddress.value);
         } else {
             step1Container.classList.add('keycard_shell__display-none');
             step2Container.classList.remove('keycard_shell__display-none');
@@ -134,7 +135,7 @@ async function handleRedeem() : Promise<void> {
   scan_btn.addEventListener("click", async () => {
     cameraId = await VerifyUtils.handleCamerasSelector(cameraSelector);
     step2Container.classList.add('keycard_shell__display-none');
-    handleStartScanning(challenge, decoder, csrftoken.value, html5QrCode, cameraId, redeemCampaign.value, redeemCode.value, redeemAddress.value);
+    handleStartScanning(challenge, decoder, csrftoken.value, html5QrCode, cameraId, cameraZoomContainer, redeemCampaign.value, redeemCode.value, redeemAddress.value);
   });
 }
 
