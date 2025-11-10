@@ -63,21 +63,7 @@ export namespace VerifyUtils {
         const cameraZoom = html5QrCode.getRunningTrackCameraCapabilities().zoomFeature();
 
         if(cameraZoom.isSupported()) {
-            container.innerHTML = "";
-            const zoomSlider = document.createElement("input");
-            zoomSlider.type = "range";
-
-            // Step unsupported on iOS, adding fallbacks for all properties
-            zoomSlider.step = (cameraZoom.step() || 0.5).toString(); 
-            zoomSlider.value = (cameraZoom.value() || 1.0).toString();
-            zoomSlider.min = (cameraZoom.min() || 1.0).toString();
-            zoomSlider.max = (cameraZoom.max() || 3.0).toString();
-
-            container.appendChild(zoomSlider);
-
-            zoomSlider.addEventListener("change", () => {
-                zoom(html5QrCode, parseInt(zoomSlider.value))
-            })
+            UIUtils.handleZoomUI(cameraZoom.value(), cameraZoom.min(), cameraZoom.max(), cameraZoom.step(), container, (val: string) => zoom(html5QrCode, parseInt(val)));
         }
     }
 
