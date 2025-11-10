@@ -57,6 +57,7 @@
     --warning-letter-spacing: -.3%;
     --qr-width: 296px;
     --qr-heigth: 296px;
+    --zoom-thumb-bg: #222;
 
 }
 
@@ -1923,6 +1924,209 @@ body {
     display: inherit;
 }
 
+/* Zoom Slider */ 
+.keycard_shell__zoom-container {
+    background: var(--white-8);
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 15px;
+    box-sizing: border-box;
+    border-radius: var(--border-radius-4);
+}
+
+.keycard_shell__zoom-prompt-container {
+    width: 100%;
+    text-align: center;
+}
+
+.keycard_shell__zoom-prompt {
+    color: var(--white-95);
+    font-size: var(--text-12);
+    letter-spacing: var(--text-letter-spacing);
+    font-family: var(--text-font-inter);
+}
+
+.keycard_shell__zoom-prompt-warning {
+    color: var(--orange);
+}
+
+.keycard_shell__zoom-slider-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+.keycard_shell__zoom-label {
+    box-sizing: border-box;
+    font-weight: var(--text-font-weight-500);
+}
+
+.keycard_shell__zoom-label-right {
+    text-align: right;
+}
+
+.keycard_shell__zoom-slider {
+    flex-grow: 0;
+    width: 75%;
+    flex-basis: 75%;
+    padding: 0 2%;
+    box-sizing: border-box;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: transparent;
+
+    &:focus {
+      outline-color: var(--orange-5);
+    }
+}
+
+  .keycard_shell__zoom-slider::-webkit-slider-runnable-track {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    height: 3px;
+    background: var(--orange-10);
+    background: -webkit-linear-gradient(
+      left,
+      var(--white-20) 0%,
+      var(--white-40) 50%,
+      var(--orange) 100%
+    );
+    background: linear-gradient(
+      to right,
+      var(--white-20) 0%,
+      var(--white-40) 50%,
+      var(--orange) 100%
+    );
+    filter: progid:DXImageTransform.Microsoft.gradient(
+      startColorstr=var(--white-20),
+      endColorstr=var(--orange),
+      GradientType=1
+    );
+  }
+
+  .keycard_shell__zoom-slider ::-moz-range-track {
+    -moz-appearance: none;
+    appearance: none;
+    height: 3px;
+    background: var(--orange);
+    background: -moz-linear-gradient(
+      left,
+      var(--white-20) 0%,
+      var(--white-40) 50%,
+      var(--orange) 100%
+    );
+    background: linear-gradient(
+      to right,
+      var(--white-20) 0%,
+      var(--white-40) 50%,
+      var(--orange) 100%
+    );
+    filter: progid:DXImageTransform.Microsoft.gradient(
+      startColorstr=var(--white-20),
+      endColorstr=var(--orange),
+      GradientType=1
+    );
+  }
+  
+  .keycard_shell__zoom-slider ::-ms-track {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    height: 3px;
+    background: var(--orange);
+    background: -moz-linear-gradient(
+      left,
+      var(--white-20) 0%,
+      var(--white-40) 50%,
+      var(--orange) 100%
+    );
+    background: -webkit-linear-gradient(
+      left,
+      var(--white-20) 0%,
+      var(--white-40) 50%,
+      var(--orange) 100%
+    );
+    background: linear-gradient(
+      to right,
+      var(--white-20) 0%,
+      var(--white-40) 50%,
+      var(--orange) 100%
+    );
+    filter: progid:DXImageTransform.Microsoft.gradient(
+      startColorstr=var(--white-20),
+      endColorstr=var(--orange),
+      GradientType=1
+    );
+  }
+
+  .keycard_shell__zoom-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  border: 2px solid var(--orange);
+  border-radius: 50%;
+  height: 20px;
+  width: 20px;
+  position: relative;
+  bottom: 8px;
+  background: var(--zoom-thumb-bg) center no-repeat;
+  background-size: 50%;
+  box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.4);
+  cursor: grab;
+    
+    &:active {
+      cursor: grabbing;
+    }
+}
+
+
+ .keycard_shell__zoom-slider ::-moz-range-thumb {
+    -moz-appearance: none;
+    appearance: none;
+    border: 2px solid var(--orange);
+    border-radius: 50%;
+    height: 20px;
+    width: 20px;
+    position: relative;
+    bottom: 8px;
+    background: var(--zoom-thumb-bg) center no-repeat;
+    background-size: 50%;
+    box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.4);
+    cursor: grab;
+    
+    &:active {
+      cursor: grabbing;
+    }
+  }
+
+  .keycard_shell__zoom-slider::-ms-thumb {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border: 2px solid var(--orange);
+    border-radius: 50%;
+    height: 20px;
+    width: 20px;
+    position: relative;
+    bottom: 8px;
+    background: var(--zoom-thumb-bg) center no-repeat;
+    background-size: 50%;
+    box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.4);
+    cursor: grab;
+    
+    &:active {
+      cursor: grabbing;
+    }
+  }
+
+
 @media (max-width: 800px) {
     .keycard-shell__copyright-container {
         flex-direction: column;
@@ -2161,7 +2365,7 @@ body {
     width: 300px;
   }
 
-  .device_verify__scan-container, .keycard_shell__enable-camera-container {
+  .keycard_shell__enable-camera-container {
     height: 300px;
   }
 
@@ -2193,11 +2397,12 @@ body {
         border: solid 1px var(--white-12);
         -webkit-backdrop-filter: blur(40px);
         backdrop-filter: blur(40px);
+        height: 300px;
     }
 
-  .device_verify__scan-container video {
-        height: 100%;
-   }
+    .device_verify__scan-container video {
+        object-fit: cover;
+    }
 
    .keycard_shell__camera-selector-container {
         width: 285px;

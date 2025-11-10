@@ -1,5 +1,6 @@
 import { CameraDevice } from "html5-qrcode";
 import Transport from "@choppu/shelljs/lib/transport";
+import { TextStr } from "./text_str";
 
 export namespace UIUtils {
   export function handleUpdateLoadProgress(transport: Transport, loadBar: HTMLProgressElement, progressPercent: HTMLSpanElement, cbFunc: () => void) : void {
@@ -65,5 +66,49 @@ export namespace UIUtils {
     } else {
         return '';
     }
+  }
+
+  export function handleZoomUI(value: number, min: number, max: number, step: number, container: HTMLDivElement, onSliderChangeFunc: (val: string) => void) : void {
+    container.innerHTML = "";
+    container.classList.add("keycard_shell__zoom-container");
+
+    const zoomSliderContainer = document.createElement("div");
+    zoomSliderContainer.classList.add("keycard_shell__zoom-slider-container");
+
+    
+
+    const zoomPromptContainer = document.createElement("div");
+    zoomPromptContainer.classList.add("keycard_shell__zoom-prompt-container");
+    zoomPromptContainer.innerHTML = `<span class="keycard_shell__zoom-prompt"><span class="keycard_shell__zoom-prompt-warning">ⓘ</span> ${TextStr.zoomPrompt}</span>`
+
+    const zoomMin = document.createElement("span");
+    zoomMin.classList.add("keycard_shell__zoom-label");
+    zoomMin.innerHTML = `${min}x`;
+
+    zoomSliderContainer.appendChild(zoomMin);
+
+    const zoomMax = document.createElement("span");
+    zoomMax.classList.add("keycard_shell__zoom-label");
+    zoomMax.classList.add("keycard_shell__zoom-label-right");
+    zoomMax.innerHTML = `${max}x`;
+
+    const zoomSlider = document.createElement("input");
+    zoomSlider.type = "range";
+
+    // Step unsupported on iOS, adding fallbacks for all properties
+    zoomSlider.step = (step || 0.5).toString(); 
+    zoomSlider.value = (value || 1.0).toString();
+    zoomSlider.min = (min || 1.0).toString();
+    zoomSlider.max = (max || 3.0).toString();
+    zoomSlider.classList.add("keycard_shell__zoom-slider");
+
+    zoomSliderContainer.appendChild(zoomSlider);
+    zoomSliderContainer.appendChild(zoomMax);
+
+    container.append(zoomSliderContainer);
+    container.append(zoomPromptContainer);
+
+    zoomSlider.addEventListener("change", () => onSliderChangeFunc(zoomSlider.value));
+    zoomSlider.addEventListener('touchmove', () => onSliderChangeFunc(zoomSlider.value));
   }
 }
