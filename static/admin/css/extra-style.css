@@ -599,6 +599,7 @@ input[type="checkbox"]:checked::before {
     border-radius: 15px;
     color: white;
     box-sizing: border-box;
+    text-align: center;
 }
 
 .csv-container-form-field {
@@ -703,6 +704,8 @@ input[type='password'] {
     max-width: 100% !important;
     color: var(--dark-80);
 }
+
+
 
 @media (max-width: 767px) {
    html:has(.admin__toggle-menu:not(:checked)), body:has(.admin__toggle-menu:not(:checked)) {

@@ -3,22 +3,53 @@ from django.contrib import admin
 from django.db import IntegrityError, transaction
 from django.contrib import messages
 from django.http import HttpResponse
+from django.template.response import TemplateResponse
 
-from apps.redeem_codes.forms import AddressAddForm, AddressChangeForm, CampaignAddForm, CampaignChangeForm
+from apps.redeem_codes.forms import AddressAddForm, AddressChangeForm, CampaignAddForm, CampaignChangeForm, ExportAddressesAsCSVForm, ExportCodesAsCSVForm
 from common.consts import REDEEM_ADDRESSES, REDEMPTION_LINK
 from common.errors import get_error_message
 
 from .models import Campaign, Address, validate_redemption_address
 
-from django import forms
-
 import secrets
 import base64
 import csv
 
-class RedeemAddressAdmin(admin.ModelAdmin):
+class ExportCsvMixin:
+    def export_csv_form(self, request, export_form, export_context, is_campaign, model):
+      if request.method == "POST":
+          form = export_form(request.POST)
+          if form.is_valid():
+              c_name = form.cleaned_data["campaign"]
+              campaign = model.objects.all().filter(campaign_name=c_name)
+              return self.export_as_csv(request, is_campaign, campaign, c_name)
+      
+      context = export_context
+
+      return TemplateResponse(request, "admin/redeem_export.html", context)
+      
+    def export_as_csv(self, request, is_campaign, queryset, c_name):
+        meta = self.model._meta
+        field_names = [field.name for field in meta.fields]
+          
+        if is_campaign:
+          field_names.append('redemption_link')
+            
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename={}.csv'.format(c_name)
+        writer = csv.writer(response)
+        writer.writerow(field_names)
+        
+        for obj in queryset:
+          if is_campaign:
+            redemption_link = '{}/{}/{}'.format(REDEMPTION_LINK, obj.campaign_name, obj.redeem_code)
+            obj.redemption_address_type = REDEEM_ADDRESSES[obj.redemption_address_type]
+          writer.writerow([getattr(obj, field) if field != 'redemption_link' else redemption_link  for field in field_names])
+
+        return response
+
+class RedeemAddressAdmin(admin.ModelAdmin, ExportCsvMixin):
   list_display = ('campaign_name', 'redemption_address')
-  list_filter = ["campaign_name"]
   form = AddressChangeForm
   add_form = AddressAddForm 
   
@@ -26,30 +57,29 @@ class RedeemAddressAdmin(admin.ModelAdmin):
   
   def get_urls(self):
       urls = super().get_urls()
-      custom_urls = [path('export-campaign/', self.export_addresses_as_csv)]
+      custom_urls = [
+        path('export/', self.export_addresses_as_csv),
+      ]
       return custom_urls + urls
   
   def get_form(self, request, obj=None, **kwargs):
-    defaults = {}
-    if obj is None:
-      defaults['form'] = self.add_form
-    defaults.update(kwargs)
-    return super().get_form(request, obj, **defaults)
+      defaults = {}
+      if obj is None:
+          defaults['form'] = self.add_form
+      defaults.update(kwargs)
+      return super().get_form(request, obj, **defaults)
   
   def export_addresses_as_csv(self, request):
-      c_name = request.GET.get('campaign_name')
-      campaign = Address.objects.all().filter(campaign_name=c_name)
-      meta = self.model._meta
-      field_names = [field.name for field in meta.fields]
-      response = HttpResponse(content_type='text/csv')
-      response['Content-Disposition'] = 'attachment; filename={}.csv'.format(c_name)
-      writer = csv.writer(response)
-      writer.writerow(field_names)
-        
-      for obj in campaign:
-        writer.writerow([getattr(obj, field) for field in field_names])
-
-      return response
+      export_form = ExportAddressesAsCSVForm
+      
+      context = dict(
+        self.admin_site.each_context(request),
+        opts=Address._meta,
+        title="Export Redemption Addresses",
+        form=ExportAddressesAsCSVForm(),
+      )
+      
+      return self.export_csv_form(request, export_form, context, False, Address)
   
   def save_model(self, request, obj, form, change):
     try:
@@ -67,7 +97,7 @@ class RedeemAddressAdmin(admin.ModelAdmin):
   def has_change_permission(self, request, obj=None):
     return False
 
-class RedeemCampaignAdmin(admin.ModelAdmin):
+class RedeemCampaignAdmin(admin.ModelAdmin, ExportCsvMixin):
     list_filter = ["campaign_name"]
     list_display = ('campaign_name', 'redeem_code', 'redemption_address_type_display', 'redemption_state', 'redemption_date')
     
@@ -82,7 +112,7 @@ class RedeemCampaignAdmin(admin.ModelAdmin):
     
     def get_urls(self):
       urls = super().get_urls()
-      custom_urls = [path('export-campaign/', self.export_campaign_as_csv)]
+      custom_urls = [path('export/', self.export_campaign_as_csv)]
       return custom_urls + urls
     
     def get_form(self, request, obj=None, **kwargs):
@@ -93,23 +123,17 @@ class RedeemCampaignAdmin(admin.ModelAdmin):
       return super().get_form(request, obj, **defaults)
     
     def export_campaign_as_csv(self, request):
-      c_name = request.GET.get('campaign_name')
-      campaign = Campaign.objects.all().filter(campaign_name=request.GET.get('campaign_name'))
-      meta = self.model._meta
-      field_names = [field.name for field in meta.fields]
-      field_names.append('redemption_link')
-      response = HttpResponse(content_type='text/csv')
-      response['Content-Disposition'] = 'attachment; filename={}.csv'.format(c_name)
-      writer = csv.writer(response)
-      writer.writerow(field_names)
-        
-      for obj in campaign:
-        redemption_link = '{}/{}/{}'.format(REDEMPTION_LINK, obj.campaign_name, obj.redeem_code)
-        obj.redemption_address_type = REDEEM_ADDRESSES[obj.redemption_address_type]
-        writer.writerow([getattr(obj, field) if field != 'redemption_link' else redemption_link  for field in field_names])
-
-      return response
-
+      export_form = ExportCodesAsCSVForm
+      
+      context = dict(
+        self.admin_site.each_context(request),
+        opts=Address._meta,
+        title="Export Campaign",
+        form=ExportCodesAsCSVForm(),
+      )
+      
+      return self.export_csv_form(request, export_form, context, True, Campaign)  
+      
     def has_change_permission(self, request, obj=None):
       return False
 
