@@ -585,6 +585,10 @@ input[type="checkbox"]:checked::before {
 
 .csv-container {
     position: relative;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px;
 }
 
 .csv-button, .csv-button:focus, .csv-button:hover, .csv-button:visited, .csv-button:link {

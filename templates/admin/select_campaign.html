@@ -3,9 +3,9 @@
 <form action="." method="post">
     {% csrf_token %}
     {{ form }}
-    <input type="submit" value="Export">
+    <input type="submit" value={{btn_label}}>
 </form>
 <div class="submit-row">
-    <a href="/admin" class="closelink">Close</a>
+    <a href="{% url cl_btn_url %}" class="closelink">Close</a>
 </div>
 {% endblock %}
