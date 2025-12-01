@@ -31,7 +31,7 @@ class DeviceVerifyAdmin(admin.ModelAdmin):
     def get_urls(self):
       urls = super().get_urls()
       custom_urls = [
-        path('import-csv/', self.import_csv),
+        path('import-csv/', self.admin_site.admin_view(self.import_csv)),
       ]
       return custom_urls + urls
 

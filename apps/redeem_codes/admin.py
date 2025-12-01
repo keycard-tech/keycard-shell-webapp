@@ -74,8 +74,8 @@ class RedeemAddressAdmin(admin.ModelAdmin, ExportCsvMixin):
   def get_urls(self):
       urls = super().get_urls()
       custom_urls = [
-        path('export/', self.export_addresses_as_csv),
-        path('delete-campaign/', self.delete_campaign)
+        path('export/', self.admin_site.admin_view(self.export_addresses_as_csv)),
+        path('delete-campaign/', self.admin_site.admin_view(self.delete_campaign))
       ]
       return custom_urls + urls
   
@@ -145,8 +145,8 @@ class RedeemCampaignAdmin(admin.ModelAdmin, ExportCsvMixin):
     def get_urls(self):
       urls = super().get_urls()
       custom_urls = [
-        path('export/', self.export_campaign_as_csv),
-        path('delete-campaign/', self.delete_campaign)
+        path('export/', self.admin_site.admin_view(self.export_campaign_as_csv)),
+        path('delete-campaign/', self.admin_site.admin_view(self.delete_campaign))
         ]
       return custom_urls + urls
     
