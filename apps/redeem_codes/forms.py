@@ -68,7 +68,7 @@ class CodesSelectCampaignForm(forms.Form):
         campaigns_list = Campaign.objects.all().values_list('campaign_name', flat=True).distinct()
         self.fields["campaign"].choices = [(campaign, campaign) for campaign in campaigns_list]
 class AddressesSelectCampaignForm(forms.Form):
-  campaign = forms.ChoiceField(required=True, choices=None, widget=forms.Select(attrs={'class': 'admin__export-form-select'}))  
+  campaign = forms.ChoiceField(required=True, choices=None, widget=forms.Select(attrs={'class': 'admin__campaign-form-select'}))  
   
   def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

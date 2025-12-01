@@ -68,6 +68,7 @@ class RedeemAddressAdmin(admin.ModelAdmin, ExportCsvMixin):
   list_display = ('campaign_name', 'redemption_address')
   form = AddressChangeForm
   add_form = AddressAddForm 
+  actions = None
   
   change_list_template = "admin/redeem_changelist.html"
   
@@ -134,6 +135,8 @@ class RedeemCampaignAdmin(admin.ModelAdmin, ExportCsvMixin):
     list_display = ('campaign_name', 'redeem_code', 'redemption_address_type_display', 'redemption_state', 'redemption_date')
     
     change_list_template = "admin/redeem_changelist.html"
+    
+    actions = None
     
     @admin.display(description='Address type')
     def redemption_address_type_display(self, obj):
@@ -223,7 +226,9 @@ class RedeemCampaignAdmin(admin.ModelAdmin, ExportCsvMixin):
               )
               data.append(redeem_code)
           if data:  
-            Campaign.objects.bulk_create(data)   
+            Campaign.objects.bulk_create(data) 
+            messages.set_level(request, messages.SUCCESS)
+            messages.success(request, "Redeem campaign added successfully")  
         except IntegrityError as err:
             messages.set_level(request, messages.ERROR)
             messages.add_message(request, messages.ERROR, "Redeem code already exists")          

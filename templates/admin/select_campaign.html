@@ -2,10 +2,13 @@
 {% block content %}
 <form action="." method="post">
     {% csrf_token %}
-    {{ form }}
-    <input type="submit" value={{btn_label}}>
+    <div class="admin__select-field-container">
+        {{ form }}
+    </div>
+    <div class="admin__btns_container">
+        <input type="submit" value={{btn_label}} class="admin__btn admin__{{btn_label|lower}}">
+        <a href="{% url cl_btn_url %}" class="closelink admin__close-btn">Close</a>
+    </div>
+    
 </form>
-<div class="submit-row">
-    <a href="{% url cl_btn_url %}" class="closelink">Close</a>
-</div>
 {% endblock %}

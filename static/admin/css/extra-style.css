@@ -229,7 +229,7 @@ td.field-is_active, td.field-is_superuser {
 }
 
 .closelink {
-   border: solid 1px var(--white-20) !important;
+    border: solid 1px var(--white-20) !important;
     font-family: var(--font-family-primary) !important;
     font-weight: 300 !important;
     background-color: var(--white-4) !important; 
@@ -581,7 +581,79 @@ input[type="checkbox"]:checked::before {
     height: auto;
 }
 
+.admin__select-field-container {
+    width: 100%;
+    box-sizing: border-box;
+    margin: 30px 0 0 0;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--hairline-color);
+}
 
+.admin__btns_container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    margin: 10px 0;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.admin__close-btn {
+    border-radius: 4px;
+    padding: 10px;
+    font-family: var(--font-family-primary);
+    font-weight: 400;
+    text-decoration: none;
+    color: var(--button-fg) !important;
+    text-align: center;
+}
+
+.admin__close-btn:hover, .admin__close-btn:visited {
+    border: none;
+    text-decoration: none;
+    color: var(--white-80);
+    font-weight: 400;
+}
+
+.admin__delete {
+    background-color: var(--delete-button-bg) !important;
+}
+
+.admin__select-field-container div {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 80px;
+    align-items: center;
+}
+
+.admin__select-field-container div label {
+    font-weight: bold;
+}
+
+#id_campaign, #id_redemption_address_type {
+    background-color: var(--white-4);
+    border: solid 1px var(--white-20);
+    outline: none;
+}
+
+#id_campaign {
+    min-width: 300px;
+}
+
+.paginator a:link, .paginator a:visited, .paginator a:focus, .paginator a:hover {
+    color: white;
+    background: none;
+    
+}
+
+.paginator .this-page {
+    padding: 2px 6px;
+    font-weight: bold;
+    background: var(--button-bg);
+}
 
 .csv-container {
     position: relative;
@@ -817,7 +889,7 @@ input[type='password'] {
     .admin__object-tools .object-tools {
         float: none;
         margin-top: 0;
-        width: 100%;
+        min-width: auto;
     }
 
     .admin__fw_hash {
@@ -825,4 +897,35 @@ input[type='password'] {
         width: 100%;
         float: none;
     }
+
+    .admin__btns_container {
+        flex-direction: column;
+        gap: 6px;
+        width: 95%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .admin__btn, .admin__close-btn  {
+        width: 100%;
+        box-sizing: border-box;
+        justify-content: center;
+        padding: 10px !important;
+        font-size: 1em;
+    }
+
+    .admin__select-field-container div {
+        flex-direction: column;
+        gap: 10px;
+        align-items: flex-start;
+    }
+
+    #id_campaign {
+        width: 100%;
+        min-height: 2.25rem;
+    }
+
+    .csv-container {
+        width: auto;
+    } 
 }
