@@ -11,7 +11,10 @@ from apps.device_verify.forms import DeviceVerifyChangeForm, DeviceVerifyForm
 
 from .models import Device, validate_public_key, validate_uid
 class DeviceVerifyAdmin(admin.ModelAdmin):
-    list_display = ('uid', 'public_key', 'verification_start_date', 'success_counter')
+    list_display = ('serial_number', 'uid', 'public_key', 'verification_start_date', 'success_counter')
+    
+    def serial_number(self, obj):
+      return bytes.fromhex(obj.uid[12:24]).decode("utf-8") + obj.uid[0:2] + obj.uid[4:6] + obj.uid[8:10]
     
     form = DeviceVerifyChangeForm
     add_form = DeviceVerifyForm
@@ -28,7 +31,7 @@ class DeviceVerifyAdmin(admin.ModelAdmin):
     def get_urls(self):
       urls = super().get_urls()
       custom_urls = [
-        path('import-csv/', self.import_csv),
+        path('import-csv/', self.admin_site.admin_view(self.import_csv)),
       ]
       return custom_urls + urls
 

@@ -5,7 +5,7 @@ from django.db import IntegrityError, transaction
 from django.contrib import messages
 from django.utils.html import format_html
 from django.conf import settings
-from common.errors import CompareDeltasError, DecodeEntryError, InvalidAddressLength, InvalidBinFileError, InvalidJSONFileError, InvalidChainDBFile, InvalidTokenDBFile, InvalidTokenList, ProcessTokenError, SerializeDeltaError, ZipError, get_error_message
+from common.errors import CompareDeltasError, InvalidAddressLength, InvalidBinFileError, InvalidJSONFileError, InvalidChainDBFile, InvalidTokenDBFile, InvalidTokenList, ProcessTokenError, SerializeDeltaError, ZipError, get_error_message
 import datetime
 
 
