@@ -22,8 +22,8 @@ def validate_redemption_address(address, address_type):
   
 class Campaign(models.Model):
   class Meta:
-    verbose_name = "Campaign"
-    verbose_name_plural = "Campaigns"
+    verbose_name = "Codes"
+    verbose_name_plural = "Codes"
     
   campaign_name = models.CharField(max_length=200, unique=False, verbose_name='Campaign name', validators=[validate_campaign_name])
   redeem_code = models.CharField(max_length=48, blank=True, unique=True, verbose_name='Redeem code')

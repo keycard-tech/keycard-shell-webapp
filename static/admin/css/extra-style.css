@@ -666,31 +666,33 @@ input[type="checkbox"]:checked::before {
 .csv-button, .csv-button:focus, .csv-button:hover, .csv-button:visited, .csv-button:link {
     display: inline-block;
     min-width: 100px;
-    padding: 8px 12px;
+    height: 30px;
+    padding: 8px 12px !important;
     background: var(--object-tools-bg);
     font-weight: 400;
     font-size: 0.6875rem;
+    line-height: 16px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    border-radius: 15px;
+    border-radius: 15px !important;
     color: white;
     box-sizing: border-box;
     text-align: center;
+    margin: 0;
 }
 
 .csv-container-form-field {
     position: relative;
     min-width: 100px;
-    min-height: 30px;
+    height: 30px;
     box-sizing: border-box;
 }
 
 .csv-button-input {
     opacity: 0;
     position: absolute;
-    min-width: 100px;
     left: 0;
-    top: 0;
+    width: 100%;
 }
 
 input[type='password'] {

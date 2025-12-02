@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.urls import path
 from django.db import IntegrityError
 from django.contrib import messages
+from django.http import HttpResponse
 
 import csv
 from django.shortcuts import redirect
@@ -32,9 +33,27 @@ class DeviceVerifyAdmin(admin.ModelAdmin):
       urls = super().get_urls()
       custom_urls = [
         path('import-csv/', self.admin_site.admin_view(self.import_csv)),
+        path('export-csv/', self.admin_site.admin_view(self.export_csv)),
       ]
       return custom_urls + urls
+    
+    def export_csv(self, request):
+      devices = Device.objects.all()
+      meta = self.model._meta
+      field_names = [field.name for field in meta.fields]
+      field_names.append('serial_number')
+            
+      response = HttpResponse(content_type='text/csv')
+      response['Content-Disposition'] = 'attachment; filename=devices.csv'
+      writer = csv.writer(response)
+      writer.writerow(field_names)
+        
+      for device in devices:
+        serial_number = self.serial_number(device)
+        writer.writerow([getattr(device, field) if field != 'serial_number' else serial_number  for field in field_names])
 
+      return response
+      
     def import_csv(self, request):
       try:
         if request.method == "POST":
