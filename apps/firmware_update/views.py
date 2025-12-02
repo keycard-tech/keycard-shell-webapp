@@ -10,12 +10,14 @@ def index(request):
 
 def get_current_firmware(request):
   fw = Firmware.objects.last()
+  fw_context = None
 
-  fw_context = {
-    "fw_path": fw.version + '/firmware.bin',
-    "version": fw.version,
-    "hash": fw.fw_hash
-    }
+  if fw is not None: 
+    fw_context = {
+      "fw_path": fw.version + '/firmware.bin',
+      "version": fw.version,
+      "hash": fw.fw_hash
+      }
 
   return HttpResponse(json.dumps(fw_context), content_type='application/json')
 

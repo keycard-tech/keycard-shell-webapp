@@ -15,12 +15,14 @@ def release_notes(request):
 
 def get_current_db(request):
   db = DB.objects.last()
+  context = None
 
-  context = {
-    "db_path": db.version + '/db.bin',
-    "hash": db.full_db_hash,
-    "version": db.version
-  }
+  if db is not None:
+    context = {
+      "db_path": db.version + '/db.bin',
+      "hash": db.full_db_hash,
+      "version": db.version
+    }
 
   return HttpResponse(json.dumps(context), content_type='application/json')
 
