@@ -17,7 +17,7 @@
     "@choppu/shelljs": "^1.0.1",
     "@choppu/shelljs-web-hid": "^1.0.1",
     "@ngraveio/bc-ur": "^1.1.13",
-    "glob": "^11.0.1",
+    "glob": "^13.0.0",
     "html5-qrcode": "^2.3.8",
     "marked": "^15.0.7",
     "multicoin-address-validator": "^0.5.26",
