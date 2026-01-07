@@ -5,6 +5,7 @@
 :root {
     --header-size: 32px;
     --header-font-weight: 400;
+    --text-bold: 700;
     --header-line-height: 40px;
     --page-header-line-height: 56px;
     --text-font-inter: 'Inter', 'Monaco', monospace;
@@ -1287,6 +1288,10 @@ body {
 
 .keycard_shell__camera-selector::picker-icon {
     display: none;
+}
+
+.keycard_shell__bold {
+    font-weight: var(--text-bold);
 }
 
 /* QR style */
