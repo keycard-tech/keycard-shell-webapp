@@ -8,14 +8,16 @@
 </div> 
 <div class="keycard_shell__page-top-container">
     <div class="keycard_shell__page-top-text-container">
-        <span class="keycard_shell__page-top-text">Air-gapped updates offer maximum security and control, keeping your Shell up to date without ever touching an internet-connected machine. Read article <a href="#" class="keycard_shell__page-top-help-link" target="_blank">Updating Shell firmware and database in in air-gapped mode</a> to learn more.</span>
+        <span class="keycard_shell__page-top-text">Air-gapped updates offer maximum security and control, keeping your Shell up to date without ever touching an internet-connected machine.<br>
+            This page helps you locate and download the latest firmware and database for an offline upgrade of your Keycard Shell.
+             Please read the <a href="https://keycard.tech/en/help/update-keycard-shell-in-air-gapped-mode" class="keycard_shell__page-top-help-link" target="_blank">Updating Keycard Shellin air-gapped mode</a> article to learn more.</span>
     </div>
 </div>
 <div class="keycard_shell__ag_update_steps">
     <div class="keycard_shell__ag_update_step">
         <div class="keycard_shell__ag_update_step-head-container">
             <h3 class="keycard_shell__ag_update_step-heading">1.&nbsp; Download stand-alone Shell updater app</h3>
-            <span class="keycard_shell__ag_update_step-description">Standalone updater app allows you to update Shell without using internet and web-browser.</span>
+            <span class="keycard_shell__ag_update_step-description">The standalone updater app allows you to update your Shell without using internet or a web-browser. You can find it on its <a href="https://github.com/keycard-tech/kshell-updater/releases/" class="keycard_shell__page-top-help-link" target="_blank">GitHub repository</a>, or find the latest version with the links below.</span>
         </div>
         <div class="keycard_shell__select-app">
             <label for="op-system-selector" class="keycard_shell__checkbox-field-top-label">Select OS</label>
@@ -41,15 +43,16 @@
         </div>
         <div class="keycard_shell__ag_hash_check_container">
             <span class="keycard_shell__ag_hash_check_text">
-                Check the app SHA256 checksum <a href="https://github.com/keycard-tech/kshell-updater/releases/latest" class="keycard_shell__page-top-help-link" target="_blank">here</a>. Use shasum -a 256 to validate your download before using it. Read <a href="#" class="keycard_shell__page-top-help-link" target="_blank">Help article</a> for detailed instruction. <br>
-                Copy Shell updater app to freshly formatted USB stick. To avoid hidden malware, always format the USB drive before transferring files.
+                Check the app SHA256 checksum <a href="https://github.com/keycard-tech/kshell-updater/releases/latest" class="keycard_shell__page-top-help-link" target="_blank">here</a>. Use shasum -a 256 to validate your download before using it. <br>
+                Copy Shell updater app to a freshly formatted USB stick. To avoid hidden malware, always format the USB drive before transferring files.
             </span>
         </div>
     </div>
     <div class="keycard_shell__ag_update_step">
         <div class="keycard_shell__ag_update_step-head-container">
             <h3 class="keycard_shell__ag_update_step-heading">2.&nbsp; Download firmware package</h3>
-            </div>
+            <span class="keycard_shell__ag_update_step-description">You can find Keycard Shell firmware releases on its <a href="https://github.com/keycard-tech/keycard-shell/releases" class="keycard_shell__page-top-help-link" target="_blank">GitHub repository</a>, or find the latest version with the links below.</span>
+        </div>
         <div class="keycard_shell__btn-container keycard_shell__btn-ag-container">
             <a href="" class="keycard_shell__btn keycard_shell__btn-ag" id="download-fw" >
                 <img src="{% static 'keycard_shell/img/download.svg' %}" alt="Download" width="20px" height="20px">
@@ -70,7 +73,6 @@
             </div>
             <span class="keycard_shell__ag_hash_check_text">
                 Use shasum -a 256 to validate your download before using it. <br>
-                Read <a href="#" class="keycard_shell__page-top-help-link" target="_blank">Help article</a> for detailed instruction. <br>
                 Copy to the same USB drive.
             </span>
         </div>
@@ -78,7 +80,8 @@
     <div class="keycard_shell__ag_update_step">
         <div class="keycard_shell__ag_update_step-head-container">
             <h3 class="keycard_shell__ag_update_step-heading">3.&nbsp; Download database package</h3>
-            </div>
+            <span class="keycard_shell__ag_update_step-description">Keycard Shell uses a database to store smart contract ABIs, ERC-20 information, and chain ID list and names. The process to generate this database is fully reproducible and both the process and past builds are documented on the <a href="https://shell.keycard.tech/update/db-version-history" class="keycard_shell__page-top-help-link" target="_blank">database version history</a> page. You can choose a database from there or simply pick the latest version with the link below.</span>
+        </div>
         <div class="keycard_shell__btn-container keycard_shell__btn-ag-container">
             <a href="" class="keycard_shell__btn keycard_shell__btn-ag" id="download-db" >
                 <img src="{% static 'keycard_shell/img/download.svg' %}" alt="Download" width="20px" height="20px">
@@ -99,7 +102,6 @@
             </div>
             <span class="keycard_shell__ag_hash_check_text">
                 Use shasum -a 256 to validate your download before using it. <br>
-                Read <a href="#" class="keycard_shell__page-top-help-link" target="_blank">Help article</a> for detailed instruction. <br>
                 Copy to the same USB drive.
             </span>
         </div>
